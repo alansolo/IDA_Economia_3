@@ -65,9 +65,9 @@ app.controller("MyController", function ($scope, $http, $window) {
             height: 500,
             vAxis: { format: '#,##0.0000000' },
             hAxis: { format: '#,##0.0000000' },
-            colors: ['#1c91c0'] 
+            colors: ['#1c91c0']
         };
-
+        
         var chart = new google.charts.Line(document.getElementById('linechart_material'));
 
         chart.draw(data, google.charts.Line.convertOptions(options));
