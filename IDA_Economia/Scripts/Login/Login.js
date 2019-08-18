@@ -26,8 +26,8 @@ app.controller("MyController", function ($scope, $http, $window) {
             dataType: 'json',
             success: function (datos) {
                 
-                if (datos.mensejeError == "OK") {
-                    $window.location.href = urlPathSystem + "/Home/Index";
+                if (datos == "OK") {
+                    $window.location.href = urlPathSystem + "/MercadoCapital/MercadoCapital";
                 }
                 else
                 {
