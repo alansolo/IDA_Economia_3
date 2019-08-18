@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewBag.Title = "MercadoCapital";
+    Layout = "~/Views/Shared/_LayoutIDA.cshtml";
+}
+
+<h4>Mercado de Capitales</h4>
+
+<head>
+    <link href="~/Content/MercadoCapital/MercadoCapital.css" rel="stylesheet" />
+    <script src="~/Scripts/MercadoCapital/MercadoCapital.js"></script>
+
+    <script src="~/Scripts/google-chart.js"></script>
+</head>
+
+<body>
+    <div ng-app="MyApp" ng-controller="MyController">
+
+        <div class="accordion" id="accordionExampleUno">
+            <div class="card">
+                <div class="card-header" id="headingUno">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseUno" aria-expanded="true" aria-controls="collapseUno">
+                            <i class="fa fa-money-check-alt fa-lg"></i> Mercado de Capitales
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="collapseUno" class="collapse" aria-labelledby="headingUno" data-parent="#accordionExampleUno">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-3" style="background-color: #F1948A;">
+
+                                <!--Campo destinado a la obtención de datos, el cliente solicita a través de la lista, las variables que quiere descargar-->
+                                <div id="Capitalesu1" style="background-color: #F1948A; margin-left: 20px; margin-top: 10px; width:250px; float:left;" align="center">
+                                    <span>Compara en mercado de Capitales:</span>
+                                    <br />
+                                    <asp:ListBox ID="ListCapitales" runat="server" Height="150" SelectionMode="Multiple">
+                                        <asp:ListItem>GRUMAB.MX</asp:ListItem>
+                                        <asp:ListItem>CEMEXCPO.MX</asp:ListItem>
+                                        <asp:ListItem>WMT.MX</asp:ListItem>
+                                        <asp:ListItem>GENTERA.MX</asp:ListItem>
+                                        <asp:ListItem>TLEVISACPO.MX</asp:ListItem>
+                                        <asp:ListItem>PINFRA.MX</asp:ListItem>
+                                        <asp:ListItem>LALAB.MX</asp:ListItem>
+                                        <asp:ListItem>GFAMSAA.MX</asp:ListItem>
+                                        <asp:ListItem>IENOVA.MX</asp:ListItem>
+                                        <asp:ListItem>KIMBERA.MX</asp:ListItem>
+                                    </asp:ListBox>
+
+                                    <br />
+                                    <br />
+
+                                    <span>Fecha Inicial:&nbsp;&nbsp;&nbsp;<asp:TextBox ID="FechaInicioCapitales" runat="server" ReadOnly="false" Width="100px"></asp:TextBox></span>
+                                    <i class="far fa-calendar-alt fa-lg alert-secondary"></i>
+                                    <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" Format="dd/MM/yyyy" TargetControlID="FechaInicioCapitales" />
+                                    <br />
+                                    <span>Fecha Final:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:TextBox ID="FechaFinCapitales" runat="server" ReadOnly="false" Width="100px"></asp:TextBox></span>
+                                    <i class="far fa-calendar-alt fa-lg alert-secondary"></i>
+                                    <ajaxToolkit:CalendarExtender ID="CalendarExtender6" runat="server" Format="dd/MM/yyyy" TargetControlID="FechaFinCapitales" />
+                                    <br />
+                                    <br />
+
+                                    <button runat="server" id="btnCapitales" class="btn-primary" ng-click="ObtenerEstadistico()">
+                                        <i class="fa fa-chart-line fa-lg"></i> Obtener Estadisticas
+                                    </button>
+
+                                    <br />
+                                    <br />
+                                    <button runat="server" id="btnExportCapitales" class="btn-primary" onserverclick="btnExportCapitales_Click">
+                                        <i class="fa fa-file-excel fa-lg"></i> Exportar
+                                    </button>
+                                    <br />
+                                    <br />
+
+                                </div>
+
+                            </div>
+                            <div class="col-9" style="background-color: #D6DBDF;">
+
+                                <!--El usuario visualiza en esta parte la gráfica en línea de la serie elegida-->
+                                <div id="Capitalesu2" style="background-color: #D6DBDF; height: 350px; width: 800px; float:left; margin-top:10px; margin-left: 45px; margin-right: auto; margin-bottom: auto;" align="center">
+
+                                    <span class="card-title">
+                                        <i class="fa fa-chart-area fa-lg"></i> Curva Varianza
+                                    </span>
+                                    <br />
+                                    <div id="linechart_material"></div>
+                                    
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+
+                                <!--Se muestra un resumen de la series como maximo, minimo, p. apertura, p. cierre, volumen de operacion, etc. -->
+                                <div id="Capitalesu311" align="center">
+                                    <br />
+
+                                    <asp:GridView ID="DgvCurvaVarianza" HorizontalAlign="Center" CssClass="table" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None">
+                                        <AlternatingRowStyle BackColor="White" />
+                                        <EditRowStyle BackColor="#2461BF" />
+                                        <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#9CB0C7" Font-Bold="True" ForeColor="Black" />
+                                        <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                        <RowStyle BackColor="#EFF3FB" />
+                                        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                        <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                        <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                        <SortedDescendingHeaderStyle BackColor="#4870BE" />
+                                    </asp:GridView>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-12">
+
+                                <!--Se muestran las estadísticas básicas de la serie económica: media, varianza, etc.-->
+                                <div id="Capitalesu411" align="center">
+
+                                    <br />
+
+                                    <asp:GridView ID="dgvTotales" HorizontalAlign="Center" CssClass="table" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None">
+                                        <AlternatingRowStyle BackColor="White" />
+                                        <EditRowStyle BackColor="#2461BF" />
+                                        <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#9CB0C7" Font-Bold="True" ForeColor="Black" />
+                                        <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                        <RowStyle BackColor="#EFF3FB" />
+                                        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                        <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                        <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                        <SortedDescendingHeaderStyle BackColor="#4870BE" />
+                                    </asp:GridView>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>

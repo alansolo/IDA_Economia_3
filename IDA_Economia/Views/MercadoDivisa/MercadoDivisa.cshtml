@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewBag.Title = "MercadoDivisa";
+    Layout = "~/Views/Shared/_LayoutIDA.cshtml";
+}
+
+<h4>Mercado de Divisas</h4>
+
+<head>
+    <link href="~/Content/MercadoDivisa/MercadoDivisa.css" rel="stylesheet" />
+    <script src="~/Scripts/MercadoDivisa/MercadoDivisa.js"></script>
+</head>
+
+<body>
+    <div ng-app="MyApp" ng-controller="MyController">
+
+        <div class="accordion" id="accordionExampleDos">
+            <div class="card">
+                <div class="card-header" id="headingDos">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDos" aria-expanded="true" aria-controls="collapseDos">
+                            <i class="fa fa-coins fa-lg"></i> Mercado de Divisas
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="collapseDos" class="collapse" aria-labelledby="headingDos" data-parent="#accordionExampleDos">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-3" style="background-color:#F0B27A">
+                                <!--Campo destinado a la obtención de datos, el cliente solicita a través de la lista, las variables que quiere descargar-->
+                                <div id="Divisasu1" style="background-color:#F0B27A; margin-left: 20px;  margin-top: 10px; width:250px; float:left;" align="center">
+                                    <p style="font-family: sans-serif">Compara en mercado de Divisas:</p>
+                                    <asp:ListBox ID="ListDivisas" runat="server">
+                                        <asp:ListItem Text="MXN/USD" Value="SF43718"></asp:ListItem>
+                                        <asp:ListItem Text="MXN/EUR" Value="SF46410"></asp:ListItem>
+                                        <asp:ListItem Text="MXN/JPY" Value="SF46406"></asp:ListItem>
+                                        <asp:ListItem Text="MXN/CNY" Value="SF290383"></asp:ListItem>
+                                        <asp:ListItem Text="MXN/GBP" Value="SF46407"></asp:ListItem>
+                                    </asp:ListBox>
+                                    <br />
+                                    <br />
+
+                                    <span>Fecha Inicial:&nbsp;&nbsp;&nbsp;<asp:TextBox ID="FechaInicioDivisa" runat="server" ReadOnly="false" Width="100px"></asp:TextBox></span>
+                                    <i class="far fa-calendar-alt fa-lg alert-secondary"></i>
+                                    <ajaxToolkit:CalendarExtender ID="CalendarExtender2" runat="server" Format="dd/MM/yyyy" TargetControlID="FechaInicioDivisa" />
+                                    <br />
+                                    <span>Fecha Final:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:TextBox ID="FechaFinDivisa" runat="server" ReadOnly="false" Width="100px"></asp:TextBox></span>
+                                    <i class="far fa-calendar-alt fa-lg alert-secondary"></i>
+                                    <ajaxToolkit:CalendarExtender ID="CalendarExtender3" runat="server" Format="dd/MM/yyyy" TargetControlID="FechaFinDivisa" />
+                                    <br />
+                                    <br />
+                                    <button runat="server" id="btnDivisa" class="btn-primary" onserverclick="btnDivisa_Click">
+                                        <i class="fa fa-chart-line fa-lg"></i> Obtener Estadisticas
+                                    </button>
+                                    
+                                    <br />
+                                    <br />
+                                    <button runat="server" id="btnExportDivisa" class="btn-primary" onserverclick="btnExportDivisa_Click">
+                                        <i class="fa fa-file-excel fa-lg"></i> Exportar
+                                    </button>
+                                    
+                                    <br />
+                                    <br />
+
+                                </div>
+                            </div>
+                            <div class="col-9" style="background-color: #D6DBDF;">
+                                <!--El usuario visualiza en esta parte la gráfica en línea de la serie elegida-->
+                                <div id="Divisasu2" style="background-color: #D6DBDF; height: 360px; width: 800px; float:left; margin-top:10px; margin-left: 45px; margin-right: auto; margin-bottom: auto;" align="center">
+
+                                    <span class="card-title">
+                                        <i class="fa fa-chart-area fa-lg"></i> Grafica Divisas
+                                    </span>
+                                    <br />
+                                    <asp:Chart ID="Chart2" runat="server" Height="330px" Width="800px" BackColor="214, 219, 223">
+                                        <Series>
+                                            <asp:Series Name="Series1" ChartType="Spline"></asp:Series>
+                                            <asp:Series ChartArea="ChartArea1" ChartType="Point" Name="Series2"></asp:Series>
+                                        </Series>
+                                        <ChartAreas>
+                                            <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
+                                        </ChartAreas>
+                                    </asp:Chart>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <!--Se muestran las estadísticas básicas de la serie económica: media, varianza, etc.-->
+                                <div id="Divisasu4" style="background-color:#FFFFFF;" align="center">
+
+                                    <asp:GridView ID="dgvDivisa" HorizontalAlign="Center" CssClass="table" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None">
+                                        <AlternatingRowStyle BackColor="White" />
+                                        <EditRowStyle BackColor="#2461BF" />
+                                        <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#9CB0C7" Font-Bold="True" ForeColor="Black" />
+                                        <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                        <RowStyle BackColor="#EFF3FB" />
+                                        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                        <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                        <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                        <SortedDescendingHeaderStyle BackColor="#4870BE" />
+                                    </asp:GridView>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>

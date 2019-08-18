@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "MercadoDinero";
+    Layout = "~/Views/Shared/_LayoutIDA.cshtml";
+}
+
+<h4>Mercado de Dinero</h4>
+
+<head>
+    <link href="~/Content/MercadoDinero/MercadoDinero.css" rel="stylesheet" />
+    <script src="~/Scripts/MercadoDinero/MercadoDinero.js"></script>
+</head>
+
+<body>
+    <div ng-app="MyApp" ng-controller="MyController">
+
+        <div class="accordion" id="accordionExampleTres">
+            <div class="card">
+                <div class="card-header" id="headingTres">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTres" aria-expanded="true" aria-controls="collapseTres">
+                            <i class="fa fa-money-bill-alt fa-lg"></i> Mercado de Dinero
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="collapseTres" class="collapse" aria-labelledby="headingTres" data-parent="#accordionExampleTres">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-3" style="background-color:#F9E79F">
+
+                                <div id="Dinerou1" style="background-color:#F9E79F; margin-left: 20px; margin-top: 10px; width:250px; float:left;" align="center">
+                                    <p style="font-family: sans-serif">Compara en mercado de Dinero:</p>
+                                    <asp:ListBox ID="ListDinero" runat="server">
+                                        <asp:ListItem Text="Cetes 28" Value="SF43936"></asp:ListItem>
+                                        <asp:ListItem Text="Cetes 91" Value="SF43939"></asp:ListItem>
+                                        <asp:ListItem Text="Cetes 182" Value="SF43942"></asp:ListItem>
+                                        <asp:ListItem Text="T-Bills 3M" Value="SI563"></asp:ListItem>
+                                        <asp:ListItem Text="T-Bills 6M" Value="SI564"></asp:ListItem>
+                                        <asp:ListItem Text="Libor 3M" Value="SI561"></asp:ListItem>
+                                        <asp:ListItem Text="Libor 6M" Value="SI562"></asp:ListItem>
+                                    </asp:ListBox>
+                                    <br />
+                                    <br />
+
+                                    <span>Fecha Inicial:&nbsp;&nbsp;&nbsp;<asp:TextBox ID="FechaInicioDinero" ReadOnly="false" runat="server" Width="100px"></asp:TextBox></span>
+                                    <ajaxToolkit:CalendarExtender ID="CalendarExtender4" runat="server" Format="dd/MM/yyyy" TargetControlID="FechaInicioDinero" />
+                                    <br />
+                                    <span>Fecha Final:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:TextBox ID="FechaFinDinero" ReadOnly="false" runat="server" Width="100px"></asp:TextBox></span>
+                                    <ajaxToolkit:CalendarExtender ID="CalendarExtender5" runat="server" Format="dd/MM/yyyy" TargetControlID="FechaFinDinero" />
+                                    <br />
+                                    <br />
+                                    <button runat="server" id="btnDinero" class="btn-primary" onserverclick="btnDinero_Click">
+                                        <i class="fa fa-chart-line fa-lg"></i> Obtener Estadisticas
+                                    </button>
+                                    
+                                    <br />
+                                    <br />
+                                    <button runat="server" id="btnExportDinero" class="btn-primary" onserverclick="btnExportDinero_Click">
+                                        <i class="fa fa-file-excel fa-lg"></i> Exportar
+                                    </button>
+                                    
+                                    <br />
+                                    <br />
+
+                                </div>
+
+                            </div>
+                            <div class="col-9" style="background-color: #D6DBDF;">
+
+                                <!--El usuario visualiza en esta parte la gráfica en línea de la serie elegida-->
+                                <div id="Dinerou2" style="background-color: #D6DBDF; height: 270px; width: 880px; float:left; margin-top:10px; margin-left: 45px; margin-right: auto; margin-bottom: auto;" align="center">
+
+                                    <span class="card-title">
+                                        <i class="fa fa-chart-area fa-lg"></i> Grafica Dinero
+                                    </span>
+                                    <br />
+                                    <asp:Chart ID="Chart1" runat="server" Height="330px" Width="800px" BackColor="214, 219, 223">
+                                        <Series>
+                                            <asp:Series Name="Series1" ChartType="Spline"></asp:Series>
+                                            <asp:Series ChartArea="ChartArea1" ChartType="Point" Name="Series2"></asp:Series>
+                                        </Series>
+                                        <ChartAreas>
+                                            <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
+                                        </ChartAreas>
+                                    </asp:Chart>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+
+                                <!--Se muestran las estadísticas básicas de la serie económica: media, varianza, etc.-->
+                                <div id="Dinerou4" style="background-color:#FFFFFF;" align="center">
+
+                                    <asp:GridView ID="dgvDinero" HorizontalAlign="Center" CssClass="table" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None">
+                                        <AlternatingRowStyle BackColor="White" />
+                                        <EditRowStyle BackColor="#2461BF" />
+                                        <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#9CB0C7" Font-Bold="True" ForeColor="Black" />
+                                        <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                        <RowStyle BackColor="#EFF3FB" />
+                                        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                        <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                        <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                        <SortedDescendingHeaderStyle BackColor="#4870BE" />
+                                    </asp:GridView>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
