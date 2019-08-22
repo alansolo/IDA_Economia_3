@@ -30,13 +30,28 @@
                     <div class="card-body">
 
                         <div class="row">
-                            <div class="col-3" style="background-color: #F1948A;">
+                            <div class="col-3" style="background-color: rgba(0, 0, 0, 0.03);">
 
                                 <!--Campo destinado a la obtención de datos, el cliente solicita a través de la lista, las variables que quiere descargar-->
-                                <div id="Capitalesu1" style="background-color: #F1948A; margin-left: 20px; margin-top: 10px; width:250px; float:left;" align="center">
+                                <div id="Capitalesu1" style="margin-left: 20px; margin-top: 10px; width:250px; float:left;" align="center">
                                     <span>Compara en mercado de Capitales:</span>
                                     <br />
-                                    <asp:ListBox ID="ListCapitales" runat="server" Height="150" SelectionMode="Multiple">
+
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <label class="custom-control-label" for="defaultUnchecked">GRUMAB.MX</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <label class="custom-control-label" for="defaultUnchecked">CEMEXCPO.MX</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <label class="custom-control-label" for="defaultUnchecked">WMT.MX</label>
+                                    </div>
+
+
+                                    @*<asp:ListBox ID="ListCapitales" runat="server" Height="150" SelectionMode="Multiple">
                                         <asp:ListItem>GRUMAB.MX</asp:ListItem>
                                         <asp:ListItem>CEMEXCPO.MX</asp:ListItem>
                                         <asp:ListItem>WMT.MX</asp:ListItem>
@@ -47,18 +62,38 @@
                                         <asp:ListItem>GFAMSAA.MX</asp:ListItem>
                                         <asp:ListItem>IENOVA.MX</asp:ListItem>
                                         <asp:ListItem>KIMBERA.MX</asp:ListItem>
-                                    </asp:ListBox>
+                                    </asp:ListBox>*@
 
                                     <br />
                                     <br />
 
-                                    <span>Fecha Inicial:&nbsp;&nbsp;&nbsp;<asp:TextBox ID="FechaInicioCapitales" runat="server" ReadOnly="false" Width="100px"></asp:TextBox></span>
-                                    <i class="far fa-calendar-alt fa-lg alert-secondary"></i>
-                                    <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" Format="dd/MM/yyyy" TargetControlID="FechaInicioCapitales" />
+                                    <span>Fecha Inicial:<asp:TextBox ID="FechaInicioCapitales" runat="server" ReadOnly="false" Width="100px"></asp:TextBox></span>
+
+                                    <div class="input-group fecha-custom">
+                                        <input type="text" class="form-control fecha fecha-custom-text" id="fechaDocumento" name="fecha"
+                                               placeholder="DD/MM/YYYY" ng-model="d.FechaFin" value="{{d.FechaFin}}"
+                                               ng-change="EditTextoCronograma(d)" required readonly />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2">
+                                                <i class="fa fa-calendar-alt fa-lg"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
                                     <br />
-                                    <span>Fecha Final:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:TextBox ID="FechaFinCapitales" runat="server" ReadOnly="false" Width="100px"></asp:TextBox></span>
-                                    <i class="far fa-calendar-alt fa-lg alert-secondary"></i>
-                                    <ajaxToolkit:CalendarExtender ID="CalendarExtender6" runat="server" Format="dd/MM/yyyy" TargetControlID="FechaFinCapitales" />
+                                    <span>Fecha Final:<asp:TextBox ID="FechaFinCapitales" runat="server" ReadOnly="false" Width="100px"></asp:TextBox></span>
+
+                                    <div class="input-group fecha-custom">
+                                        <input type="text" class="form-control fecha fecha-custom-text" id="fechaDocumento" name="fecha"
+                                               placeholder="DD/MM/YYYY" ng-model="d.FechaFin" value="{{d.FechaFin}}"
+                                               ng-change="EditTextoCronograma(d)" required readonly />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2">
+                                                <i class="fa fa-calendar-alt fa-lg"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
                                     <br />
                                     <br />
 
@@ -77,10 +112,10 @@
                                 </div>
 
                             </div>
-                            <div class="col-9" style="background-color: #D6DBDF;">
+                            <div class="col-9">
 
                                 <!--El usuario visualiza en esta parte la gráfica en línea de la serie elegida-->
-                                <div id="Capitalesu2" style="background-color: #D6DBDF; height: 350px; width: 800px; float:left; margin-top:10px; margin-left: 45px; margin-right: auto; margin-bottom: auto;" align="center">
+                                <div id="Capitalesu2" style="min-width: 800px; float:left; margin-top:10px; margin-left: 45px; margin-right: auto; margin-bottom: auto;" align="center">
 
                                     <span class="card-title">
                                         <i class="fa fa-chart-area fa-lg"></i> Curva Varianza
@@ -100,19 +135,20 @@
                                 <div id="Capitalesu311" align="center">
                                     <br />
 
-                                    <asp:GridView ID="DgvCurvaVarianza" HorizontalAlign="Center" CssClass="table" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None">
-                                        <AlternatingRowStyle BackColor="White" />
-                                        <EditRowStyle BackColor="#2461BF" />
-                                        <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                        <HeaderStyle BackColor="#9CB0C7" Font-Bold="True" ForeColor="Black" />
-                                        <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
-                                        <RowStyle BackColor="#EFF3FB" />
-                                        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                                        <SortedAscendingCellStyle BackColor="#F5F7FB" />
-                                        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
-                                        <SortedDescendingCellStyle BackColor="#E9EBEF" />
-                                        <SortedDescendingHeaderStyle BackColor="#4870BE" />
-                                    </asp:GridView>
+                                    <div>
+                                        <table class="table">
+                                            <thead class="thead-light">
+                                                <tr >
+                                                    <th ng-repeat="j in ListEncabezadoEmpresa">{{j.Columna}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="d in ListDatos">
+                                                    <td ng-repeat="m in d.datos">{{m}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
 
                                 </div>
 
@@ -128,20 +164,26 @@
 
                                     <br />
 
-                                    <asp:GridView ID="dgvTotales" HorizontalAlign="Center" CssClass="table" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None">
-                                        <AlternatingRowStyle BackColor="White" />
-                                        <EditRowStyle BackColor="#2461BF" />
-                                        <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                        <HeaderStyle BackColor="#9CB0C7" Font-Bold="True" ForeColor="Black" />
-                                        <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
-                                        <RowStyle BackColor="#EFF3FB" />
-                                        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                                        <SortedAscendingCellStyle BackColor="#F5F7FB" />
-                                        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
-                                        <SortedDescendingCellStyle BackColor="#E9EBEF" />
-                                        <SortedDescendingHeaderStyle BackColor="#4870BE" />
-                                    </asp:GridView>
-
+                                    <div>
+                                        <table class="table">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Empresa</th>
+                                                    <th>Rendimiento Promedio</th>
+                                                    <th>Max periodo</th>
+                                                    <th>Min periodo</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="d in ListEmpresa">
+                                                    <td>{{d.Nombre}}</td>
+                                                    <td>{{d.MediaRendimiento}}</td>
+                                                    <td>{{d.MaxPrecio}}</td>
+                                                    <td>{{d.MinPrecio}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
 
                                 </div>
 

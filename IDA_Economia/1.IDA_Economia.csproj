@@ -160,8 +160,10 @@
     <Compile Include="Models\CalculoMercadoCapital.cs" />
     <Compile Include="Models\CurvaVarianza.cs" />
     <Compile Include="Models\DataSerie.cs" />
+    <Compile Include="Models\DatosMecadoCapital.cs" />
     <Compile Include="Models\Empresa.cs" />
     <Compile Include="Models\EmpresaVsEmpresa.cs" />
+    <Compile Include="Models\EncabezadoEmpresa.cs" />
     <Compile Include="Models\MercadoCapital\ResultadoMercadoCapital.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Serie.cs" />

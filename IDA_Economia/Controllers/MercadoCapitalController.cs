@@ -53,6 +53,9 @@ namespace IDA_Economia.Controllers
 
             List<CalculoMercadoCapital> ListaCalculoMercadoCapital = new List<CalculoMercadoCapital>();
 
+            List<EncabezadoEmpresa> ListaEncabezadoEmpresa = new List<EncabezadoEmpresa>();
+            EncabezadoEmpresa encabezadoEmpresa = new EncabezadoEmpresa();
+
             ////OBTENER EMPRESAS SELECCIONADAS
             //foreach (ListItem item in ListCapitales.Items)
             //{
@@ -162,13 +165,11 @@ namespace IDA_Economia.Controllers
                 n.MediaRendimiento = promedio;
             });
 
-            //dgvTotales.DataSource = ListaEmpresa.Select(n => new
-            //{
-            //    Empresa = n.Nombre,
-            //    Rendimiento_Promedio = n.MediaRendimiento,
-            //    Max_Periodo = n.ListaPrecio.Max(m => m.Close),
-            //    Min_Periodo = n.ListaPrecio.Min(m => m.Close)
-            //}).ToList();
+            ListaEmpresa.ForEach(n => 
+            {
+                n.MaxPrecio = n.ListaPrecio.Max(m => m.Close);
+                n.MinPrecio = n.ListaPrecio.Min(m => m.Close);
+            });
 
             //dgvTotales.DataBind();
 
@@ -526,18 +527,20 @@ namespace IDA_Economia.Controllers
             //DgvCurvaVarianza.DataSource = dtExportarInformacion;
             //DgvCurvaVarianza.DataBind();
 
-            CalculoMercadoCapital calculoMercadoCapital = new CalculoMercadoCapital();
+            //CalculoMercadoCapital calculoMercadoCapital = new CalculoMercadoCapital();
 
-            foreach (DataRow dr in dtExportarInformacion.Rows)
-            {
-                calculoMercadoCapital = new CalculoMercadoCapital();
+            //foreach (DataRow dr in dtExportarInformacion.Rows)
+            //{
+            //    calculoMercadoCapital = new CalculoMercadoCapital();
 
-                calculoMercadoCapital.Numero = dr["Numero"].ToString();
-                calculoMercadoCapital.RendimientoAsumido = dr["Rendimiento_Asumido"].ToString();
-                calculoMercadoCapital.Riesgo = dr["Riesgo"].ToString();
+            //    calculoMercadoCapital.Numero = dr["Numero"].ToString();
+            //    calculoMercadoCapital.RendimientoAsumido = dr["Rendimiento_Asumido"].ToString();
+            //    calculoMercadoCapital.Riesgo = dr["Riesgo"].ToString();
 
-                ListaCalculoMercadoCapital.Add(calculoMercadoCapital);
-            }
+            //    ListaCalculoMercadoCapital.Add(calculoMercadoCapital);
+            //}
+
+
 
             Session["dgvCurvaVarianza"] = dtExportarInformacion;
 
@@ -556,9 +559,25 @@ namespace IDA_Economia.Controllers
             //    MensajeError("Mercado de Capitales", "No se realizo correctamente el calculo, revise que las empresas contengan datos historicos.", htmlScript.ToString());
             //}
 
+            dtExportarInformacion.Columns.Cast<DataColumn>().ToList().ForEach(n =>
+            {
+                encabezadoEmpresa = new EncabezadoEmpresa();
+                encabezadoEmpresa.Columna = n.ColumnName;
+                ListaEncabezadoEmpresa.Add(encabezadoEmpresa);
+            });
+
+            int i = 0;
+            var ListDatos = dtExportarInformacion.Rows.Cast<DataRow>().ToList().Select(n => new DatosMecadoCapital
+            {
+                id = i++,
+                datos = n.ItemArray
+            }).ToList();
+
             resultadoMercadoCapital.ListaEmpresa = ListaEmpresa;
+            resultadoMercadoCapital.ListaEncabezadoEmpresa = ListaEncabezadoEmpresa;
             resultadoMercadoCapital.ListaCurvaVarianza = ListaCurvaVarianza;
             resultadoMercadoCapital.ListaCalculoMercadoCapital = ListaCalculoMercadoCapital;
+            resultadoMercadoCapital.ListaDatos = ListDatos.ToList();
 
             return Json(resultadoMercadoCapital, JsonRequestBehavior.AllowGet);
         }

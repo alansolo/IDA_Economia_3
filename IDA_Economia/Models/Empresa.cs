@@ -17,6 +17,8 @@ namespace IDA_Economia.Models
         public double Varianza { get; set; }
         public double Media { get; set; }
         public double TotalDias { get; set; }
+        public decimal MaxPrecio { get; set; }
+        public decimal MinPrecio { get; set; }
         public List<YahooHistoricalPriceData> ListaPrecio = new List<YahooHistoricalPriceData>();
     }
 }

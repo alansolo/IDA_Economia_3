@@ -9,6 +9,15 @@ app.controller("MyController", function ($scope, $http, $window) {
 
     var urlPathSystem = "";
 
+    //Inicializar fecha
+    var date_input = $(".fecha");
+    date_input.datepicker({
+        format: 'dd/mm/yyyy',
+        todayHighlight: true,
+        autoclose: true,
+        language: "es"
+    });
+
     google.charts.load('current', { 'packages': ['line'] });
 
     $scope.ObtenerEstadistico = function () {
@@ -27,6 +36,12 @@ app.controller("MyController", function ($scope, $http, $window) {
             success: function (datos) {
 
                 $scope.ListGraficoLinea = datos.ListaCurvaVarianza;
+
+                $scope.ListEncabezadoEmpresa = datos.ListaEncabezadoEmpresa;
+
+                $scope.ListDatos = datos.ListaDatos;
+
+                $scope.ListEmpresa = datos.ListaEmpresa;               
 
                 google.charts.setOnLoadCallback(drawChart);
 
@@ -47,8 +62,8 @@ app.controller("MyController", function ($scope, $http, $window) {
         var ListGrafico = $scope.ListGraficoLinea;
 
         var data = new google.visualization.DataTable();
-        data.addColumn('number', 'Riegos del portafolio');
-        data.addColumn('number', 'Rendimiento del portafolio');
+        data.addColumn('number', 'Riegos del \n portafolio');
+        data.addColumn('number', 'Rendimiento \n del portafolio');
 
         //LLENAR INFORMACION
         $.each(ListGrafico, function (key, value) {

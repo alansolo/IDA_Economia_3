@@ -302,3 +302,16 @@ main {
 
 /*------------------
 ------------------*/
+
+.custom-control {
+    padding-left: 2rem;
+    text-align: left;
+}
+
+.fecha-custom {
+    width: 190px;
+}
+
+.fecha-custom-text {
+    height: 30px;
+}

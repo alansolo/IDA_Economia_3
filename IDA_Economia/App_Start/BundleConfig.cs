@@ -29,13 +29,17 @@ namespace IDA_Economia
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.min.js"));
+                      "~/Scripts/bootstrap.min.js",
+                      "~/Scripts/bootstrap-notify.js",
+                      "~/Scripts/bootstrap-datepicker.min.js",
+                      "~/Scripts/locales/bootstrap-datepicker.es.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/Shared/_LayoutIDA.css",
                       "~/Content/FontAwesome/all.css",
-                      "~/Content/Loaders/loaders.css"));
+                      "~/Content/Loaders/loaders.css",
+                      "~/Content/bootstrap-datepicker.css"));
         }
     }
 }
