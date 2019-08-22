@@ -18,6 +18,8 @@ app.controller("MyController", function ($scope, $http, $window) {
         language: "es"
     });
 
+    //$('#dateselector').datepicker("setDate", new Date(2008,9,03) );
+
     google.charts.load('current', { 'packages': ['line'] });
 
     $scope.ObtenerEstadistico = function () {
@@ -44,6 +46,8 @@ app.controller("MyController", function ($scope, $http, $window) {
                 $scope.ListEmpresa = datos.ListaEmpresa;               
 
                 google.charts.setOnLoadCallback(drawChart);
+
+                MessageSuccess("Mercado de Capitales", "Se realizo correctamente el calculo.");
 
                 $scope.$apply();
 
@@ -86,6 +90,45 @@ app.controller("MyController", function ($scope, $http, $window) {
         var chart = new google.charts.Line(document.getElementById('linechart_material'));
 
         chart.draw(data, google.charts.Line.convertOptions(options));
+    }
+
+    function MessageInfo(titulo, message) {
+        $.notify({
+            // options
+            icon: 'fa fa-info-circle fa-lg',
+            title: "<span class='title-notify'><strong>" + titulo + "</strong></span><br/>",
+            message: "<span class='message-notify'>" + message + "</span><br/>"
+        }, {
+                // settings
+                type: 'info',
+                delay: 8000
+            });
+    }
+
+    function MessageSuccess(titulo, message) {
+        $.notify({
+            // options
+            icon: 'fa fa-check-circle fa-lg',
+            title: "<span class='title-notify'><strong>" + titulo + "</strong></span><br/>",
+            message: "<span class='message-notify'>" + message + "</span><br/>"
+        }, {
+                // settings
+                type: 'success',
+                delay: 8000
+            });
+    }
+
+    function MessageDanger(titulo, message) {
+        $.notify({
+            // options
+            icon: 'fa fa-window-close fa-lg',
+            title: "<span class='title-notify'><strong>" + titulo + "</strong></span><br/>",
+            message: "<span class='message-notify'>" + message + "</span><br/>"
+        }, {
+                // settings
+                type: 'danger',
+                delay: 8000
+            });
     }
 
 });

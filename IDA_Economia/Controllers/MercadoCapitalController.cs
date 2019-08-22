@@ -1,9 +1,11 @@
-﻿using IDA_Economia.Models;
+﻿using ClosedXML.Excel;
+using IDA_Economia.Models;
 using IDA_Economia.Models.MercadoCapital;
 using OperacionMatriz;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,8 +19,14 @@ namespace IDA_Economia.Controllers
         string crumb = "SPwNBQX77jD"; //"ourzFxbliAq";//
 
         // GET: MercadoCapital
+        [HttpGet]
         public ActionResult MercadoCapital()
         {
+            if (Session["Usuario"] == null)
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
             return View();
         }
 
@@ -579,7 +587,35 @@ namespace IDA_Economia.Controllers
             resultadoMercadoCapital.ListaCalculoMercadoCapital = ListaCalculoMercadoCapital;
             resultadoMercadoCapital.ListaDatos = ListDatos.ToList();
 
+            Session["dtInformacion"] = dtExportarInformacion;
+
             return Json(resultadoMercadoCapital, JsonRequestBehavior.AllowGet);
+        }
+        public void ExportarExcel()
+        {
+            string nombreArchivo = "Calculo_De_Portafolio_Eficiente.xlsx";
+            string hojaArchivo = "Riesgo_Rendimiento";
+            DataTable dtInformacion = (DataTable)Session["dtInformacion"]; 
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dtInformacion, hojaArchivo);
+
+                Response.ClearContent();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.ms-excel";
+                Response.AddHeader("content-disposition", "attachment; filename=" + nombreArchivo);
+
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,6 +11,7 @@ namespace IDA_Economia.Controllers
     public class LoginController : Controller
     {
         // GET: Login
+        [HttpGet]
         public ActionResult Login()
         {
             return View();
@@ -33,7 +35,7 @@ namespace IDA_Economia.Controllers
 
                 if (usuario == userDefault && password == passwordDefault)
                 {
-                    Session["usuario"] = usuario;
+                    Session["Usuario"] = usuario;
                     mensejeError = "OK";
                 }
                 else
@@ -44,6 +46,5 @@ namespace IDA_Economia.Controllers
 
             return Json(mensejeError, JsonRequestBehavior.AllowGet);
         }
-
     }
 }
