@@ -6,8 +6,10 @@ using System.Web;
 
 namespace IDA_Economia.Models
 {
+    [DataContract]
     public class Response
     {
+        [DataMember(Name = "bmx")]
         public SeriesResponse seriesResponse { get; set; }
     }
 }

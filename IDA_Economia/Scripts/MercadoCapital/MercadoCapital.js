@@ -9,16 +9,33 @@ app.controller("MyController", function ($scope, $http, $window) {
 
     var urlPathSystem = "";
 
+    var myDate = new Date();
+    var dd = myDate.getDate();
+
+    var mm = myDate.getMonth() + 1;
+    var yyyy = myDate.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+
+    if (mm < 10) {
+        mm = '0' + mm;
+    } 
+
+    myDate = dd + '/' + mm + '/' + yyyy;
+
     //Inicializar fecha
     var date_input = $(".fecha");
     date_input.datepicker({
         format: 'dd/mm/yyyy',
         todayHighlight: true,
         autoclose: true,
-        language: "es"
+        language: "es",
+        setDate: myDate
     });
 
-    //$('#dateselector').datepicker("setDate", new Date(2008,9,03) );
+    $scope.FechaInicio = myDate;
+    $scope.FechaFinal = myDate;
 
     google.charts.load('current', { 'packages': ['line'] });
 
@@ -28,11 +45,11 @@ app.controller("MyController", function ($scope, $http, $window) {
         $.ajax({
             type: "POST",
             url: urlPathSystem + "/MercadoCapital/ObtenerEstadistico",
-            //data: JSON.stringify(
-            //    {
-            //        'usuario': varUsuario,
-            //        'password': varPassword
-            //    }),
+            data: JSON.stringify(
+                {
+                    'strFechaInicio': $scope.FechaInicio,
+                    'strFechaFinal': $scope.FechaFinal
+                }),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (datos) {

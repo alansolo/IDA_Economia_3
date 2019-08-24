@@ -80,17 +80,17 @@
 
 
                                     @*<asp:ListBox ID="ListCapitales" runat="server" Height="150" SelectionMode="Multiple">
-            <asp:ListItem>GRUMAB.MX</asp:ListItem>
-            <asp:ListItem>CEMEXCPO.MX</asp:ListItem>
-            <asp:ListItem>WMT.MX</asp:ListItem>
-            <asp:ListItem>GENTERA.MX</asp:ListItem>
-            <asp:ListItem>TLEVISACPO.MX</asp:ListItem>
-            <asp:ListItem>PINFRA.MX</asp:ListItem>
-            <asp:ListItem>LALAB.MX</asp:ListItem>
-            <asp:ListItem>GFAMSAA.MX</asp:ListItem>
-            <asp:ListItem>IENOVA.MX</asp:ListItem>
-            <asp:ListItem>KIMBERA.MX</asp:ListItem>
-        </asp:ListBox>*@
+                                        <asp:ListItem>GRUMAB.MX</asp:ListItem>
+                                        <asp:ListItem>CEMEXCPO.MX</asp:ListItem>
+                                        <asp:ListItem>WMT.MX</asp:ListItem>
+                                        <asp:ListItem>GENTERA.MX</asp:ListItem>
+                                        <asp:ListItem>TLEVISACPO.MX</asp:ListItem>
+                                        <asp:ListItem>PINFRA.MX</asp:ListItem>
+                                        <asp:ListItem>LALAB.MX</asp:ListItem>
+                                        <asp:ListItem>GFAMSAA.MX</asp:ListItem>
+                                        <asp:ListItem>IENOVA.MX</asp:ListItem>
+                                        <asp:ListItem>KIMBERA.MX</asp:ListItem>
+                                    </asp:ListBox>*@
 
                                     <br />
                                     <br />
@@ -99,8 +99,8 @@
 
                                     <div class="input-group fecha-custom">
                                         <input type="text" class="form-control fecha fecha-custom-text" id="fechaDocumento" name="fecha"
-                                               placeholder="DD/MM/YYYY" ng-model="d.FechaFin" value="{{d.FechaFin}}"
-                                               ng-change="EditTextoCronograma(d)" required readonly />
+                                               placeholder="DD/MM/YYYY" ng-model="FechaInicio" value="{{FechaInicio}}"
+                                               ng-change="" required readonly />
                                         <div class="input-group-append">
                                             <span class="input-group-text" id="basic-addon2">
                                                 <i class="fa fa-calendar-alt fa-lg"></i>
@@ -113,8 +113,8 @@
 
                                     <div class="input-group fecha-custom">
                                         <input type="text" class="form-control fecha fecha-custom-text" id="fechaDocumento" name="fecha"
-                                               placeholder="DD/MM/YYYY" ng-model="d.FechaFin" value="{{d.FechaFin}}"
-                                               ng-change="EditTextoCronograma(d)" required readonly />
+                                               placeholder="DD/MM/YYYY" ng-model="FechaFinal" value="{{FechaFinal}}"
+                                               ng-change="" required readonly />
                                         <div class="input-group-append">
                                             <span class="input-group-text" id="basic-addon2">
                                                 <i class="fa fa-calendar-alt fa-lg"></i>
@@ -132,11 +132,12 @@
                                     <br />
                                     <br />
                                     @*<button runat="server" id="btnExportCapitales" class="btn-primary" onserverclick="btnExportCapitales_Click">
-            <i class="fa fa-file-excel fa-lg"></i> Exportar
-        </button>*@
+                                        <i class="fa fa-file-excel fa-lg"></i> Exportar
+                                    </button>*@
                                     <a href="@Url.Action("ExportarExcel","MercadoCapital")" class="btn btn-primary" id="ExportarCronograma">
                                         <i class="fa fa-file-excel fa-lg" aria-hidden="true"></i> Exportar
                                     </a>
+
                                     <br />
                                     <br />
 
@@ -197,7 +198,7 @@
 
                                     <div>
                                         <table class="table">
-                                            <thead class="thead-light">
+                                            <thead class="thead-light" ng-show="ListEmpresa.length">
                                                 <tr>
                                                     <th>Empresa</th>
                                                     <th>Rendimiento Promedio</th>
