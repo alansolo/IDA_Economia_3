@@ -495,10 +495,7 @@ namespace IDA_Economia.Controllers
                     }
 
                     cont++;
-                }
-
-
-                Session["dgvCurvaVarianza"] = dtExportarInformacion;
+                }               
 
 
                 dtExportarInformacion.Columns.Cast<DataColumn>().ToList().ForEach(n =>
@@ -521,7 +518,7 @@ namespace IDA_Economia.Controllers
                 resultadoMercadoCapital.ListaCalculoMercadoCapital = ListaCalculoMercadoCapital;
                 resultadoMercadoCapital.ListaDatos = ListDatos.ToList();
 
-                Session["dtInformacion"] = dtExportarInformacion;
+                Session["dtInformacionCapital"] = dtExportarInformacion;
             }
             catch(Exception ex)
             {
@@ -534,7 +531,7 @@ namespace IDA_Economia.Controllers
         {
             string nombreArchivo = "Calculo_De_Portafolio_Eficiente.xlsx";
             string hojaArchivo = "Riesgo_Rendimiento";
-            DataTable dtInformacion = (DataTable)Session["dtInformacion"]; 
+            DataTable dtInformacion = (DataTable)Session["dtInformacionCapital"]; 
 
             using (XLWorkbook wb = new XLWorkbook())
             {

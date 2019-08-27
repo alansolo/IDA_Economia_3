@@ -103,7 +103,7 @@ namespace IDA_Economia.Controllers
                 });
 
 
-                Session["dgvDivisa"] = dt1;
+                Session["dtInformacionDivisa"] = dt1;
 
             }
             catch (Exception ex)
@@ -118,7 +118,7 @@ namespace IDA_Economia.Controllers
         {
             string nombreArchivo = "Historico_Divisa.xlsx";
             string hojaArchivo = "Divisa";
-            DataTable dtInformacion = (DataTable)Session["dtInformacion"];
+            DataTable dtInformacion = (DataTable)Session["dtInformacionDivisa"];
 
             using (XLWorkbook wb = new XLWorkbook())
             {

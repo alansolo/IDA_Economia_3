@@ -58,7 +58,7 @@ app.controller("MyController", function ($scope, $http, $window) {
 
                 google.charts.setOnLoadCallback(drawChart);
 
-                MessageSuccess("Mercado de Capitales", "Se realizo correctamente el calculo.");
+                MessageSuccess("Mercado de Divisa", "Se realizo correctamente el calculo.");
 
                 $scope.$apply();
 

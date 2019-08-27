@@ -42,7 +42,7 @@ namespace IDA_Economia.Controllers
                 string fechainicio = "";
                 string fechafinal = "";
 
-                seriesID = "SF43718";
+                seriesID = "SF43936";
 
                 fechainicio = Convert.ToDateTime(strFechaInicio).ToString("yyyy-MM-dd");
 
@@ -89,7 +89,7 @@ namespace IDA_Economia.Controllers
                 int cont = 0;
                 dos1.ForEach(m =>
                 {
-                    dt1.Rows.Add(m.Date, Convert.ToDouble(m.Data).ToString("0.0000##"));
+                    dt1.Rows.Add(m.Date, Convert.ToDouble(m.Data).ToString("0.00##"));
 
                     datosDinero = new DatosDinero();
                     datosDinero.Fecha = m.Date;
@@ -101,7 +101,7 @@ namespace IDA_Economia.Controllers
                 });
 
 
-                Session["dgvDivisa"] = dt1;
+                Session["dtInformacionDinero"] = dt1;
 
             }
             catch (Exception ex)
@@ -116,7 +116,7 @@ namespace IDA_Economia.Controllers
         {
             string nombreArchivo = "Historico_Dinero.xlsx";
             string hojaArchivo = "Dinero";
-            DataTable dtInformacion = (DataTable)Session["dtInformacion"];
+            DataTable dtInformacion = (DataTable)Session["dtInformacionDinero"];
 
             using (XLWorkbook wb = new XLWorkbook())
             {
