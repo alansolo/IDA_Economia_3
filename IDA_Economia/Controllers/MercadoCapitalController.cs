@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using Datos;
 using IDA_Economia.Models;
 using IDA_Economia.Models.MercadoCapital;
 using OperacionMatriz;
@@ -102,13 +103,13 @@ namespace IDA_Economia.Controllers
                 {
                     var yahooFinance = new YahooFinanceClient(cookie, crumb);
                     var yahooStockCode = x.Nombre; //yahooFinance.GetYahooStockCode(exchange, symbol);
-                List<YahooHistoricalPriceData> yahooPriceHistory = yahooFinance.GetDailyHistoricalPriceData(yahooStockCode, fechaInicio, fechafinal);
+                    List<YahooHistoricalPriceData> yahooPriceHistory = yahooFinance.GetDailyHistoricalPriceData(yahooStockCode, fechaInicio, fechafinal);
 
-                //OBTENER REGISTROS TOTALES
-                x.Cantidad = yahooPriceHistory.Count;
+                    //OBTENER REGISTROS TOTALES
+                    x.Cantidad = yahooPriceHistory.Count;
 
-                //CALCULAR RENDIMIENTO
-                cont = 0;
+                    //CALCULAR RENDIMIENTO
+                    cont = 0;
                     primerRegistro = true;
                     foreach (YahooHistoricalPriceData data in yahooPriceHistory)
                     {
@@ -125,18 +126,18 @@ namespace IDA_Economia.Controllers
                         cont++;
                     }
 
-                //AGREGAR LISTA DE PRECIOS
-                x.ListaPrecio = yahooPriceHistory;
+                    //AGREGAR LISTA DE PRECIOS
+                    x.ListaPrecio = yahooPriceHistory;
 
-                //OBTENEMOS SUMATORIA DEL RENDIMIENTO
-                x.Rendimiento = yahooPriceHistory.Sum(n => n.Rendimiento);
+                    //OBTENEMOS SUMATORIA DEL RENDIMIENTO
+                    x.Rendimiento = yahooPriceHistory.Sum(n => n.Rendimiento);
 
-                //decimal promedio = yahooPriceHistory.Average(n => n.Close);
-                //x.Media = Convert.ToDouble(promedio);
+                    //decimal promedio = yahooPriceHistory.Average(n => n.Close);
+                    //x.Media = Convert.ToDouble(promedio);
 
 
-                //OBTENER VARIANZA RENDIMIENTO
-                double M = 0.0;
+                    //OBTENER VARIANZA RENDIMIENTO
+                    double M = 0.0;
                     double S = 0.0;
                     int k = 1;
 
@@ -495,7 +496,7 @@ namespace IDA_Economia.Controllers
                     }
 
                     cont++;
-                }               
+                }
 
 
                 dtExportarInformacion.Columns.Cast<DataColumn>().ToList().ForEach(n =>
@@ -520,13 +521,13 @@ namespace IDA_Economia.Controllers
 
                 Session["dtInformacionCapital"] = dtExportarInformacion;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
 
             return Json(resultadoMercadoCapital, JsonRequestBehavior.AllowGet);
-        }
+        }       
         public void ExportarExcel()
         {
             string nombreArchivo = "Calculo_De_Portafolio_Eficiente.xlsx";

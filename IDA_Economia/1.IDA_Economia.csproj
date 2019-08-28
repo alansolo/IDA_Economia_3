@@ -384,6 +384,10 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Datos\4.Datos.csproj">
+      <Project>{83646b64-dbc7-4dc7-b2af-d42667735dbd}</Project>
+      <Name>4.Datos</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OperacionMatriz\3.OperacionMatriz.csproj">
       <Project>{411823D0-7C12-4C23-8FFD-E18AC4736502}</Project>
       <Name>3.OperacionMatriz</Name>

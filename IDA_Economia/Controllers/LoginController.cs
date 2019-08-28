@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Datos;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -30,8 +31,16 @@ namespace IDA_Economia.Controllers
             }
             else
             {
-                userDefault = ConfigurationManager.AppSettings["usuario"].ToString();
-                passwordDefault = ConfigurationManager.AppSettings["password"].ToString();
+                DataTable dtUsuario = new DataTable();
+
+                BDCapital bdCapital = new BDCapital();
+                dtUsuario = bdCapital.ObtenerUsuario("ObtenerUsuario", usuario);
+
+                userDefault = dtUsuario.Rows.Cast<DataRow>().ToList().Select(n => n["Usuario"].ToString()).FirstOrDefault();
+                passwordDefault = dtUsuario.Rows.Cast<DataRow>().ToList().Select(n => n["Password"].ToString()).FirstOrDefault();
+
+                //userDefault = ConfigurationManager.AppSettings["usuario"].ToString();
+                //passwordDefault = ConfigurationManager.AppSettings["password"].ToString();
 
                 if (usuario == userDefault && password == passwordDefault)
                 {
