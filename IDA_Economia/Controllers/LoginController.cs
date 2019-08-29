@@ -1,4 +1,5 @@
-﻿using Datos;
+﻿using Entidades;
+using Negocio.MercadoCapital;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -24,6 +25,8 @@ namespace IDA_Economia.Controllers
             string mensejeError = string.Empty;
             string userDefault = string.Empty;
             string passwordDefault = string.Empty;
+            List<Parametro> listParametro = new List<Parametro>();
+            Parametro parametro = new Parametro();
 
             if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(password))
             {
@@ -33,8 +36,13 @@ namespace IDA_Economia.Controllers
             {
                 DataTable dtUsuario = new DataTable();
 
-                BDCapital bdCapital = new BDCapital();
-                dtUsuario = bdCapital.ObtenerUsuario("ObtenerUsuario", usuario);
+                parametro.Nombre = "Usuario";
+                parametro.Valor = usuario;
+
+                listParametro.Add(parametro);
+
+                MercadoCapital mercadoCapital = new MercadoCapital();
+                dtUsuario = mercadoCapital.ObtenerUsuario(listParametro);
 
                 userDefault = dtUsuario.Rows.Cast<DataRow>().ToList().Select(n => n["Usuario"].ToString()).FirstOrDefault();
                 passwordDefault = dtUsuario.Rows.Cast<DataRow>().ToList().Select(n => n["Password"].ToString()).FirstOrDefault();

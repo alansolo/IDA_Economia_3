@@ -384,9 +384,13 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Datos\4.Datos.csproj">
-      <Project>{83646b64-dbc7-4dc7-b2af-d42667735dbd}</Project>
-      <Name>4.Datos</Name>
+    <ProjectReference Include="..\Entidades\Entidades.csproj">
+      <Project>{2581E8BD-D205-4CAC-97E4-43C278408224}</Project>
+      <Name>Entidades</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Negocio\4.Negocio.csproj">
+      <Project>{6f24c1ea-c59e-4a74-bc31-6f34cfef0436}</Project>
+      <Name>4.Negocio</Name>
     </ProjectReference>
     <ProjectReference Include="..\OperacionMatriz\3.OperacionMatriz.csproj">
       <Project>{411823D0-7C12-4C23-8FFD-E18AC4736502}</Project>
