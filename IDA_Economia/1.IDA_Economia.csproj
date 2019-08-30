@@ -60,6 +60,10 @@
       <HintPath>..\packages\FastMember.1.3.0\lib\net45\FastMember.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -120,9 +124,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -170,6 +171,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MercadoCapitalController.cs" />
     <Compile Include="Controllers\MercadoDineroController.cs" />
@@ -330,6 +332,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\loaders.js" />
     <Content Include="Scripts\Login\Login.js" />
+    <Content Include="Scripts\Log\Log.js" />
     <Content Include="Scripts\MercadoCapital\MercadoCapital.js" />
     <Content Include="Scripts\MercadoDinero\MercadoDinero.js" />
     <Content Include="Scripts\MercadoDivisa\MercadoDivisa.js" />
@@ -370,6 +373,7 @@
     <Content Include="Views\MercadoCapital\MercadoCapital.cshtml" />
     <Content Include="Views\MercadoDinero\MercadoDinero.cshtml" />
     <Content Include="Views\MercadoDivisa\MercadoDivisa.cshtml" />
+    <Content Include="Views\Log\Log.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -384,9 +388,9 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Entidades\Entidades.csproj">
+    <ProjectReference Include="..\Entidades\7.Entidades.csproj">
       <Project>{2581E8BD-D205-4CAC-97E4-43C278408224}</Project>
-      <Name>Entidades</Name>
+      <Name>7.Entidades</Name>
     </ProjectReference>
     <ProjectReference Include="..\Negocio\4.Negocio.csproj">
       <Project>{6f24c1ea-c59e-4a74-bc31-6f34cfef0436}</Project>

@@ -1,17 +1,16 @@
 ﻿using Entidades;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Datos.MercadoCapital
+namespace Datos.MercadoDivisa
 {
-    public class BDCapital:BD
+    public class BDMercadoDivisa: BD
     {
-        public object ObtenerUsuario(string spName, List<Parametro> listParametro)
+        public object ObtenerCatDivisa(string spName, List<Parametro> listParametro)
         {
             object Resultado = new object();
             List<SqlParameter> listParametrosSQL = new List<SqlParameter>();

@@ -80,7 +80,6 @@ namespace Datos
 
             return result;
         }
-
         protected DataTable ExecuteNonQueryDataTable(string spName, List<SqlParameter> parameters)
         {
             DataSet dataSet = null;

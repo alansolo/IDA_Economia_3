@@ -20,7 +20,7 @@ namespace Negocio.MercadoCapital
 
             try
             {
-                dtUsuario = bdCapital.ObtenerUsuario(spName, listParametro);
+                //dtUsuario = bdCapital.ObtenerUsuario(spName, listParametro);
             }
             catch (Exception ex)
             {

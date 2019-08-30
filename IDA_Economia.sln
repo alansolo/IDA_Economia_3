@@ -15,7 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5.Datos", "Datos\5.Datos.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4.Negocio", "Negocio\4.Negocio.csproj", "{6F24C1EA-C59E-4A74-BC31-6F34CFEF0436}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entidades", "Entidades\Entidades.csproj", "{2581E8BD-D205-4CAC-97E4-43C278408224}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "7.Entidades", "Entidades\7.Entidades.csproj", "{2581E8BD-D205-4CAC-97E4-43C278408224}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "8.BaseDatos", "BaseDatos\8.BaseDatos.csproj", "{F5317EB7-A154-41A6-9217-393181BB41BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{2581E8BD-D205-4CAC-97E4-43C278408224}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2581E8BD-D205-4CAC-97E4-43C278408224}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2581E8BD-D205-4CAC-97E4-43C278408224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5317EB7-A154-41A6-9217-393181BB41BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5317EB7-A154-41A6-9217-393181BB41BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5317EB7-A154-41A6-9217-393181BB41BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5317EB7-A154-41A6-9217-393181BB41BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

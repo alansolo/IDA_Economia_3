@@ -43,23 +43,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BD.cs" />
+    <Compile Include="Log\BDLog.cs" />
     <Compile Include="MercadoCapital\BDCapital.cs" />
+    <Compile Include="MercadoDinero\BDMercadoDinero.cs" />
+    <Compile Include="MercadoDivisa\BDMercadoDivisa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlParameterGroup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Entidades\Entidades.csproj">
+    <ProjectReference Include="..\Entidades\7.Entidades.csproj">
       <Project>{2581E8BD-D205-4CAC-97E4-43C278408224}</Project>
-      <Name>Entidades</Name>
+      <Name>7.Entidades</Name>
     </ProjectReference>
     <ProjectReference Include="..\Herramientas\6.Herramientas.csproj">
       <Project>{3c8fd4b4-6f3c-4127-8cd7-04eab59e5465}</Project>
       <Name>6.Herramientas</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MercadoDinero\" />
-    <Folder Include="MercadoDivisa\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

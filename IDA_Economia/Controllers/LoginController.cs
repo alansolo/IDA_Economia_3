@@ -1,5 +1,6 @@
 ﻿using Entidades;
 using Negocio.MercadoCapital;
+using Negocio.MercadoDivisa;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -34,6 +35,13 @@ namespace IDA_Economia.Controllers
             }
             else
             {
+                //PRUEBAS
+
+                MercadoDivisa mercadoDivisa = new MercadoDivisa();
+
+                mercadoDivisa.ObtenerCatDivisa(listParametro);
+
+
                 DataTable dtUsuario = new DataTable();
 
                 parametro.Nombre = "Usuario";
