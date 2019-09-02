@@ -11,7 +11,7 @@ namespace Negocio.MercadoDinero
 {
     public class MercadoDinero
     {
-        public List<CatDinero> ObtenerCatDivisa(List<Parametro> listParametro)
+        public List<CatDinero> ObtenerCatDinero(List<Parametro> listParametro)
         {
             object Resultado = new object();
             const string spName = "ObtenerCatDinero";

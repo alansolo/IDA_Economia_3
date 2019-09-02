@@ -12,6 +12,8 @@ using IDA_Economia.Models.MercadoDivisa;
 using ClosedXML.Excel;
 using System.IO;
 using System.Net.Http;
+using Entidades;
+using Negocio.MercadoDivisa;
 
 namespace IDA_Economia.Controllers
 {
@@ -28,7 +30,18 @@ namespace IDA_Economia.Controllers
 
             return View();
         }
+        [HttpPost]
+        public JsonResult ObtenerCatDivisa()
+        {
+            List<CatDivisa> ListCatDivisa = new List<CatDivisa>();
 
+            MercadoDivisa mercadoDivisa = new MercadoDivisa();
+            List<Parametro> ListParametro = new List<Parametro>();
+
+            ListCatDivisa = mercadoDivisa.ObtenerCatDivisa(ListParametro);
+
+            return Json(ListCatDivisa, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public JsonResult ObtenerEstadistico(string strFechaInicio, string strFechaFinal)
         {

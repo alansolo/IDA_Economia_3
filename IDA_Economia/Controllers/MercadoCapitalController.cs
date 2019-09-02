@@ -1,6 +1,8 @@
 ﻿using ClosedXML.Excel;
+using Entidades;
 using IDA_Economia.Models;
 using IDA_Economia.Models.MercadoCapital;
+using Negocio.MercadoCapital;
 using OperacionMatriz;
 using System;
 using System.Collections.Generic;
@@ -29,7 +31,18 @@ namespace IDA_Economia.Controllers
 
             return View();
         }
+        [HttpPost]
+        public JsonResult ObtenerCatCapital()
+        {
+            List<CatCapital> ListCapital = new List<CatCapital>();
 
+            MercadoCapital mercadoCapital = new MercadoCapital();
+            List<Parametro> ListParametro = new List<Parametro>();
+
+            ListCapital = mercadoCapital.ObtenerCatCapital(ListParametro);
+
+            return Json(ListCapital, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public JsonResult ObtenerEstadistico(string strFechaInicio, string strFechaFinal)
         {

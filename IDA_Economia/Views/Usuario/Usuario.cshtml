@@ -7,8 +7,8 @@
 <h2>Usuario</h2>
 
 <head>
-    <link href="~/Content/MercadoDinero/Usuario.css" rel="stylesheet" />
-    <script src="~/Scripts/MercadoDinero/Usuario.js"></script>
+    <link href="~/Content/Usuario/Usuario.css" rel="stylesheet" />
+    <script src="~/Scripts/Usuario/Usuario.js"></script>
 </head>
 
 <body>
@@ -51,6 +51,8 @@
             </div>
         </div>
 
+        <br />
+
         <div class="accordion" id="accordionExampleDos">
             <div class="card">
                 <div class="card-header" id="headingDos">
@@ -65,17 +67,17 @@
 
                     <div>
                         <table class="table">
-                            <thead class="thead-light" ng-show="ListUsuario.length">
+                            <thead class="thead-light">
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Usuario</th>
                                     <th>Rol</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody ng-show="ListUsuario.length">
                                 <tr ng-repeat="d in ListUsuario">
                                     <td>{{d.Nombre}}</td>
-                                    <td>{{d.Usuario}}</td>
+                                    <td>{{d.Login}}</td>
                                     <td>{{d.Rol}}</td>
                                 </tr>
                             </tbody>

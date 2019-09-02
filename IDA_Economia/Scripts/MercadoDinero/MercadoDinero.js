@@ -39,6 +39,28 @@ app.controller("MyController", function ($scope, $http, $window) {
 
     google.charts.load('current', { 'packages': ['line'] });
 
+    $('#myModalLoader').modal('show');
+
+    $.ajax({
+        type: "POST",
+        url: urlPathSystem + "/MercadoDinero/ObtenerCatDinero",
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (datos) {
+
+            $scope.ListCatDinero = datos;
+
+            $scope.$apply();
+
+            $("#myModalLoader").modal('hide');
+
+        },
+        error: function (error) {
+
+            $("#myModalLoader").modal('hide');
+        }
+    });
+
     $scope.ObtenerEstadistico = function () {
         $('#myModalLoader').modal('show');
 

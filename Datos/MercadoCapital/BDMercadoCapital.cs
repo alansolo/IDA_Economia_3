@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Datos.MercadoCapital
 {
-    public class BDCapital:BD
+    public class BDMercadoCapital:BD
     {
         public object ObtenerCatCapital(string spName, List<Parametro> listParametro)
         {

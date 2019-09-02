@@ -37,65 +37,15 @@
                                     <span>Compara en mercado de Capitales:</span>
                                     <br />
 
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input">
-                                        <label class="custom-control-label" for="defaultUnchecked">GRUMAB.MX</label>
+                                    <div ng-repeat="d in ListCatCapital" class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck{{d.Id}}">
+                                        <label class="custom-control-label" for="customCheck{{d.Id}}" ng-model="d.Valor">{{d.Nombre}}</label>
                                     </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input">
-                                        <label class="custom-control-label" for="defaultUnchecked">CEMEXCPO.MX</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input">
-                                        <label class="custom-control-label" for="defaultUnchecked">WMT.MX</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input">
-                                        <label class="custom-control-label" for="defaultUnchecked">GENTERA.MX</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input">
-                                        <label class="custom-control-label" for="defaultUnchecked">TLEVISACPO.MX</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input">
-                                        <label class="custom-control-label" for="defaultUnchecked">PINFRA.MX</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input">
-                                        <label class="custom-control-label" for="defaultUnchecked">LALAB.MX</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input">
-                                        <label class="custom-control-label" for="defaultUnchecked">GFAMSAA.MX</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input">
-                                        <label class="custom-control-label" for="defaultUnchecked">IENOVA.MX</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input">
-                                        <label class="custom-control-label" for="defaultUnchecked">KIMBERA.MX</label>
-                                    </div>
-
-
-                                    @*<asp:ListBox ID="ListCapitales" runat="server" Height="150" SelectionMode="Multiple">
-                                        <asp:ListItem>GRUMAB.MX</asp:ListItem>
-                                        <asp:ListItem>CEMEXCPO.MX</asp:ListItem>
-                                        <asp:ListItem>WMT.MX</asp:ListItem>
-                                        <asp:ListItem>GENTERA.MX</asp:ListItem>
-                                        <asp:ListItem>TLEVISACPO.MX</asp:ListItem>
-                                        <asp:ListItem>PINFRA.MX</asp:ListItem>
-                                        <asp:ListItem>LALAB.MX</asp:ListItem>
-                                        <asp:ListItem>GFAMSAA.MX</asp:ListItem>
-                                        <asp:ListItem>IENOVA.MX</asp:ListItem>
-                                        <asp:ListItem>KIMBERA.MX</asp:ListItem>
-                                    </asp:ListBox>*@
 
                                     <br />
                                     <br />
 
-                                    <span>Fecha Inicial:<asp:TextBox ID="FechaInicioCapitales" runat="server" ReadOnly="false" Width="100px"></asp:TextBox></span>
+                                    <span>Fecha Inicial:</span>
 
                                     <div class="input-group fecha-custom">
                                         <input type="text" class="form-control fecha fecha-custom-text" id="fechaDocumento" name="fecha"
@@ -109,7 +59,7 @@
                                     </div>
 
                                     <br />
-                                    <span>Fecha Final:<asp:TextBox ID="FechaFinCapitales" runat="server" ReadOnly="false" Width="100px"></asp:TextBox></span>
+                                    <span>Fecha Final:</span>
 
                                     <div class="input-group fecha-custom">
                                         <input type="text" class="form-control fecha fecha-custom-text" id="fechaDocumento" name="fecha"
@@ -125,7 +75,7 @@
                                     <br />
                                     <br />
 
-                                    <button runat="server" id="btnCapitales" class="btn btn-primary" ng-click="ObtenerEstadistico()">
+                                    <button id="btnCapitales" class="btn btn-primary" ng-click="ObtenerEstadistico()">
                                         <i class="fa fa-chart-line fa-lg"></i> Obtener Estadisticas
                                     </button>
 

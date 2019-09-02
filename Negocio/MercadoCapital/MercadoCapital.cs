@@ -1,5 +1,8 @@
 ﻿using Datos.MercadoCapital;
+using Datos.Usuario;
 using Entidades;
+using Negocio.MercadoCapital;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,21 +15,28 @@ namespace Negocio.MercadoCapital
 {
     public class MercadoCapital
     {
-        public DataTable ObtenerUsuario(List<Parametro> listParametro)
+        public List<CatCapital> ObtenerCatCapital(List<Parametro> listParametro)
         {
-            DataTable dtUsuario = new DataTable();
-            const string spName = "ObtenerUsuario";
-            BDCapital bdCapital = new BDCapital();
+            object Resultado = new object();
+            const string spName = "ObtenerCatDivisa";
+            List<CatCapital> ListCatCapital = new List<CatCapital>();
+            BDMercadoCapital bdMercadoCapital = new BDMercadoCapital();
+
 
             try
             {
-                //dtUsuario = bdCapital.ObtenerUsuario(spName, listParametro);
+                Resultado = bdMercadoCapital.ObtenerCatCapital(spName, listParametro);
+
+                Resultado = "[" + Resultado + "]";
+
+                var jsonCatCapital = JsonConvert.DeserializeObject<CatCapital[]>(Resultado.ToString());
+                ListCatCapital = jsonCatCapital.ToList();
             }
             catch (Exception ex)
             {
             }
 
-            return dtUsuario;
+            return ListCatCapital;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Entidades;
+using Negocio.Login;
 using Negocio.MercadoCapital;
 using Negocio.MercadoDivisa;
 using System;
@@ -35,28 +36,19 @@ namespace IDA_Economia.Controllers
             }
             else
             {
-                //PRUEBAS
-
-                MercadoDivisa mercadoDivisa = new MercadoDivisa();
-
-                mercadoDivisa.ObtenerCatDivisa(listParametro);
-
-
-                DataTable dtUsuario = new DataTable();
+                Entidades.Usuario Usuario = new Usuario();
 
                 parametro.Nombre = "Usuario";
                 parametro.Valor = usuario;
 
                 listParametro.Add(parametro);
 
-                MercadoCapital mercadoCapital = new MercadoCapital();
-                dtUsuario = mercadoCapital.ObtenerUsuario(listParametro);
+                Login login = new Login();
 
-                userDefault = dtUsuario.Rows.Cast<DataRow>().ToList().Select(n => n["Usuario"].ToString()).FirstOrDefault();
-                passwordDefault = dtUsuario.Rows.Cast<DataRow>().ToList().Select(n => n["Password"].ToString()).FirstOrDefault();
+                Usuario = login.ObtenerUsuario(listParametro);
 
-                //userDefault = ConfigurationManager.AppSettings["usuario"].ToString();
-                //passwordDefault = ConfigurationManager.AppSettings["password"].ToString();
+                userDefault = Usuario.Login;
+                passwordDefault = Usuario.Password;
 
                 if (usuario == userDefault && password == passwordDefault)
                 {

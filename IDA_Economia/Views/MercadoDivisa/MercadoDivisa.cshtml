@@ -35,42 +35,15 @@
                                 <div id="Divisasu1" style="margin-left: 20px;  margin-top: 10px; width:250px; float:left;" align="center">
                                     <p style="font-family: sans-serif">Compara en mercado de Divisas:</p>
 
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" id="customRadio1" name="divisaRadio">
-                                        <label class="custom-control-label" for="customRadio1">MXN/USD</label>
+                                    <div ng-repeat="d in ListCatDivisa" class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="customRadio{{d.Id}}" name="divisaRadio">
+                                        <label class="custom-control-label" for="customRadio{{d.Id}}" ng-model="d.Valor">{{d.Nombre}}</label>
                                     </div>
 
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" id="customRadio2" name="divisaRadio">
-                                        <label class="custom-control-label" for="customRadio2">MXN/EUR</label>
-                                    </div>
-
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" id="customRadio3" name="divisaRadio">
-                                        <label class="custom-control-label" for="customRadio3">MXN/JPY</label>
-                                    </div>
-
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" id="customRadio4" name="divisaRadio">
-                                        <label class="custom-control-label" for="customRadio4">MXN/CNY</label>
-                                    </div>
-
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" id="customRadio5" name="divisaRadio">
-                                        <label class="custom-control-label" for="customRadio5">MXN/GBP</label>
-                                    </div>
-
-                                    @*<asp:ListBox ID="ListDivisas" runat="server">
-                                        <asp:ListItem Text="MXN/USD" Value="SF43718"></asp:ListItem>
-                                        <asp:ListItem Text="MXN/EUR" Value="SF46410"></asp:ListItem>
-                                        <asp:ListItem Text="MXN/JPY" Value="SF46406"></asp:ListItem>
-                                        <asp:ListItem Text="MXN/CNY" Value="SF290383"></asp:ListItem>
-                                        <asp:ListItem Text="MXN/GBP" Value="SF46407"></asp:ListItem>
-                                    </asp:ListBox>*@
                                     <br />
                                     <br />
 
-                                    <span>Fecha Inicial:&nbsp;&nbsp;&nbsp;<asp:TextBox ID="FechaInicioDivisa" runat="server" ReadOnly="false" Width="100px"></asp:TextBox></span>
+                                    <span>Fecha Inicial:</span>
 
                                     <div class="input-group fecha-custom">
                                         <input type="text" class="form-control fecha fecha-custom-text" id="fechaDocumento" name="fecha"
@@ -84,7 +57,7 @@
                                     </div>
 
                                     <br />
-                                    <span>Fecha Final:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:TextBox ID="FechaFinDivisa" runat="server" ReadOnly="false" Width="100px"></asp:TextBox></span>
+                                    <span>Fecha Final:</span>
 
                                     <div class="input-group fecha-custom">
                                         <input type="text" class="form-control fecha fecha-custom-text" id="fechaDocumento" name="fecha"

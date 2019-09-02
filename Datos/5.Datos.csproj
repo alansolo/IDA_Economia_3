@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="BD.cs" />
     <Compile Include="Log\BDLog.cs" />
-    <Compile Include="MercadoCapital\BDCapital.cs" />
+    <Compile Include="MercadoCapital\BDMercadoCapital.cs" />
     <Compile Include="MercadoDinero\BDMercadoDinero.cs" />
     <Compile Include="MercadoDivisa\BDMercadoDivisa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

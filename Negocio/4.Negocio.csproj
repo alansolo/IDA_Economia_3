@@ -47,11 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Login\Login.cs" />
     <Compile Include="Log\Log.cs" />
     <Compile Include="MercadoCapital\MercadoCapital.cs" />
     <Compile Include="MercadoDinero\MercadoDinero.cs" />
     <Compile Include="MercadoDivisa\MercadoDivisa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Usuario\Usuario.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

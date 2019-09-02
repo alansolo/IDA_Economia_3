@@ -1,6 +1,8 @@
 ﻿using ClosedXML.Excel;
+using Entidades;
 using IDA_Economia.Models;
 using IDA_Economia.Models.MercadoDinero;
+using Negocio.MercadoDinero;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,7 +28,18 @@ namespace IDA_Economia.Controllers
 
             return View();
         }
+        [HttpPost]
+        public JsonResult ObtenerCatDinero()
+        {
+            List<CatDinero> ListCatDinero = new List<CatDinero>();
 
+            MercadoDinero mercadoDinero = new MercadoDinero();
+            List<Parametro> ListParametro = new List<Parametro>();
+
+            ListCatDinero = mercadoDinero.ObtenerCatDinero(ListParametro);
+
+            return Json(ListCatDinero, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public JsonResult ObtenerEstadistico(string strFechaInicio, string strFechaFinal)
         {
