@@ -52,6 +52,52 @@ namespace Datos
 
             return result;
         }
+        protected string[] ExecuteScalar(string spName, List<SqlParameter> parameters, string spNameDetalle, List<SqlParameter> parametersDetalle)
+        {
+            string[] result = new string[1];
+            SqlTransaction transaction;
+
+            using (sqlConnection = new SqlConnection(connectionString))
+            {
+                sqlConnection.Open();
+                transaction = sqlConnection.BeginTransaction(IsolationLevel.ReadCommitted);
+
+                try
+                {
+                    command = new SqlCommand();
+                    command.Connection = sqlConnection;
+                    command.Transaction = transaction;
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = spName;
+
+                    foreach (SqlParameter item in parameters)
+                        command.Parameters.Add(item);
+
+                    result[0] = (string)command.ExecuteScalar();
+
+                    command.Parameters.Clear();
+
+                    command.CommandText = spNameDetalle;
+
+                    foreach (SqlParameter item in parametersDetalle)
+                        command.Parameters.Add(item);
+
+                    result[1] = (string)command.ExecuteScalar();
+
+                }
+                catch (Exception ex)
+                {
+                    //Write log error
+                    transaction.Rollback();
+                    ArchivoLog.EscribirLog(null, DateTime.Now.ToString("dd/MM/yyyy mm:ss") + ": Method: " + ex.Source + " Error: " + ex.Message);
+                    throw ex;
+                }
+
+                transaction.Commit();
+            }
+
+            return result;
+        }
         protected int ExecuteNonQuery(string spName, List<SqlParameter> parameters)
         {
             int result = 0;

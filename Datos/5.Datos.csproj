@@ -49,6 +49,7 @@
     <Compile Include="MercadoDivisa\BDMercadoDivisa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlParameterGroup.cs" />
+    <Compile Include="Usuario\BDUsuario.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Entidades\7.Entidades.csproj">

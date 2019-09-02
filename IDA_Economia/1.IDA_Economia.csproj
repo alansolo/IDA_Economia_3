@@ -176,6 +176,7 @@
     <Compile Include="Controllers\MercadoCapitalController.cs" />
     <Compile Include="Controllers\MercadoDineroController.cs" />
     <Compile Include="Controllers\MercadoDivisaController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -220,10 +221,12 @@
     <Content Include="Content\Loaders\loaders.css" />
     <Content Include="Content\Loaders\loaders.min.css" />
     <Content Include="Content\Login\Login.css" />
+    <Content Include="Content\Log\Log.js" />
     <Content Include="Content\MercadoCapital\MercadoCapital.css" />
     <Content Include="Content\MercadoDinero\MercadoDinero.css" />
     <Content Include="Content\MercadoDivisa\MercadoDivisa.css" />
     <Content Include="Content\Shared\_LayoutIDA.css" />
+    <Content Include="Content\Usuario\Usuario.js" />
     <Content Include="Content\webfonts\fa-brands-400.svg" />
     <Content Include="Content\webfonts\fa-regular-400.svg" />
     <Content Include="Content\webfonts\fa-solid-900.svg" />
@@ -345,6 +348,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Scripts\Usuario\Usuario.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -374,6 +378,7 @@
     <Content Include="Views\MercadoDinero\MercadoDinero.cshtml" />
     <Content Include="Views\MercadoDivisa\MercadoDivisa.cshtml" />
     <Content Include="Views\Log\Log.cshtml" />
+    <Content Include="Views\Usuario\Usuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

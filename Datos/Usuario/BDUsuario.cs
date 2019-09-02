@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Datos.MercadoDinero
+namespace Datos.Usuario
 {
-    public class BDMercadoDinero:BD
+    public class BDUsuario:BD
     {
-        public object ObtenerCatDinero(string spName, List<Parametro> listParametro)
+        public object ObtenerUsuario(string spName, List<Parametro> listParametro)
         {
             object Resultado = new object();
             List<SqlParameter> listParametrosSQL = new List<SqlParameter>();
@@ -31,7 +31,7 @@ namespace Datos.MercadoDinero
 
             return Resultado;
         }
-        public object InsertDinero(string spName, List<Parametro> listParametro)
+        public object InsertUsuario(string spName, List<Parametro> listParametro)
         {
             object Resultado = new object();
             List<SqlParameter> listParametrosSQL = new List<SqlParameter>();
