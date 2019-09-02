@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entidades;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,6 +19,25 @@ namespace IDA_Economia.Controllers
             }
 
             return View();
+        }
+        [HttpPost]
+        public JsonResult ObtenerUsuario()
+        {
+            List<Log> ListLog = new List<Log>();
+
+            Negocio.Log.Log log = new Negocio.Log.Log();
+            List<Parametro> ListParametro = new List<Parametro>();
+
+            try
+            {
+                //ListLog = log.ObtenerLog(ListParametro);
+            }
+            catch (Exception ex)
+            {
+            }
+
+
+            return Json(ListLog, JsonRequestBehavior.AllowGet);
         }
     }
 }

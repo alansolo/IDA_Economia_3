@@ -141,6 +141,7 @@ namespace IDA_Economia.Controllers
 
                     resultadoMercadoDinero.ListaDatos.Add(datosDinero);
 
+                    //AGREGAR DETALLE DE LOG
                     parametro = new Parametro();
                     parametro.Nombre = "Empresa";
                     parametro.Valor = divisa;
@@ -164,6 +165,7 @@ namespace IDA_Economia.Controllers
                     parametro.Valor = Session["Usuario"];
 
                     listParametroDetalle.Add(parametro);
+
 
                     cont++;
                 });

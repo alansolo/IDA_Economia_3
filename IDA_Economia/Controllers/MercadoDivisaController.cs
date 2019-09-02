@@ -60,6 +60,12 @@ namespace IDA_Economia.Controllers
             string fechafinal = "";
 
             CatDivisa catDivisaDefault = new CatDivisa();
+            string divisa = string.Empty;
+
+            List<Parametro> listParametro = new List<Parametro>();
+            Parametro parametro = new Parametro();
+
+            List<Parametro> listParametroDetalle = new List<Parametro>();
 
             try
             {
@@ -71,7 +77,8 @@ namespace IDA_Economia.Controllers
 
                 if (catDivisaDefault != null)
                 {
-                    seriesID = "SF43936";
+                    seriesID = catDivisaDefault.Valor;
+                    divisa = catDivisaDefault.Nombre;
                 }
                 else
                 {
@@ -80,7 +87,6 @@ namespace IDA_Economia.Controllers
                     return Json(resultadoMercadoDivisa, JsonRequestBehavior.AllowGet);
                 }
 
-                seriesID = "SF43718";
 
                 fechainicio = Convert.ToDateTime(strFechaInicio).ToString("yyyy-MM-dd");
 
@@ -135,11 +141,68 @@ namespace IDA_Economia.Controllers
 
                     resultadoMercadoDivisa.ListaDatos.Add(datosDivisa);
 
+                    //AGREGAR DETALLE DE LOG
+                    parametro = new Parametro();
+                    parametro.Nombre = "Empresa";
+                    parametro.Valor = divisa;
+
+                    listParametroDetalle.Add(parametro);
+
+                    parametro = new Parametro();
+                    parametro.Nombre = "Fecha";
+                    parametro.Valor = m.Date;
+
+                    listParametroDetalle.Add(parametro);
+
+                    parametro = new Parametro();
+                    parametro.Nombre = "Valor";
+                    parametro.Valor = m.Data;
+
+                    listParametroDetalle.Add(parametro);
+
+                    parametro = new Parametro();
+                    parametro.Nombre = "Usuario";
+                    parametro.Valor = Session["Usuario"];
+
+                    listParametroDetalle.Add(parametro);
+
+
                     cont++;
                 });
 
 
                 Session["dtInformacionDivisa"] = dt1;
+
+                //INSERTAR INFORMACION LOG
+                listParametro = new List<Parametro>();
+
+                parametro = new Parametro();
+                parametro.Nombre = "Usuario";
+                parametro.Valor = Session["Usuario"];
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "Modulo";
+                parametro.Valor = "Mercado Divisa";
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "Empresa";
+                parametro.Valor = divisa;
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "Resumen";
+                parametro.Valor = "Generar Estadistico Mercado Divisa";
+
+                listParametro.Add(parametro);
+
+                //INSERTAR LOG
+                Negocio.Log.Log log = new Negocio.Log.Log();
+                log.InsertLog(listParametro, listParametroDetalle);
 
             }
             catch (Exception ex)

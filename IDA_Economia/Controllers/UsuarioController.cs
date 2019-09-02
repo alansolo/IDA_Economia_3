@@ -29,7 +29,14 @@ namespace IDA_Economia.Controllers
 
             List<Parametro> ListParametro = new List<Parametro>();
 
-            ListUsuario = Usuario.ObtenerUsuario(ListParametro);
+            try
+            {
+                ListUsuario = Usuario.ObtenerUsuario(ListParametro);
+            }
+            catch (Exception ex)
+            {
+            }
+            
 
             return Json(ListUsuario, JsonRequestBehavior.AllowGet);
         }
