@@ -57,6 +57,29 @@ namespace Negocio.Log
 
             return ListLog;
         }
+        public List<Log> InsertLog(List<Parametro> listParametro)
+        {
+            object Resultado = new object();
+            const string spName = "ObtenerLog";
+            List<Log> ListLog = new List<Log>();
+            BDLog bdLog = new BDLog();
+
+
+            try
+            {
+                Resultado = bdLog.InsertLog(spName, listParametro);
+
+                Resultado = "[" + Resultado + "]";
+
+                var jsonLog = JsonConvert.DeserializeObject<Log[]>(Resultado.ToString());
+                ListLog = jsonLog.ToList();
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ListLog;
+        }
         public List<Log> InsertLog(List<Parametro> listParametro, List<Parametro> listParametroDetalle)
         {
             object Resultado = new object();

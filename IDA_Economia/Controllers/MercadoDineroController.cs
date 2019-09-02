@@ -38,24 +38,55 @@ namespace IDA_Economia.Controllers
 
             ListCatDinero = mercadoDinero.ObtenerCatDinero(ListParametro);
 
+            //SELECCIONAR EL PRIMER ELEMENTO
+            if (ListCatDinero.Count > 0)
+            {
+                ListCatDinero[0].Check = true;
+            }
+
             return Json(ListCatDinero, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public JsonResult ObtenerEstadistico(string strFechaInicio, string strFechaFinal)
+        public JsonResult ObtenerEstadistico(string strFechaInicio, string strFechaFinal, List<CatDinero> ListCatDinero)
         {
             ResultadoMercadoDinero resultadoMercadoDinero = new ResultadoMercadoDinero();
             resultadoMercadoDinero.ListaDatos = new List<DatosDinero>();
             DatosDinero datosDinero = new DatosDinero();
 
+            string seriesID = string.Empty;
+            string divisa = string.Empty;
+            string fechainicio = string.Empty;
+            string fechafinal = string.Empty;
+
+            CatDinero catDineroDefault = new CatDinero();
+
+            List<Parametro> listParametro = new List<Parametro>();
+            Parametro parametro = new Parametro();
+
+            List<Parametro> listParametroDetalle = new List<Parametro>();
+
             try
             {
                 //Se solicita la información al cliente para definir el código que realizará la petición al API:
                 //string valor = "";
-                string seriesID = "";
-                string fechainicio = "";
-                string fechafinal = "";
 
-                seriesID = "SF43936";
+                //OBTENER LA DIVISA SELECCIONADA
+
+                catDineroDefault = ListCatDinero.Where(n => n.Check).FirstOrDefault();
+
+                if(catDineroDefault != null)
+                {
+                    seriesID = catDineroDefault.Valor;
+                    divisa = catDineroDefault.Nombre;
+
+                }
+                else
+                {
+                    resultadoMercadoDinero.Mensaje = "Debe seleccionar por lo menos una divisa.";
+
+                    return Json(resultadoMercadoDinero, JsonRequestBehavior.AllowGet);
+                }
+                
 
                 fechainicio = Convert.ToDateTime(strFechaInicio).ToString("yyyy-MM-dd");
 
@@ -110,11 +141,66 @@ namespace IDA_Economia.Controllers
 
                     resultadoMercadoDinero.ListaDatos.Add(datosDinero);
 
+                    parametro = new Parametro();
+                    parametro.Nombre = "Empresa";
+                    parametro.Valor = divisa;
+
+                    listParametroDetalle.Add(parametro);
+
+                    parametro = new Parametro();
+                    parametro.Nombre = "Fecha";
+                    parametro.Valor = m.Date;
+
+                    listParametroDetalle.Add(parametro);
+
+                    parametro = new Parametro();
+                    parametro.Nombre = "Valor";
+                    parametro.Valor = m.Data;
+
+                    listParametroDetalle.Add(parametro);
+
+                    parametro = new Parametro();
+                    parametro.Nombre = "Usuario";
+                    parametro.Valor = Session["Usuario"];
+
+                    listParametroDetalle.Add(parametro);
+
                     cont++;
                 });
 
 
                 Session["dtInformacionDinero"] = dt1;
+
+                //INSERTAR INFORMACION LOG
+                listParametro = new List<Parametro>();
+
+                parametro = new Parametro();
+                parametro.Nombre = "Usuario";
+                parametro.Valor = Session["Usuario"];
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "Modulo";
+                parametro.Valor = "Mercado Divisa";
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "Empresa";
+                parametro.Valor = divisa;
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "Resumen";
+                parametro.Valor = "Generar Estadistico Mercado Divisa";
+
+                listParametro.Add(parametro);
+
+                //INSERTAR LOG
+                Negocio.Log.Log log = new Negocio.Log.Log();
+                log.InsertLog(listParametro, listParametroDetalle);
 
             }
             catch (Exception ex)

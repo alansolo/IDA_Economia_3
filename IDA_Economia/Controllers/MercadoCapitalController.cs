@@ -34,22 +34,31 @@ namespace IDA_Economia.Controllers
         [HttpPost]
         public JsonResult ObtenerCatCapital()
         {
-            List<CatCapital> ListCapital = new List<CatCapital>();
+            List<CatCapital> ListCatCapital = new List<CatCapital>();
 
             MercadoCapital mercadoCapital = new MercadoCapital();
             List<Parametro> ListParametro = new List<Parametro>();
 
-            ListCapital = mercadoCapital.ObtenerCatCapital(ListParametro);
+            ListCatCapital = mercadoCapital.ObtenerCatCapital(ListParametro);
 
-            return Json(ListCapital, JsonRequestBehavior.AllowGet);
+            //SELECCIONAR EL PRIMER ELEMENTO
+            if(ListCatCapital.Count > 0)
+            {
+                ListCatCapital[0].Check = true;
+            }
+
+            return Json(ListCatCapital, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public JsonResult ObtenerEstadistico(string strFechaInicio, string strFechaFinal)
+        public JsonResult ObtenerEstadistico(string strFechaInicio, string strFechaFinal, List<CatCapital> ListCatCapital)
         {
             ResultadoMercadoCapital resultadoMercadoCapital = new ResultadoMercadoCapital();
 
             DateTime fechaInicio = new DateTime();
             DateTime fechafinal = new DateTime();
+
+            List<Parametro> listParametro = new List<Parametro>();
+            Parametro parametro = new Parametro();
 
             double totalDias = 0;
 
@@ -78,32 +87,28 @@ namespace IDA_Economia.Controllers
             {
                 totalDias = (fechafinal - fechaInicio).TotalDays;
 
-                ////OBTENER EMPRESAS SELECCIONADAS
-                //foreach (ListItem item in ListCapitales.Items)
-                //{
-                //    if (item.Selected)
-                //    {
-                //        Empresa empresa = new Empresa();
-                //        empresa.Nombre = item.Value;
+                //OBTENER EMPRESAS SELECCIONADAS
+                foreach (CatCapital catCapital in ListCatCapital.Where(n => n.Check).ToList())
+                {
+                    Empresa empresa = new Empresa();
+                    empresa.Nombre = catCapital.Valor;
 
-                //        ListaEmpresa.Add(empresa);
-                //    }
-                //}
+                    ListaEmpresa.Add(empresa);
+                }
 
-                Empresa empresa = new Empresa();
-                empresa.Nombre = "GRUMAB.MX";
+                if(ListaEmpresa.Count <= 0)
+                {
+                    resultadoMercadoCapital.Mensaje = "Se debe seleccionar por lo menos una empresa.";
 
-                ListaEmpresa.Add(empresa);
+                    return Json(resultadoMercadoCapital, JsonRequestBehavior.AllowGet);
+                }
 
-                empresa = new Empresa();
-                empresa.Nombre = "CEMEXCPO.MX";
+                if (ListaEmpresa.Count > 7)
+                {
+                    resultadoMercadoCapital.Mensaje = "Se debe seleccionar como maximo 7 empresas.";
 
-                ListaEmpresa.Add(empresa);
-
-                empresa = new Empresa();
-                empresa.Nombre = "WMT.MX";
-
-                ListaEmpresa.Add(empresa);
+                    return Json(resultadoMercadoCapital, JsonRequestBehavior.AllowGet);
+                }
 
 
                 ////////////////////////
@@ -532,6 +537,37 @@ namespace IDA_Economia.Controllers
                 resultadoMercadoCapital.ListaDatos = ListDatos.ToList();
 
                 Session["dtInformacionCapital"] = dtExportarInformacion;
+
+                //INSERTAR INFORMACION LOG
+                listParametro = new List<Parametro>();
+
+                parametro = new Parametro();
+                parametro.Nombre = "Usuario";
+                parametro.Valor = Session["Usuario"];
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "Modulo";
+                parametro.Valor = "Mercado Capital";
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "Empresa";
+                parametro.Valor = string.Join(", ", ListaEmpresa.Select(n => n.Nombre).ToArray());
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "Resumen";
+                parametro.Valor = "Generar Estadistico Mercado Capital";
+
+                listParametro.Add(parametro);
+
+                Negocio.Log.Log log = new Negocio.Log.Log();
+                log.InsertLog(listParametro);
+
             }
             catch (Exception ex)
             {

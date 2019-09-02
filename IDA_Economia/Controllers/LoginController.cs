@@ -54,6 +54,30 @@ namespace IDA_Economia.Controllers
                 {
                     Session["Usuario"] = usuario;
                     mensejeError = "OK";
+
+                    //INSERTAR INFORMACION LOG
+                    listParametro = new List<Parametro>();
+
+                    parametro = new Parametro();
+                    parametro.Nombre = "Usuario";
+                    parametro.Valor = userDefault;
+
+                    listParametro.Add(parametro);
+
+                    parametro = new Parametro();
+                    parametro.Nombre = "Modulo";
+                    parametro.Valor = "Login";
+
+                    listParametro.Add(parametro);
+
+                    parametro = new Parametro();
+                    parametro.Nombre = "Resumen";
+                    parametro.Valor = "Inicio sesion";
+
+                    listParametro.Add(parametro);
+
+                    Negocio.Log.Log log = new Negocio.Log.Log();
+                    log.InsertLog(listParametro);
                 }
                 else
                 {

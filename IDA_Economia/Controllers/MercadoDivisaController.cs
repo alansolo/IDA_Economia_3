@@ -40,22 +40,45 @@ namespace IDA_Economia.Controllers
 
             ListCatDivisa = mercadoDivisa.ObtenerCatDivisa(ListParametro);
 
+            //SELECCIONAR EL PRIMER ELEMENTO
+            if (ListCatDivisa.Count > 0)
+            {
+                ListCatDivisa[0].Check = true;
+            }
+
             return Json(ListCatDivisa, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public JsonResult ObtenerEstadistico(string strFechaInicio, string strFechaFinal)
+        public JsonResult ObtenerEstadistico(string strFechaInicio, string strFechaFinal, List<CatDivisa> ListCatDivisa)
         {
             ResultadoMercadoDivisa resultadoMercadoDivisa = new ResultadoMercadoDivisa();
             resultadoMercadoDivisa.ListaDatos = new List<DatosDivisa>();
             DatosDivisa datosDivisa = new DatosDivisa();
 
+            string seriesID = "";
+            string fechainicio = "";
+            string fechafinal = "";
+
+            CatDivisa catDivisaDefault = new CatDivisa();
+
             try
             {
                 //Se solicita la información al cliente para definir el código que realizará la petición al API:
                 //string valor = "";
-                string seriesID = "";
-                string fechainicio = "";
-                string fechafinal = "";
+
+                //OBTENER LA DIVISA SELECCIONADA
+                catDivisaDefault = ListCatDivisa.Where(n => n.Check).FirstOrDefault();
+
+                if (catDivisaDefault != null)
+                {
+                    seriesID = "SF43936";
+                }
+                else
+                {
+                    resultadoMercadoDivisa.Mensaje = "Debe seleccionar por lo menos una moneda.";
+
+                    return Json(resultadoMercadoDivisa, JsonRequestBehavior.AllowGet);
+                }
 
                 seriesID = "SF43718";
 

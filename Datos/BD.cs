@@ -56,6 +56,9 @@ namespace Datos
         {
             string[] result = new string[1];
             SqlTransaction transaction;
+            SqlParameter sqlParameterOut = new SqlParameter();
+            SqlParameter sqlParemeter = new SqlParameter();
+            long idLog = 0;
 
             using (sqlConnection = new SqlConnection(connectionString))
             {
@@ -75,9 +78,23 @@ namespace Datos
 
                     result[0] = (string)command.ExecuteScalar();
 
+                    //OBTENER ID LOG
+                    sqlParameterOut = parameters.Where(n => n.ParameterName == "@ID_Campc").FirstOrDefault();
+
+                    if (sqlParameterOut != null && sqlParameterOut.Value != null)
+                    {
+                        idLog = Convert.ToInt32(sqlParameterOut.Value);
+                    }
+
                     command.Parameters.Clear();
 
                     command.CommandText = spNameDetalle;
+
+                    //Agregar Id Log
+                    sqlParemeter.ParameterName = "IdLog";
+                    sqlParemeter.Value = idLog;
+
+                    command.Parameters.Add(sqlParemeter);
 
                     foreach (SqlParameter item in parametersDetalle)
                         command.Parameters.Add(item);

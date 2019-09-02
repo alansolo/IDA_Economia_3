@@ -27,23 +27,48 @@
 
                 <div id="collapseUno" class="collapse show" aria-labelledby="headingUno" data-parent="#accordionExampleUno">
 
-                    <div class="row justify-content-md-center">
-                        <div class="input-group">
-                            <label class="control-label" for="campana">Campaña:</label>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="input-group-append">
-                                <input type="text" class="form-control text-uppercase" id="campana" placeholder="Campaña" name="campana"
-                                       required>
-                                <div class="input-group-append">
-                                    <i class="fa fa-align-justify fa-lg input-group-text" aria-hidden="true"></i>
+                    <div id="BuscarUsuario" class="container">
+                        <div class="row justify-content-md-center">
+
+                            <form role="form" name="formulario" id="formulario" class="">
+
+                                <div class="form-group input-group">
+                                    <label class="control-label width-control" for="claveCampania">Login:</label>
+                                    &nbsp;
+                                    <div class="input-group-append">
+                                        <input type="text" class="form-control" id="login" placeholder="Login" name="login"
+                                               ng-model="LoginUsuario" required>
+                                    </div>
                                 </div>
-                            </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-primary" ng-disabled="" ng-click="">
-                                    <i class="fa fa-search fa-lg" aria-hidden="true"></i>Buscar
-                                </button>
-                            </div>
+
+                                <div class="form-group input-group">
+                                    <label class="control-label width-control" for="campania">Nombre:</label>
+                                    &nbsp;
+                                    <div class="input-group-append">
+                                        <input type="text" class="form-control text-uppercase" id="nombre" placeholder="Nombre" name="nombre"
+                                               ng-model="NombreUsuario" required>
+                                    </div>
+                                </div>                               
+
+                                <div class="form-group input-group">
+                                    <label class="control-label width-control" for="alcance">Rol:</label>
+                                    &nbsp;
+                                    <div class="input-group-append">
+                                        <select class="form-control" id="rolUsuario" ng-model="RolUsuario" ng-options="data.Alcance for data in ListTipoAlcance | orderBy:'ID'" required>
+                                            <option value="">-- SELECCIONE --</option>
+                                        </select>
+                                    </div>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary" ng-disabled="" title="Buscar Campaña por uno o varios filtros."
+                                                ng-click="SearchCampana(Camp_Number, Nombre_Camp, TipoUrgente, TipoSell, TipoCampania, TipoAlcance)">
+                                            <i class="fa fa-search fa-lg" aria-hidden="true"></i>Buscar
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </form>
+
                         </div>
                     </div>
 

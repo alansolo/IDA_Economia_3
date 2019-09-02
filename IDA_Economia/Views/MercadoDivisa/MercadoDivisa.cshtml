@@ -36,7 +36,7 @@
                                     <p style="font-family: sans-serif">Compara en mercado de Divisas:</p>
 
                                     <div ng-repeat="d in ListCatDivisa" class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" id="customRadio{{d.Id}}" name="divisaRadio">
+                                        <input type="radio" class="custom-control-input" id="customRadio{{d.Id}}" name="divisaRadio" ng-checked="d.Check">
                                         <label class="custom-control-label" for="customRadio{{d.Id}}" ng-model="d.Valor">{{d.Nombre}}</label>
                                     </div>
 

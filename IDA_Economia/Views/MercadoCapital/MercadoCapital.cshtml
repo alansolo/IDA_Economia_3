@@ -38,7 +38,7 @@
                                     <br />
 
                                     <div ng-repeat="d in ListCatCapital" class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck{{d.Id}}">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck{{d.Id}}" ng-checked="d.Check">
                                         <label class="custom-control-label" for="customCheck{{d.Id}}" ng-model="d.Valor">{{d.Nombre}}</label>
                                     </div>
 
