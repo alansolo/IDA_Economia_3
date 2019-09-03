@@ -23,7 +23,7 @@ namespace IDA_Economia.Controllers
         [HttpPost]
         public JsonResult ObtenerUsuario()
         {
-            List<Usuario> ListUsuario = new List<Usuario>();
+            List<Entidades.Usuario> ListUsuario = new List<Entidades.Usuario>();
 
             Negocio.Usuario.Usuario Usuario = new Negocio.Usuario.Usuario();
 

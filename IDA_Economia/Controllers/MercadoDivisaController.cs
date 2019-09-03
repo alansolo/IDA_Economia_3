@@ -166,7 +166,6 @@ namespace IDA_Economia.Controllers
 
                     listParametroDetalle.Add(parametro);
 
-
                     cont++;
                 });
 
