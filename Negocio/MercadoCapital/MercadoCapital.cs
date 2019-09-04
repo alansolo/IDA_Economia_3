@@ -18,7 +18,7 @@ namespace Negocio.MercadoCapital
         public List<CatCapital> ObtenerCatCapital(List<Parametro> listParametro)
         {
             object Resultado = new object();
-            const string spName = "ObtenerCatDivisa";
+            const string spName = "ObtenerCatCapital";
             List<CatCapital> ListCatCapital = new List<CatCapital>();
             BDMercadoCapital bdMercadoCapital = new BDMercadoCapital();
 

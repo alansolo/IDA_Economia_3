@@ -96,9 +96,9 @@ namespace IDA_Economia.Controllers
                     ListaEmpresa.Add(empresa);
                 }
 
-                if(ListaEmpresa.Count <= 0)
+                if(ListaEmpresa.Count <= 1)
                 {
-                    resultadoMercadoCapital.Mensaje = "Se debe seleccionar por lo menos una empresa.";
+                    resultadoMercadoCapital.Mensaje = "Se debe seleccionar por lo menos dos empresa.";
 
                     return Json(resultadoMercadoCapital, JsonRequestBehavior.AllowGet);
                 }
@@ -452,7 +452,7 @@ namespace IDA_Economia.Controllers
                 List<CurvaVarianza> ListaCurvaVarianza = new List<CurvaVarianza>();
                 double[,] W2T;
 
-
+                int w = 0;
                 foreach (double valor in ListaNumeroAleatorio)
                 {
                     B2V[ListaEmpresa.Count, 0] = valor;
@@ -480,11 +480,14 @@ namespace IDA_Economia.Controllers
                     double sigma = matrizSigmaB[0, 0];
 
                     CurvaVarianza curvaVarianza = new CurvaVarianza();
+                    curvaVarianza.Numero = w + 1;
                     curvaVarianza.RendimientoAsumido = rendimientoAsumido;
                     curvaVarianza.Sigma = sigma;
                     curvaVarianza.W = W2T;
 
                     ListaCurvaVarianza.Add(curvaVarianza);
+
+                    w++;
                 }
 
 
@@ -539,34 +542,34 @@ namespace IDA_Economia.Controllers
                 Session["dtInformacionCapital"] = dtExportarInformacion;
 
                 //INSERTAR INFORMACION LOG
-                listParametro = new List<Parametro>();
+                //listParametro = new List<Parametro>();
 
-                parametro = new Parametro();
-                parametro.Nombre = "Usuario";
-                parametro.Valor = Session["Usuario"];
+                //parametro = new Parametro();
+                //parametro.Nombre = "Usuario";
+                //parametro.Valor = Session["Usuario"];
 
-                listParametro.Add(parametro);
+                //listParametro.Add(parametro);
 
-                parametro = new Parametro();
-                parametro.Nombre = "Modulo";
-                parametro.Valor = "Mercado Capital";
+                //parametro = new Parametro();
+                //parametro.Nombre = "Modulo";
+                //parametro.Valor = "Mercado Capital";
 
-                listParametro.Add(parametro);
+                //listParametro.Add(parametro);
 
-                parametro = new Parametro();
-                parametro.Nombre = "Empresa";
-                parametro.Valor = string.Join(", ", ListaEmpresa.Select(n => n.Nombre).ToArray());
+                //parametro = new Parametro();
+                //parametro.Nombre = "Empresa";
+                //parametro.Valor = string.Join(", ", ListaEmpresa.Select(n => n.Nombre).ToArray());
 
-                listParametro.Add(parametro);
+                //listParametro.Add(parametro);
 
-                parametro = new Parametro();
-                parametro.Nombre = "Resumen";
-                parametro.Valor = "Generar Estadistico Mercado Capital";
+                //parametro = new Parametro();
+                //parametro.Nombre = "Resumen";
+                //parametro.Valor = "Generar Estadistico Mercado Capital";
 
-                listParametro.Add(parametro);
+                //listParametro.Add(parametro);
 
-                Negocio.Log.Log log = new Negocio.Log.Log();
-                log.InsertLog(listParametro);
+                //Negocio.Log.Log log = new Negocio.Log.Log();
+                //log.InsertLog(listParametro);
 
             }
             catch (Exception ex)

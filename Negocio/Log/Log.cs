@@ -60,7 +60,7 @@ namespace Negocio.Log
         public List<Log> InsertLog(List<Parametro> listParametro)
         {
             object Resultado = new object();
-            const string spName = "ObtenerLog";
+            const string spName = "InsertLog";
             List<Log> ListLog = new List<Log>();
             BDLog bdLog = new BDLog();
 

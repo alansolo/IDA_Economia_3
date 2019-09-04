@@ -71,6 +71,12 @@ namespace IDA_Economia.Controllers
                     listParametro.Add(parametro);
 
                     parametro = new Parametro();
+                    parametro.Nombre = "Empresa";
+                    parametro.Valor = "Inicio sesion";
+
+                    listParametro.Add(parametro);
+
+                    parametro = new Parametro();
                     parametro.Nombre = "Resumen";
                     parametro.Valor = "Inicio sesion";
 

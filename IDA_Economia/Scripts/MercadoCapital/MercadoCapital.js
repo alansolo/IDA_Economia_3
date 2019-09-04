@@ -64,13 +64,18 @@ app.controller("MyController", function ($scope, $http, $window) {
     $scope.ObtenerEstadistico = function () {
         $('#myModalLoader').modal('show');
 
+        var ListCatCapitalFiltro = $scope.ListCatCapital.filter(function (i, n) {
+            return i.Check === true
+        });
+
         $.ajax({
             type: "POST",
             url: urlPathSystem + "/MercadoCapital/ObtenerEstadistico",
             data: JSON.stringify(
                 {
                     'strFechaInicio': $scope.FechaInicio,
-                    'strFechaFinal': $scope.FechaFinal
+                    'strFechaFinal': $scope.FechaFinal,
+                    'ListCatCapital': ListCatCapitalFiltro
                 }),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
