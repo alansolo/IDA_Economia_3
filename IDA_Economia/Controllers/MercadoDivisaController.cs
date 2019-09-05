@@ -43,7 +43,7 @@ namespace IDA_Economia.Controllers
             //SELECCIONAR EL PRIMER ELEMENTO
             if (ListCatDivisa.Count > 0)
             {
-                ListCatDivisa[0].Check = true;
+                ListCatDivisa[0].Check = ListCatDivisa[0].Valor;
             }
 
             return Json(ListCatDivisa, JsonRequestBehavior.AllowGet);
@@ -64,6 +64,8 @@ namespace IDA_Economia.Controllers
 
             List<Parametro> listParametro = new List<Parametro>();
             Parametro parametro = new Parametro();
+            List<GrupoParametro> listGrupoParametro = new List<GrupoParametro>();
+            GrupoParametro grupoParametro = new GrupoParametro();
 
             List<Parametro> listParametroDetalle = new List<Parametro>();
 
@@ -73,7 +75,7 @@ namespace IDA_Economia.Controllers
                 //string valor = "";
 
                 //OBTENER LA DIVISA SELECCIONADA
-                catDivisaDefault = ListCatDivisa.Where(n => n.Check).FirstOrDefault();
+                catDivisaDefault = ListCatDivisa.Where(n => !string.IsNullOrEmpty(n.Check)).FirstOrDefault();
 
                 if (catDivisaDefault != null)
                 {
@@ -165,6 +167,10 @@ namespace IDA_Economia.Controllers
                     parametro.Valor = Session["Usuario"];
 
                     listParametroDetalle.Add(parametro);
+
+                    grupoParametro = new GrupoParametro();
+                    grupoParametro.ListGrupoParametro = listParametroDetalle;
+                    listGrupoParametro.Add(grupoParametro);
 
                     cont++;
                 });

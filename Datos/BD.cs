@@ -52,7 +52,7 @@ namespace Datos
 
             return result;
         }
-        protected string[] ExecuteScalar(string spName, List<SqlParameter> parameters, string spNameDetalle, List<SqlParameter> parametersDetalle)
+        protected string[] ExecuteScalar(string spName, List<SqlParameter> parameters, string spNameDetalle, List<SqlParameterGroup> parametersGroup)
         {
             string[] result = new string[1];
             SqlTransaction transaction;
@@ -96,10 +96,36 @@ namespace Datos
 
                     command.Parameters.Add(sqlParemeter);
 
-                    foreach (SqlParameter item in parametersDetalle)
-                        command.Parameters.Add(item);
+                    //foreach (SqlParameter item in parametersDetalle)
+                    //    command.Parameters.Add(item);
 
-                    result[1] = (string)command.ExecuteScalar();
+                    //result[1] = (string)command.ExecuteScalar();
+
+                    foreach (SqlParameterGroup paramGroup in parametersGroup)
+                    {
+                        try
+                        {
+                            command = new SqlCommand();
+                            command.Connection = sqlConnection;
+                            command.Transaction = transaction;
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.CommandText = spName;
+
+                            foreach (SqlParameter item in paramGroup.ListSqlParameter)
+                                command.Parameters.Add(item);
+
+                            result[1] = (string)command.ExecuteScalar();
+
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+
+                            //Write log error
+                            ArchivoLog.EscribirLog(null, DateTime.Now.ToString("dd/MM/yyyy mm:ss") + ": Method: " + ex.Source + " Error: " + ex.Message);
+                            throw ex;
+                        }
+                    }
 
                 }
                 catch (Exception ex)

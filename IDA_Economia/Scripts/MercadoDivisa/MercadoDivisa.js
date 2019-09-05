@@ -48,7 +48,7 @@ app.controller("MyController", function ($scope, $http, $window) {
         dataType: 'json',
         success: function (datos) {
 
-            $scope.ListDivisa = datos;
+            $scope.ListCatDivisa = datos;
 
             $scope.$apply();
 
@@ -69,8 +69,9 @@ app.controller("MyController", function ($scope, $http, $window) {
             url: urlPathSystem + "/MercadoDivisa/ObtenerEstadistico",
             data: JSON.stringify(
                 {
-                    'strFechaInicio': $scope.FechaInicio,
-                    'strFechaFinal': $scope.FechaFinal
+                    "strFechaInicio": $scope.FechaInicio,
+                    "strFechaFinal": $scope.FechaFinal,
+                    "ListCatDivisa": $scope.ListCatDivisa
                 }),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',

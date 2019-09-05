@@ -52,11 +52,11 @@ namespace Datos.Log
 
             return Resultado;
         }
-        public object InsertLog(string spName, List<Parametro> listParametro, string spNameDetalle, List<Parametro> listParametroDetalle)
+        public object InsertLog(string spName, List<Parametro> listParametro, string spNameDetalle, List<GrupoParametro> listParametroDetalle)
         {
             object Resultado = new object();
             List<SqlParameter> listParametrosSQL = new List<SqlParameter>();
-            List<SqlParameter> listParametrosDetalleSQL = new List<SqlParameter>();
+            List<SqlParameterGroup> listParametrosDetalleSQL = new List<SqlParameterGroup>();
 
             try
             {
@@ -66,11 +66,21 @@ namespace Datos.Log
                     Value = n.Valor
                 }).ToList();
 
-                listParametrosDetalleSQL = listParametroDetalle.Select(n => new SqlParameter
+                listParametroDetalle.ForEach(n =>
                 {
-                    ParameterName = "@" + n.Nombre,
-                    Value = n.Valor
-                }).ToList();
+                    SqlParameterGroup group = new SqlParameterGroup();
+
+                    group.ListSqlParameter =
+                        n.ListGrupoParametro.Select(m => new SqlParameter
+                        {
+                            ParameterName = "@" + m.Nombre,
+                            Value = m.Valor
+                        }).ToList();
+
+                    listParametrosDetalleSQL.Add(group);
+                });
+
+               
 
                 Resultado = ExecuteScalar(spName, listParametrosSQL, spNameDetalle, listParametrosDetalleSQL);
             }

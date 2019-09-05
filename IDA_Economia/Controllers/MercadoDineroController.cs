@@ -41,7 +41,7 @@ namespace IDA_Economia.Controllers
             //SELECCIONAR EL PRIMER ELEMENTO
             if (ListCatDinero.Count > 0)
             {
-                ListCatDinero[0].Check = true;
+                ListCatDinero[0].Check = ListCatDinero[0].Valor;
             }
 
             return Json(ListCatDinero, JsonRequestBehavior.AllowGet);
@@ -72,7 +72,7 @@ namespace IDA_Economia.Controllers
 
                 //OBTENER LA DIVISA SELECCIONADA
 
-                catDineroDefault = ListCatDinero.Where(n => n.Check).FirstOrDefault();
+                catDineroDefault = ListCatDinero.Where(n => !string.IsNullOrEmpty(n.Check)).FirstOrDefault();
 
                 if(catDineroDefault != null)
                 {
@@ -201,7 +201,7 @@ namespace IDA_Economia.Controllers
 
                 //INSERTAR LOG
                 Negocio.Log.Log log = new Negocio.Log.Log();
-                log.InsertLog(listParametro, listParametroDetalle);
+                //log.InsertLog(listParametro, listParametroDetalle);
 
             }
             catch (Exception ex)

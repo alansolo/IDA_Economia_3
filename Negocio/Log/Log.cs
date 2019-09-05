@@ -80,7 +80,7 @@ namespace Negocio.Log
 
             return ListLog;
         }
-        public List<Log> InsertLog(List<Parametro> listParametro, List<Parametro> listParametroDetalle)
+        public List<Log> InsertLog(List<Parametro> listParametro, List<GrupoParametro> listParametroDetalle)
         {
             object Resultado = new object();
             const string spName = "ObtenerLog";

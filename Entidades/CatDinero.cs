@@ -15,6 +15,6 @@ namespace Entidades
         public DateTime Creado { get; set; }
         public Nullable<DateTime> Modificado { get; set; }
         public string UsuarioModificado { get; set; }
-        public bool Check { get; set; }
+        public string Check { get; set; }
     }
 }
