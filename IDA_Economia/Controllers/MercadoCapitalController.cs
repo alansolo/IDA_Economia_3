@@ -41,6 +41,8 @@ namespace IDA_Economia.Controllers
 
             ListCatCapital = mercadoCapital.ObtenerCatCapital(ListParametro);
 
+            Session["ListCatCapital"] = ListCatCapital;
+
             //SELECCIONAR EL PRIMER ELEMENTO
             if(ListCatCapital.Count > 0)
             {
@@ -82,6 +84,11 @@ namespace IDA_Economia.Controllers
 
             fechaInicio = Convert.ToDateTime(strFechaInicio);
             fechafinal = Convert.ToDateTime(strFechaFinal);
+
+            List<GrupoParametro> listGrupoParametro = new List<GrupoParametro>();
+            GrupoParametro grupoParametro = new GrupoParametro();
+            List<Parametro> listParametroDetalle = new List<Parametro>();
+
 
             try
             {
@@ -452,6 +459,9 @@ namespace IDA_Economia.Controllers
                 List<CurvaVarianza> ListaCurvaVarianza = new List<CurvaVarianza>();
                 double[,] W2T;
 
+
+                listGrupoParametro = new List<GrupoParametro>();
+
                 int w = 0;
                 foreach (double valor in ListaNumeroAleatorio)
                 {
@@ -486,6 +496,56 @@ namespace IDA_Economia.Controllers
                     curvaVarianza.W = W2T;
 
                     ListaCurvaVarianza.Add(curvaVarianza);
+
+                   
+                    //EMPRESAS
+                    for (int l = 0; curvaVarianza.W.Length > l; l++)
+                    {
+                        //AGREGAR INFORMACION DE LOG
+                        listParametroDetalle = new List<Parametro>();
+
+                        //AGREGAR DETALLE DE LOG
+                        parametro = new Parametro();
+                        parametro.Nombre = "Numero";
+                        parametro.Valor = w + 1;
+
+                        listParametroDetalle.Add(parametro);
+
+                        parametro = new Parametro();
+                        parametro.Nombre = "Rendimiento";
+                        parametro.Valor = rendimientoAsumido;
+
+                        listParametroDetalle.Add(parametro);
+
+                        parametro = new Parametro();
+                        parametro.Nombre = "Sigma";
+                        parametro.Valor = sigma;
+
+                        listParametroDetalle.Add(parametro);
+
+                        parametro = new Parametro();
+                        parametro.Nombre = "Usuario";
+                        parametro.Valor = Session["Usuario"];
+
+                        listParametroDetalle.Add(parametro);
+
+                        parametro = new Parametro();
+                        parametro.Nombre = "Empresa";
+                        parametro.Valor = ListaEmpresa[l].Nombre;
+
+                        listParametroDetalle.Add(parametro);
+
+                        parametro = new Parametro();
+                        parametro.Nombre = "Valor";
+                        parametro.Valor = curvaVarianza.W[0, l].ToString("0.0000##");
+
+                        listParametroDetalle.Add(parametro);
+
+                        grupoParametro = new GrupoParametro();
+                        grupoParametro.ListGrupoParametro = listParametroDetalle;
+                        listGrupoParametro.Add(grupoParametro);
+                    }                   
+
 
                     w++;
                 }
@@ -542,34 +602,41 @@ namespace IDA_Economia.Controllers
                 Session["dtInformacionCapital"] = dtExportarInformacion;
 
                 //INSERTAR INFORMACION LOG
-                //listParametro = new List<Parametro>();
+                listParametro = new List<Parametro>();
 
-                //parametro = new Parametro();
-                //parametro.Nombre = "Usuario";
-                //parametro.Valor = Session["Usuario"];
+                parametro = new Parametro();
+                parametro.Nombre = "Usuario";
+                parametro.Valor = Session["Usuario"];
 
-                //listParametro.Add(parametro);
+                listParametro.Add(parametro);
 
-                //parametro = new Parametro();
-                //parametro.Nombre = "Modulo";
-                //parametro.Valor = "Mercado Capital";
+                parametro = new Parametro();
+                parametro.Nombre = "Modulo";
+                parametro.Valor = "Mercado Capital";
 
-                //listParametro.Add(parametro);
+                listParametro.Add(parametro);
 
-                //parametro = new Parametro();
-                //parametro.Nombre = "Empresa";
-                //parametro.Valor = string.Join(", ", ListaEmpresa.Select(n => n.Nombre).ToArray());
+                parametro = new Parametro();
+                parametro.Nombre = "Empresa";
+                parametro.Valor = string.Join(", ", ListaEmpresa.Select(n => n.Nombre).ToArray());
 
-                //listParametro.Add(parametro);
+                listParametro.Add(parametro);
 
-                //parametro = new Parametro();
-                //parametro.Nombre = "Resumen";
-                //parametro.Valor = "Generar Estadistico Mercado Capital";
+                parametro = new Parametro();
+                parametro.Nombre = "Resumen";
+                parametro.Valor = "Generar Estadistico Mercado Capital";
 
-                //listParametro.Add(parametro);
+                listParametro.Add(parametro);
 
-                //Negocio.Log.Log log = new Negocio.Log.Log();
-                //log.InsertLog(listParametro);
+                parametro = new Parametro();
+                parametro.Nombre = "Detalle";
+                parametro.Valor = "Fecha Inicio: " + strFechaInicio + ", Fecha Final: " + strFechaFinal;
+
+                listParametro.Add(parametro);
+
+                //INSERTAR LOG
+                Negocio.Log.Log log = new Negocio.Log.Log();
+                log.InsertLogCapital(listParametro, listGrupoParametro);
 
             }
             catch (Exception ex)

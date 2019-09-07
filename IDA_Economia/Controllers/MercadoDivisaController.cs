@@ -40,6 +40,8 @@ namespace IDA_Economia.Controllers
 
             ListCatDivisa = mercadoDivisa.ObtenerCatDivisa(ListParametro);
 
+            Session["ListCatDivisa"] = ListCatDivisa;
+
             //SELECCIONAR EL PRIMER ELEMENTO
             if (ListCatDivisa.Count > 0)
             {
@@ -64,9 +66,9 @@ namespace IDA_Economia.Controllers
 
             List<Parametro> listParametro = new List<Parametro>();
             Parametro parametro = new Parametro();
+
             List<GrupoParametro> listGrupoParametro = new List<GrupoParametro>();
             GrupoParametro grupoParametro = new GrupoParametro();
-
             List<Parametro> listParametroDetalle = new List<Parametro>();
 
             try
@@ -132,6 +134,8 @@ namespace IDA_Economia.Controllers
                 dt1.Columns.Add("Valor");
 
 
+                listGrupoParametro = new List<GrupoParametro>();
+
                 int cont = 0;
                 dos1.ForEach(m =>
                 {
@@ -142,6 +146,8 @@ namespace IDA_Economia.Controllers
                     datosDivisa.Valor = Convert.ToDouble(m.Data);
 
                     resultadoMercadoDivisa.ListaDatos.Add(datosDivisa);
+
+                    listParametroDetalle = new List<Parametro>();
 
                     //AGREGAR DETALLE DE LOG
                     parametro = new Parametro();
@@ -204,10 +210,11 @@ namespace IDA_Economia.Controllers
                 parametro.Valor = "Generar Estadistico Mercado Divisa";
 
                 listParametro.Add(parametro);
+                
 
                 //INSERTAR LOG
                 Negocio.Log.Log log = new Negocio.Log.Log();
-                log.InsertLog(listParametro, listParametroDetalle);
+                log.InsertLogDivisa(listParametro, listGrupoParametro);
 
             }
             catch (Exception ex)

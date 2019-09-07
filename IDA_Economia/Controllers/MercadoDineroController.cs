@@ -38,6 +38,8 @@ namespace IDA_Economia.Controllers
 
             ListCatDinero = mercadoDinero.ObtenerCatDinero(ListParametro);
 
+            Session["ListCatDinero"] = ListCatDinero;
+
             //SELECCIONAR EL PRIMER ELEMENTO
             if (ListCatDinero.Count > 0)
             {
@@ -54,7 +56,7 @@ namespace IDA_Economia.Controllers
             DatosDinero datosDinero = new DatosDinero();
 
             string seriesID = string.Empty;
-            string divisa = string.Empty;
+            string dinero = string.Empty;
             string fechainicio = string.Empty;
             string fechafinal = string.Empty;
 
@@ -63,6 +65,8 @@ namespace IDA_Economia.Controllers
             List<Parametro> listParametro = new List<Parametro>();
             Parametro parametro = new Parametro();
 
+            List<GrupoParametro> listGrupoParametro = new List<GrupoParametro>();
+            GrupoParametro grupoParametro = new GrupoParametro();
             List<Parametro> listParametroDetalle = new List<Parametro>();
 
             try
@@ -77,7 +81,7 @@ namespace IDA_Economia.Controllers
                 if(catDineroDefault != null)
                 {
                     seriesID = catDineroDefault.Valor;
-                    divisa = catDineroDefault.Nombre;
+                    dinero = catDineroDefault.Nombre;
 
                 }
                 else
@@ -130,6 +134,8 @@ namespace IDA_Economia.Controllers
                 dt1.Columns.Add("Valor");
 
 
+                listGrupoParametro = new List<GrupoParametro>();
+
                 int cont = 0;
                 dos1.ForEach(m =>
                 {
@@ -141,10 +147,12 @@ namespace IDA_Economia.Controllers
 
                     resultadoMercadoDinero.ListaDatos.Add(datosDinero);
 
+                    listParametroDetalle = new List<Parametro>();
+
                     //AGREGAR DETALLE DE LOG
                     parametro = new Parametro();
                     parametro.Nombre = "Empresa";
-                    parametro.Valor = divisa;
+                    parametro.Valor = dinero;
 
                     listParametroDetalle.Add(parametro);
 
@@ -166,6 +174,10 @@ namespace IDA_Economia.Controllers
 
                     listParametroDetalle.Add(parametro);
 
+                    grupoParametro = new GrupoParametro();
+                    grupoParametro.ListGrupoParametro = listParametroDetalle;
+                    listGrupoParametro.Add(grupoParametro);
+
                     cont++;
                 });
 
@@ -183,13 +195,13 @@ namespace IDA_Economia.Controllers
 
                 parametro = new Parametro();
                 parametro.Nombre = "Modulo";
-                parametro.Valor = "Mercado Divisa";
+                parametro.Valor = "Mercado Dinero";
 
                 listParametro.Add(parametro);
 
                 parametro = new Parametro();
                 parametro.Nombre = "Empresa";
-                parametro.Valor = divisa;
+                parametro.Valor = dinero;
 
                 listParametro.Add(parametro);
 
@@ -201,7 +213,7 @@ namespace IDA_Economia.Controllers
 
                 //INSERTAR LOG
                 Negocio.Log.Log log = new Negocio.Log.Log();
-                //log.InsertLog(listParametro, listParametroDetalle);
+                log.InsertLogDinero(listParametro, listGrupoParametro);
 
             }
             catch (Exception ex)

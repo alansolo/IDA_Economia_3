@@ -54,11 +54,12 @@ namespace Datos
         }
         protected string[] ExecuteScalar(string spName, List<SqlParameter> parameters, string spNameDetalle, List<SqlParameterGroup> parametersGroup)
         {
-            string[] result = new string[1];
+            string[] result = new string[2];
             SqlTransaction transaction;
             SqlParameter sqlParameterOut = new SqlParameter();
-            SqlParameter sqlParemeter = new SqlParameter();
+            SqlParameter sqlParameter = new SqlParameter();
             long idLog = 0;
+            const string mensajeOK = "{\"MENSAJE\":\"OK\"}";
 
             using (sqlConnection = new SqlConnection(connectionString))
             {
@@ -73,33 +74,29 @@ namespace Datos
                     command.CommandType = CommandType.StoredProcedure;
                     command.CommandText = spName;
 
+                    sqlParameter = new SqlParameter();
+                    sqlParameter.ParameterName = "@IdLog";
+                    sqlParameter.SqlDbType = SqlDbType.BigInt;
+                    sqlParameter.Direction = ParameterDirection.Output;
+                    command.Parameters.Add(sqlParameter);
+
                     foreach (SqlParameter item in parameters)
                         command.Parameters.Add(item);
 
                     result[0] = (string)command.ExecuteScalar();
 
+                    if(result[0] != mensajeOK)
+                    {
+                        throw new Exception(result[0]);
+                    }
+
                     //OBTENER ID LOG
-                    sqlParameterOut = parameters.Where(n => n.ParameterName == "@ID_Campc").FirstOrDefault();
+                    sqlParameterOut = command.Parameters.Cast<SqlParameter>().Where(n => n.ParameterName == "@IdLog").FirstOrDefault();
 
                     if (sqlParameterOut != null && sqlParameterOut.Value != null)
                     {
                         idLog = Convert.ToInt32(sqlParameterOut.Value);
                     }
-
-                    command.Parameters.Clear();
-
-                    command.CommandText = spNameDetalle;
-
-                    //Agregar Id Log
-                    sqlParemeter.ParameterName = "IdLog";
-                    sqlParemeter.Value = idLog;
-
-                    command.Parameters.Add(sqlParemeter);
-
-                    //foreach (SqlParameter item in parametersDetalle)
-                    //    command.Parameters.Add(item);
-
-                    //result[1] = (string)command.ExecuteScalar();
 
                     foreach (SqlParameterGroup paramGroup in parametersGroup)
                     {
@@ -109,13 +106,24 @@ namespace Datos
                             command.Connection = sqlConnection;
                             command.Transaction = transaction;
                             command.CommandType = CommandType.StoredProcedure;
-                            command.CommandText = spName;
+                            command.CommandText = spNameDetalle;
+
+                            //Agregar Id Log
+                            sqlParameter = new SqlParameter();
+                            sqlParameter.ParameterName = "IdLog";
+                            sqlParameter.Value = idLog;
+
+                            command.Parameters.Add(sqlParameter);
 
                             foreach (SqlParameter item in paramGroup.ListSqlParameter)
                                 command.Parameters.Add(item);
 
                             result[1] = (string)command.ExecuteScalar();
 
+                            if (result[1] != mensajeOK)
+                            {
+                                throw new Exception(result[0]);
+                            }
                         }
                         catch (Exception ex)
                         {

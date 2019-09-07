@@ -30,14 +30,14 @@ namespace IDA_Economia.Controllers
 
             try
             {
-                //ListLog = log.ObtenerLog(ListParametro);
+                ListLog = log.ObtenerLog(ListParametro);
             }
             catch (Exception ex)
             {
             }
 
 
-            return Json(ListLog, JsonRequestBehavior.AllowGet);
+            return Json(ListLog.OrderBy(n => n.Creado), JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -11,11 +11,11 @@ namespace Negocio.Log
 {
     public class Log
     {
-        public List<Log> ObtenerLog(List<Parametro> listParametro)
+        public List<Entidades.Log> ObtenerLog(List<Parametro> listParametro)
         {
             object Resultado = new object();
             const string spName = "ObtenerLog";
-            List<Log> ListLog = new List<Log>();
+            List<Entidades.Log> ListLog = new List<Entidades.Log>();
             BDLog bdLog = new BDLog();
 
 
@@ -25,7 +25,7 @@ namespace Negocio.Log
 
                 Resultado = "[" + Resultado + "]";
 
-                var jsonLog = JsonConvert.DeserializeObject<Log[]>(Resultado.ToString());
+                var jsonLog = JsonConvert.DeserializeObject<Entidades.Log[]>(Resultado.ToString());
                 ListLog = jsonLog.ToList();
             }
             catch (Exception ex)
@@ -80,11 +80,11 @@ namespace Negocio.Log
 
             return ListLog;
         }
-        public List<Log> InsertLog(List<Parametro> listParametro, List<GrupoParametro> listParametroDetalle)
+        public List<Log> InsertLogDivisa(List<Parametro> listParametro, List<GrupoParametro> listParametroDetalle)
         {
             object Resultado = new object();
-            const string spName = "ObtenerLog";
-            const string spNameDetalle = "ObtenerLogDetalle";
+            const string spName = "InsertLog";
+            const string spNameDetalle = "InsertLogDetalleDivisa";
             List<Log> ListLog = new List<Log>();
             BDLog bdLog = new BDLog();
 
@@ -104,10 +104,81 @@ namespace Negocio.Log
 
             return ListLog;
         }
-        public List<LogDetalle> InsertLogDetalle(List<Parametro> listParametro)
+        public List<Log> InsertLogDinero(List<Parametro> listParametro, List<GrupoParametro> listParametroDetalle)
         {
             object Resultado = new object();
-            const string spName = "ObtenerLogDetalle";
+            const string spName = "InsertLog";
+            const string spNameDetalle = "InsertLogDetalleDinero";
+            List<Log> ListLog = new List<Log>();
+            BDLog bdLog = new BDLog();
+
+
+            try
+            {
+                Resultado = bdLog.InsertLog(spName, listParametro, spNameDetalle, listParametroDetalle);
+
+                Resultado = "[" + Resultado + "]";
+
+                var jsonLog = JsonConvert.DeserializeObject<Log[]>(Resultado.ToString());
+                ListLog = jsonLog.ToList();
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ListLog;
+        }
+        public List<Log> InsertLogCapital(List<Parametro> listParametro, List<GrupoParametro> listParametroDetalle)
+        {
+            object Resultado = new object();
+            const string spName = "InsertLog";
+            const string spNameDetalle = "InsertLogDetalleCapital";
+            List<Log> ListLog = new List<Log>();
+            BDLog bdLog = new BDLog();
+
+
+            try
+            {
+                Resultado = bdLog.InsertLog(spName, listParametro, spNameDetalle, listParametroDetalle);
+
+                Resultado = "[" + Resultado + "]";
+
+                var jsonLog = JsonConvert.DeserializeObject<Log[]>(Resultado.ToString());
+                ListLog = jsonLog.ToList();
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ListLog;
+        }
+        public List<LogDetalle> InsertLogDetalleDivisa(List<Parametro> listParametro)
+        {
+            object Resultado = new object();
+            const string spName = "ObtenerLogDetalleDivisa";
+            List<LogDetalle> ListLog = new List<LogDetalle>();
+            BDLog bdLog = new BDLog();
+
+
+            try
+            {
+                Resultado = bdLog.InsertLogDetalle(spName, listParametro);
+
+                Resultado = "[" + Resultado + "]";
+
+                var jsonLogDetalle = JsonConvert.DeserializeObject<LogDetalle[]>(Resultado.ToString());
+                ListLog = jsonLogDetalle.ToList();
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ListLog;
+        }
+        public List<LogDetalle> InsertLogDetalleDinero(List<Parametro> listParametro)
+        {
+            object Resultado = new object();
+            const string spName = "ObtenerLogDetalleDinero";
             List<LogDetalle> ListLog = new List<LogDetalle>();
             BDLog bdLog = new BDLog();
 

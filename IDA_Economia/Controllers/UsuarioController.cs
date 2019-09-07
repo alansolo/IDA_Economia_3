@@ -24,21 +24,68 @@ namespace IDA_Economia.Controllers
         public JsonResult ObtenerUsuario()
         {
             List<Entidades.Usuario> ListUsuario = new List<Entidades.Usuario>();
-
             Negocio.Usuario.Usuario Usuario = new Negocio.Usuario.Usuario();
-
             List<Parametro> ListParametro = new List<Parametro>();
 
             try
             {
                 ListUsuario = Usuario.ObtenerUsuario(ListParametro);
+
+                Session["ListUsuario"] = ListUsuario;
             }
             catch (Exception ex)
             {
             }
-            
 
-            return Json(ListUsuario, JsonRequestBehavior.AllowGet);
+
+            return Json(ListUsuario.OrderBy(n => n.Nombre), JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult AgregarUsuario()
+        {
+            List<Entidades.Usuario> ListUsuario = new List<Entidades.Usuario>();
+            Negocio.Usuario.Usuario Usuario = new Negocio.Usuario.Usuario();
+            List<Parametro> ListParametro = new List<Parametro>();
+
+            Entidades.Usuario usuario = new Entidades.Usuario();
+
+            try
+            {
+                ListUsuario = (List<Entidades.Usuario>)Session["ListUsuario"];
+
+                usuario = Usuario.AgregarUsuario(ListParametro);
+
+                ListUsuario.Add(usuario);
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return Json(ListUsuario.OrderBy(n => n.Nombre), JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult EditarUsuario(Entidades.Usuario usuario)
+        {
+            List<Entidades.Usuario> ListUsuario = new List<Entidades.Usuario>();
+            Negocio.Usuario.Usuario Usuario = new Negocio.Usuario.Usuario();
+            List<Parametro> ListParametro = new List<Parametro>();
+
+            try
+            {
+                ListUsuario = (List<Entidades.Usuario>)Session["ListUsuario"];
+
+                usuario = Usuario.AgregarUsuario(ListParametro);
+
+                ListUsuario.RemoveAll(n => n.Id == usuario.Id);
+
+                ListUsuario.Add(usuario);
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return Json(ListUsuario.OrderBy(n => n.Nombre), JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

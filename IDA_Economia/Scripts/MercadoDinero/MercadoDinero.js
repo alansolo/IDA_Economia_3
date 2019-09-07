@@ -69,8 +69,9 @@ app.controller("MyController", function ($scope, $http, $window) {
             url: urlPathSystem + "/MercadoDinero/ObtenerEstadistico",
             data: JSON.stringify(
                 {
-                    'strFechaInicio': $scope.FechaInicio,
-                    'strFechaFinal': $scope.FechaFinal
+                    "strFechaInicio": $scope.FechaInicio,
+                    "strFechaFinal": $scope.FechaFinal,
+                    "ListCatDinero": $scope.ListCatDinero
                 }),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',

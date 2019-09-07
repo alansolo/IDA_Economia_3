@@ -33,5 +33,27 @@ namespace Negocio.Usuario
 
             return ListUsuario;
         }
+        public Entidades.Usuario AgregarUsuario(List<Parametro> listParametro)
+        {
+            object Resultado = new object();
+            Entidades.Usuario usuario = new Entidades.Usuario();
+            const string spName = "InsertUsuario";
+            BDUsuario bdUsuario = new BDUsuario();
+
+            try
+            {
+                Resultado = bdUsuario.InsertUsuario(spName, listParametro);
+
+                Resultado = "[" + Resultado + "]";
+
+                var jsonListUsuario = JsonConvert.DeserializeObject<Entidades.Usuario>(Resultado.ToString());
+                usuario = jsonListUsuario;
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return usuario;
+        }
     }
 }
