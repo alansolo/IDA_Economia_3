@@ -405,6 +405,10 @@
       <Project>{411823D0-7C12-4C23-8FFD-E18AC4736502}</Project>
       <Name>3.OperacionMatriz</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Seguridad\9.Seguridad.csproj">
+      <Project>{86DFF3AE-1F3F-4B07-8D96-172ABEB43B17}</Project>
+      <Name>9.Seguridad</Name>
+    </ProjectReference>
     <ProjectReference Include="..\YahooFinance.NET\2.YahooFinance.NET.csproj">
       <Project>{FFAA8437-97A3-43DC-972A-8C358D37A98F}</Project>
       <Name>2.YahooFinance.NET</Name>

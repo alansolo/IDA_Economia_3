@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Entidades
 {
     [Serializable]
-    public class LogDetalle
+    public class LogDetalleDivisa
     {
         public long Id { get; set; }
         public long IdLog { get; set; }

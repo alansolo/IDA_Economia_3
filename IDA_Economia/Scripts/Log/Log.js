@@ -42,7 +42,7 @@ app.controller("MyController", function ($scope, $http, $window) {
 
         $.ajax({
             type: "POST",
-            url: urlPathSystem + "/MercadoCapital/ObtenerEstadistico",
+            url: urlPathSystem + "/Log/ObtenerLog",
             data: JSON.stringify(
                 {
                     'strFechaInicio': $scope.FechaInicio,
@@ -52,15 +52,17 @@ app.controller("MyController", function ($scope, $http, $window) {
             dataType: 'json',
             success: function (datos) {
 
-                $scope.ListGraficoLinea = datos.ListaCurvaVarianza;
+                if (datos.Mensaje != "") {
+                    MessageInfo("Historico Actividades", datos.Mensaje);
 
-                $scope.ListEncabezadoEmpresa = datos.ListaEncabezadoEmpresa;
+                    $scope.$apply();
 
-                $scope.ListDatos = datos.ListaDatos;
+                    return;
+                }
 
-                $scope.ListEmpresa = datos.ListaEmpresa;
+                $scope.ListLog = datos.ListLog;
 
-                MessageSuccess("Log", "Se obtuvo correctamente la informacion.");
+                MessageSuccess("Historico Actividades", "Se obtuvo correctamente la informacion.");
 
                 $scope.$apply();
 

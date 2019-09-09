@@ -103,9 +103,9 @@ namespace IDA_Economia.Controllers
                     ListaEmpresa.Add(empresa);
                 }
 
-                if(ListaEmpresa.Count <= 1)
+                if(ListaEmpresa.Count <= 2)
                 {
-                    resultadoMercadoCapital.Mensaje = "Se debe seleccionar por lo menos dos empresa.";
+                    resultadoMercadoCapital.Mensaje = "Se debe seleccionar por lo menos tres empresas.";
 
                     return Json(resultadoMercadoCapital, JsonRequestBehavior.AllowGet);
                 }
@@ -637,6 +637,8 @@ namespace IDA_Economia.Controllers
                 //INSERTAR LOG
                 Negocio.Log.Log log = new Negocio.Log.Log();
                 log.InsertLogCapital(listParametro, listGrupoParametro);
+
+                resultadoMercadoCapital.Mensaje = "";
 
             }
             catch (Exception ex)

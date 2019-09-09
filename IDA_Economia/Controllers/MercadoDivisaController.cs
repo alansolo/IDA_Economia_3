@@ -14,6 +14,7 @@ using System.IO;
 using System.Net.Http;
 using Entidades;
 using Negocio.MercadoDivisa;
+using System.Globalization;
 
 namespace IDA_Economia.Controllers
 {
@@ -70,6 +71,12 @@ namespace IDA_Economia.Controllers
             List<GrupoParametro> listGrupoParametro = new List<GrupoParametro>();
             GrupoParametro grupoParametro = new GrupoParametro();
             List<Parametro> listParametroDetalle = new List<Parametro>();
+
+            string Lang = "es-MX";//set your culture here
+            System.Threading.Thread.CurrentThread.CurrentCulture =
+                new System.Globalization.CultureInfo(Lang);
+
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Lang);
 
             try
             {
@@ -158,7 +165,7 @@ namespace IDA_Economia.Controllers
 
                     parametro = new Parametro();
                     parametro.Nombre = "Fecha";
-                    parametro.Valor = m.Date;
+                    parametro.Valor = DateTime.ParseExact(m.Date, "dd/MM/yyyy", CultureInfo.CurrentCulture);
 
                     listParametroDetalle.Add(parametro);
 
@@ -210,12 +217,18 @@ namespace IDA_Economia.Controllers
                 parametro.Valor = "Generar Estadistico Mercado Divisa";
 
                 listParametro.Add(parametro);
-                
+
+                parametro = new Parametro();
+                parametro.Nombre = "Detalle";
+                parametro.Valor = "Fecha Inicio: " + strFechaInicio + ", Fecha Final: " + strFechaFinal;
+
+                listParametro.Add(parametro);
 
                 //INSERTAR LOG
                 Negocio.Log.Log log = new Negocio.Log.Log();
                 log.InsertLogDivisa(listParametro, listGrupoParametro);
 
+                resultadoMercadoDivisa.Mensaje = "";
             }
             catch (Exception ex)
             {

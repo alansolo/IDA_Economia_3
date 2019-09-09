@@ -2,6 +2,7 @@
 using Negocio.Login;
 using Negocio.MercadoCapital;
 using Negocio.MercadoDivisa;
+using Seguridad;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -29,6 +30,9 @@ namespace IDA_Economia.Controllers
             string passwordDefault = string.Empty;
             List<Parametro> listParametro = new List<Parametro>();
             Parametro parametro = new Parametro();
+            string passwordEncrip = string.Empty;
+            string passwordDecrip = string.Empty;
+            const string key = "idaeconomia";
 
             if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(password))
             {
@@ -47,10 +51,14 @@ namespace IDA_Economia.Controllers
 
                 Usuario = login.ObtenerUsuario(listParametro);
 
+                passwordEncrip = EncripDecrip.Encriptar(password, key);
+
+                //passwordDecrip = EncripDecrip.Desencriptar(passwordEncrip, key);
+
                 userDefault = Usuario.Login;
                 passwordDefault = Usuario.Password;
 
-                if (usuario == userDefault && password == passwordDefault)
+                if (usuario == userDefault && passwordEncrip == passwordDefault)
                 {
                     Session["Usuario"] = usuario;
                     mensejeError = "OK";

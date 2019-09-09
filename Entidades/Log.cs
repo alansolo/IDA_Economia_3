@@ -16,5 +16,8 @@ namespace Entidades
         public string Empresa { get; set; }
         public string Resumen { get; set; }
         public string Detalle { get; set; }
+        public LogDetalleDivisa DetalleDivisa { get; set; }
+        public LogDetalleDinero DetalleDinero { get; set; }
+        public LogDetalleCapital DetalleCapital { get; set; }
     }
 }

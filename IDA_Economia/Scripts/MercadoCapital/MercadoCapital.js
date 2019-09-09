@@ -81,6 +81,17 @@ app.controller("MyController", function ($scope, $http, $window) {
             dataType: 'json',
             success: function (datos) {
 
+                if (datos.Mensaje != "")
+                {
+                    MessageInfo("Mercado de Capitales", datos.Mensaje);
+
+                    $scope.$apply();
+
+                    $("#myModalLoader").modal('hide');
+
+                    return;
+                }
+
                 $scope.ListGraficoLinea = datos.ListaCurvaVarianza;
 
                 $scope.ListEncabezadoEmpresa = datos.ListaEncabezadoEmpresa;

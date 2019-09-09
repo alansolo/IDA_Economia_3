@@ -34,29 +34,6 @@ namespace Negocio.Log
 
             return ListLog;
         }
-        public List<LogDetalle> ObtenerLogDetalle(List<Parametro> listParametro)
-        {
-            object Resultado = new object();
-            const string spName = "ObtenerLogDetalle";
-            List<LogDetalle> ListLog = new List<LogDetalle>();
-            BDLog bdLog = new BDLog();
-
-
-            try
-            {
-                Resultado = bdLog.ObtenerLogDetalle(spName, listParametro);
-
-                Resultado = "[" + Resultado + "]";
-
-                var jsonLogDetalle = JsonConvert.DeserializeObject<LogDetalle[]>(Resultado.ToString());
-                ListLog = jsonLogDetalle.ToList();
-            }
-            catch (Exception ex)
-            {
-            }
-
-            return ListLog;
-        }
         public List<Log> InsertLog(List<Parametro> listParametro)
         {
             object Resultado = new object();
@@ -152,11 +129,11 @@ namespace Negocio.Log
 
             return ListLog;
         }
-        public List<LogDetalle> InsertLogDetalleDivisa(List<Parametro> listParametro)
+        public List<LogDetalleDivisa> InsertLogDetalleDivisa(List<Parametro> listParametro)
         {
             object Resultado = new object();
             const string spName = "ObtenerLogDetalleDivisa";
-            List<LogDetalle> ListLog = new List<LogDetalle>();
+            List<LogDetalleDivisa> ListLog = new List<LogDetalleDivisa>();
             BDLog bdLog = new BDLog();
 
 
@@ -166,7 +143,7 @@ namespace Negocio.Log
 
                 Resultado = "[" + Resultado + "]";
 
-                var jsonLogDetalle = JsonConvert.DeserializeObject<LogDetalle[]>(Resultado.ToString());
+                var jsonLogDetalle = JsonConvert.DeserializeObject<LogDetalleDivisa[]>(Resultado.ToString());
                 ListLog = jsonLogDetalle.ToList();
             }
             catch (Exception ex)
@@ -175,11 +152,11 @@ namespace Negocio.Log
 
             return ListLog;
         }
-        public List<LogDetalle> InsertLogDetalleDinero(List<Parametro> listParametro)
+        public List<LogDetalleDinero> InsertLogDetalleDinero(List<Parametro> listParametro)
         {
             object Resultado = new object();
             const string spName = "ObtenerLogDetalleDinero";
-            List<LogDetalle> ListLog = new List<LogDetalle>();
+            List<LogDetalleDinero> ListLog = new List<LogDetalleDinero>();
             BDLog bdLog = new BDLog();
 
 
@@ -189,7 +166,7 @@ namespace Negocio.Log
 
                 Resultado = "[" + Resultado + "]";
 
-                var jsonLogDetalle = JsonConvert.DeserializeObject<LogDetalle[]>(Resultado.ToString());
+                var jsonLogDetalle = JsonConvert.DeserializeObject<LogDetalleDinero[]>(Resultado.ToString());
                 ListLog = jsonLogDetalle.ToList();
             }
             catch (Exception ex)

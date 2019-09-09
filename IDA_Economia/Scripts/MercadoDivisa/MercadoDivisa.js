@@ -77,6 +77,14 @@ app.controller("MyController", function ($scope, $http, $window) {
             dataType: 'json',
             success: function (datos) {
 
+                if (datos.Mensaje != "") {
+                    MessageInfo("Mercado de Capitales", datos.Mensaje);
+
+                    $scope.$apply();
+
+                    return;
+                }
+
                 $scope.ListGraficoLinea = datos.ListaDatos;
 
                 google.charts.setOnLoadCallback(drawChart);

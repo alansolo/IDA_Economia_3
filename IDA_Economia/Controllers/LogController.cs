@@ -21,16 +21,35 @@ namespace IDA_Economia.Controllers
             return View();
         }
         [HttpPost]
-        public JsonResult ObtenerUsuario()
+        public JsonResult ObtenerLog(string usuario, DateTime fechaInicio, DateTime fechaFinal)
         {
             List<Log> ListLog = new List<Log>();
 
             Negocio.Log.Log log = new Negocio.Log.Log();
-            List<Parametro> ListParametro = new List<Parametro>();
+            List<Parametro> listParametro = new List<Parametro>();
+            Parametro parametro = new Parametro();
 
             try
             {
-                ListLog = log.ObtenerLog(ListParametro);
+                parametro = new Parametro();
+                parametro.Nombre = "Usuario";
+                parametro.Valor = usuario;
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "FechaInicio";
+                parametro.Valor = fechaInicio;
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "FechaFinal";
+                parametro.Valor = fechaFinal;
+
+                listParametro.Add(parametro);
+
+                ListLog = log.ObtenerLog(listParametro);
             }
             catch (Exception ex)
             {

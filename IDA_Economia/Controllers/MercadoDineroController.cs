@@ -6,6 +6,7 @@ using Negocio.MercadoDinero;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -69,6 +70,13 @@ namespace IDA_Economia.Controllers
             GrupoParametro grupoParametro = new GrupoParametro();
             List<Parametro> listParametroDetalle = new List<Parametro>();
 
+            string Lang = "es-MX";//set your culture here
+            System.Threading.Thread.CurrentThread.CurrentCulture =
+                new System.Globalization.CultureInfo(Lang);
+
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Lang);
+
+
             try
             {
                 //Se solicita la información al cliente para definir el código que realizará la petición al API:
@@ -78,7 +86,7 @@ namespace IDA_Economia.Controllers
 
                 catDineroDefault = ListCatDinero.Where(n => !string.IsNullOrEmpty(n.Check)).FirstOrDefault();
 
-                if(catDineroDefault != null)
+                if (catDineroDefault != null)
                 {
                     seriesID = catDineroDefault.Valor;
                     dinero = catDineroDefault.Nombre;
@@ -90,7 +98,7 @@ namespace IDA_Economia.Controllers
 
                     return Json(resultadoMercadoDinero, JsonRequestBehavior.AllowGet);
                 }
-                
+
 
                 fechainicio = Convert.ToDateTime(strFechaInicio).ToString("yyyy-MM-dd");
 
@@ -158,7 +166,7 @@ namespace IDA_Economia.Controllers
 
                     parametro = new Parametro();
                     parametro.Nombre = "Fecha";
-                    parametro.Valor = m.Date;
+                    parametro.Valor = DateTime.ParseExact(m.Date, "dd/MM/yyyy", CultureInfo.CurrentCulture);
 
                     listParametroDetalle.Add(parametro);
 
@@ -211,10 +219,17 @@ namespace IDA_Economia.Controllers
 
                 listParametro.Add(parametro);
 
+                parametro = new Parametro();
+                parametro.Nombre = "Detalle";
+                parametro.Valor = "Fecha Inicio: " + strFechaInicio + ", Fecha Final: " + strFechaFinal;
+
+                listParametro.Add(parametro);               
+
                 //INSERTAR LOG
                 Negocio.Log.Log log = new Negocio.Log.Log();
                 log.InsertLogDinero(listParametro, listGrupoParametro);
 
+                resultadoMercadoDinero.Mensaje = "";
             }
             catch (Exception ex)
             {
