@@ -3,6 +3,7 @@ using Entidades;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,15 +19,28 @@ namespace Negocio.MercadoDivisa
             const string spName = "ObtenerCatDivisa";
             List<CatDivisa> ListCatDivisa = new List<CatDivisa>();
             BDMercadoDivisa bdMercadoDivisa = new BDMercadoDivisa();
-
+            DataTable dtResultado = new DataTable();
+            StringBuilder sbResultado = new StringBuilder();
 
             try
             {
                 Resultado = bdMercadoDivisa.ObtenerCatDivisa(spName, listParametro);
 
-                Resultado = "[" + Resultado + "]";
+                dtResultado = (DataTable)Resultado;
 
-                var jsonCatDivisa = JsonConvert.DeserializeObject<CatDivisa[]>(Resultado.ToString());
+                if (dtResultado.Rows.Count > 0)
+                {
+                    sbResultado.Append("[");
+
+                    dtResultado.Rows.Cast<DataRow>().ToList().ForEach(n =>
+                    {
+                        sbResultado.Append(n[0].ToString());
+                    });
+
+                    sbResultado.Append("]");
+                }
+
+                var jsonCatDivisa = JsonConvert.DeserializeObject<CatDivisa[]>(sbResultado.ToString());
                 ListCatDivisa = jsonCatDivisa.ToList();
             }
             catch (Exception ex)

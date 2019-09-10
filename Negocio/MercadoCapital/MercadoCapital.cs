@@ -21,16 +21,29 @@ namespace Negocio.MercadoCapital
             const string spName = "ObtenerCatCapital";
             List<CatCapital> ListCatCapital = new List<CatCapital>();
             BDMercadoCapital bdMercadoCapital = new BDMercadoCapital();
-
+            DataTable dtResultado = new DataTable();
+            StringBuilder sbResultado = new StringBuilder();
 
             try
             {
                 Resultado = bdMercadoCapital.ObtenerCatCapital(spName, listParametro);
 
-                Resultado = "[" + Resultado + "]";
+                dtResultado = (DataTable)Resultado;
 
-                var jsonCatCapital = JsonConvert.DeserializeObject<CatCapital[]>(Resultado.ToString());
-                ListCatCapital = jsonCatCapital.ToList();
+                if (dtResultado.Rows.Count > 0)
+                {
+                    sbResultado.Append("[");
+
+                    dtResultado.Rows.Cast<DataRow>().ToList().ForEach(n =>
+                    {
+                        sbResultado.Append(n[0].ToString());
+                    });
+
+                    sbResultado.Append("]");
+
+                    var jsonCatCapital = JsonConvert.DeserializeObject<CatCapital[]>(sbResultado.ToString());
+                    ListCatCapital = jsonCatCapital.ToList();
+                }
             }
             catch (Exception ex)
             {

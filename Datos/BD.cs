@@ -1,8 +1,12 @@
 ﻿using Herramientas;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+using Microsoft.Practices.EnterpriseLibrary.Data;
+using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -24,14 +28,26 @@ namespace Datos
         {
             connectionString = ConfigurationManager.ConnectionStrings[dataBaseConnection].ToString();
         }
-        protected string ExecuteScalar(string spName, List<SqlParameter> parameters)
+        protected object ExecuteScalar(string spName, List<SqlParameter> parameters)
         {
-            string result = string.Empty;
+            object result = new object();
+            //object uno = new object();
+            StringBuilder str = new StringBuilder();
+
+            //SqlDatabase db = new SqlDatabase(connectionString);
+            //DbCommand command1; 
+
+            DataSet dataSet = null;
+            DataTable dataTable = new DataTable();
 
             using (sqlConnection = new SqlConnection(connectionString))
+            //using (DbConnection con = db.CreateConnection())
             {
                 try
                 {
+                    //command1 = con.CreateCommand();
+
+
                     command = new SqlCommand();
                     command.CommandType = CommandType.StoredProcedure;
                     command.CommandText = spName;
@@ -40,7 +56,70 @@ namespace Datos
 
                     command.Connection = sqlConnection;
                     sqlConnection.Open();
-                    result = (string)command.ExecuteScalar();
+                    //result = (string)db.ExecuteScalar(command1);
+                    //uno = command.ExecuteReader();
+
+                    //str.Append(db.ExecuteScalar(command1));
+
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
+                    dataSet = new DataSet("dsResult");
+                    dataAdapter.Fill(dataSet);
+
+                    if (dataSet.Tables.Count > 0)
+                    {
+                        dataTable = dataSet.Tables[0];
+                    }
+
+                    result = dataTable;
+                }
+                catch (Exception ex)
+                {
+                    //Write log error
+                    ArchivoLog.EscribirLog(null, DateTime.Now.ToString("dd/MM/yyyy mm:ss") + ": Method: " + ex.Source + " Error: " + ex.Message);
+                    throw ex;
+                }
+            }
+
+            return result;
+        }
+        protected object ExecuteScalarMultiple(string spName, List<SqlParameter> parameters)
+        {
+            object result = new object();
+            //object uno = new object();
+            StringBuilder str = new StringBuilder();
+
+            //SqlDatabase db = new SqlDatabase(connectionString);
+            //DbCommand command1; 
+
+            DataSet dataSet = null;
+
+            using (sqlConnection = new SqlConnection(connectionString))
+            //using (DbConnection con = db.CreateConnection())
+            {
+                try
+                {
+                    //command1 = con.CreateCommand();
+
+
+                    command = new SqlCommand();
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = spName;
+                    foreach (SqlParameter item in parameters)
+                        command.Parameters.Add(item);
+
+                    command.Connection = sqlConnection;
+                    sqlConnection.Open();
+                    //result = (string)db.ExecuteScalar(command1);
+                    //uno = command.ExecuteReader();
+
+                    //str.Append(db.ExecuteScalar(command1));
+
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
+                    dataSet = new DataSet("dsResult");
+                    dataAdapter.Fill(dataSet);
+
+                    result = dataSet;
+
                 }
                 catch (Exception ex)
                 {

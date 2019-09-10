@@ -1,6 +1,7 @@
 ﻿using Entidades;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace Datos.Log
                     Value = n.Valor
                 }).ToList();
 
-                Resultado = ExecuteScalar(spName, listParametrosSQL);
+                Resultado = ExecuteScalarMultiple(spName, listParametrosSQL);
             }
             catch (Exception ex)
             {
@@ -97,11 +98,17 @@ namespace Datos.Log
 
             try
             {
-                listParametrosSQL = listParametro.Select(n => new SqlParameter
+                SqlParameter sqlParameter = new SqlParameter();
+                sqlParameter.ParameterName = "@IdLog";
+                sqlParameter.SqlDbType = SqlDbType.BigInt;
+                sqlParameter.Direction = ParameterDirection.Output;
+                listParametrosSQL.Add(sqlParameter);
+
+                listParametrosSQL.AddRange(listParametro.Select(n => new SqlParameter
                 {
                     ParameterName = "@" + n.Nombre,
                     Value = n.Valor
-                }).ToList();
+                }).ToList());
 
                 Resultado = ExecuteScalar(spName, listParametrosSQL);
             }

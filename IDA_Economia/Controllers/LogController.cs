@@ -1,4 +1,5 @@
 ﻿using Entidades;
+using IDA_Economia.Models.Log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,10 @@ namespace IDA_Economia.Controllers
             return View();
         }
         [HttpPost]
-        public JsonResult ObtenerLog(string usuario, DateTime fechaInicio, DateTime fechaFinal)
+        public JsonResult ObtenerLog(string usuario, string strFechaInicio, string strFechaFinal)
         {
-            List<Log> ListLog = new List<Log>();
+            ResultadoLog resultadoLog = new Models.Log.ResultadoLog();
+            List<Log> ListaLog = new List<Log>();
 
             Negocio.Log.Log log = new Negocio.Log.Log();
             List<Parametro> listParametro = new List<Parametro>();
@@ -39,24 +41,35 @@ namespace IDA_Economia.Controllers
 
                 parametro = new Parametro();
                 parametro.Nombre = "FechaInicio";
-                parametro.Valor = fechaInicio;
+                parametro.Valor = strFechaInicio;
 
                 listParametro.Add(parametro);
 
                 parametro = new Parametro();
                 parametro.Nombre = "FechaFinal";
-                parametro.Valor = fechaFinal;
+                parametro.Valor = strFechaFinal;
 
                 listParametro.Add(parametro);
 
-                ListLog = log.ObtenerLog(listParametro);
+                ListaLog = log.ObtenerLog(listParametro);
+                
+                resultadoLog.ListaLog = ListaLog.OrderBy(n => n.Creado).ToList();
+                resultadoLog.ListaLog.ForEach(n =>
+                {
+                    n.StrCreado = n.Creado.ToString("dd/MM/yyyy hh:mm:ss");
+                    n.DetalleCapital.ForEach(m =>
+                    {
+                        m.StrCreado = m.Creado.ToString("dd/MM/yyyy hh:mm:ss");
+                    });
+                });
+                resultadoLog.Mensaje = "";
             }
             catch (Exception ex)
             {
             }
 
 
-            return Json(ListLog.OrderBy(n => n.Creado), JsonRequestBehavior.AllowGet);
+            return Json(resultadoLog, JsonRequestBehavior.AllowGet);
         }
     }
 }

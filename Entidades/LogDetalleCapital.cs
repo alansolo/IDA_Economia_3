@@ -18,5 +18,6 @@ namespace Entidades
         public decimal Valor { get; set; }
         public string Usuario { get; set; }
         public DateTime Creado { get; set; }
+        public string StrCreado { get; set; }
     }
 }

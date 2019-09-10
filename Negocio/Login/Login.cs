@@ -3,6 +3,7 @@ using Entidades;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,13 +18,19 @@ namespace Negocio.Login
             Entidades.Usuario Usuario = new Entidades.Usuario();
             const string spName = "ObtenerUsuario";
             BDUsuario bdUsuario = new BDUsuario();
+            DataTable dtResultado = new DataTable();
 
             try
             {
                 Resultado = bdUsuario.ObtenerUsuario(spName, listParametro);
 
-                var jsonUsuario = JsonConvert.DeserializeObject<Entidades.Usuario>(Resultado.ToString());
-                Usuario = jsonUsuario;
+                dtResultado = (DataTable)Resultado;
+
+                if (dtResultado.Rows.Count > 0)
+                {
+                    var jsonUsuario = JsonConvert.DeserializeObject<Entidades.Usuario>(dtResultado.Rows[0][0].ToString());
+                    Usuario = jsonUsuario;
+                }
             }
             catch (Exception ex)
             {

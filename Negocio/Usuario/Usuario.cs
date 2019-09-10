@@ -3,6 +3,7 @@ using Entidades;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,14 +18,28 @@ namespace Negocio.Usuario
             List<Entidades.Usuario> ListUsuario = new List<Entidades.Usuario>();
             const string spName = "ObtenerUsuario";
             BDUsuario bdUsuario = new BDUsuario();
+            DataTable dtResultado = new DataTable();
+            StringBuilder sbResultado = new StringBuilder();
 
             try
             {
                 Resultado = bdUsuario.ObtenerUsuario(spName, listParametro);
 
-                Resultado = "[" + Resultado + "]";
+                dtResultado = (DataTable)Resultado;
 
-                var jsonListUsuario = JsonConvert.DeserializeObject<Entidades.Usuario[]>(Resultado.ToString());
+                if (dtResultado.Rows.Count > 0)
+                {
+                    sbResultado.Append("[");
+
+                    dtResultado.Rows.Cast<DataRow>().ToList().ForEach(n =>
+                    {
+                        sbResultado.Append(n[0].ToString());
+                    });
+
+                    sbResultado.Append("]");
+                }
+
+                var jsonListUsuario = JsonConvert.DeserializeObject<Entidades.Usuario[]>(sbResultado.ToString());
                 ListUsuario = jsonListUsuario.ToList();
             }
             catch (Exception ex)
@@ -39,15 +54,18 @@ namespace Negocio.Usuario
             Entidades.Usuario usuario = new Entidades.Usuario();
             const string spName = "InsertUsuario";
             BDUsuario bdUsuario = new BDUsuario();
+            DataTable dtResultado = new DataTable();
 
             try
             {
                 Resultado = bdUsuario.InsertUsuario(spName, listParametro);
 
-                Resultado = "[" + Resultado + "]";
-
-                var jsonListUsuario = JsonConvert.DeserializeObject<Entidades.Usuario>(Resultado.ToString());
-                usuario = jsonListUsuario;
+                if (dtResultado.Rows.Count > 0)
+                {
+                    var jsonListUsuario = JsonConvert.DeserializeObject<Entidades.Usuario>(dtResultado.Rows[0][0].ToString());
+                    usuario = jsonListUsuario;
+                }
+                
             }
             catch (Exception ex)
             {

@@ -45,6 +45,7 @@ app.controller("MyController", function ($scope, $http, $window) {
             url: urlPathSystem + "/Log/ObtenerLog",
             data: JSON.stringify(
                 {
+                    'usuario': $scope.Usuario,
                     'strFechaInicio': $scope.FechaInicio,
                     'strFechaFinal': $scope.FechaFinal
                 }),
@@ -57,10 +58,12 @@ app.controller("MyController", function ($scope, $http, $window) {
 
                     $scope.$apply();
 
+                    $("#myModalLoader").modal('hide');
+
                     return;
                 }
 
-                $scope.ListLog = datos.ListLog;
+                $scope.ListLog = datos.ListaLog;
 
                 MessageSuccess("Historico Actividades", "Se obtuvo correctamente la informacion.");
 

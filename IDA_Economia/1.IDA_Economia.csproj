@@ -189,6 +189,7 @@
     <Compile Include="Models\Empresa.cs" />
     <Compile Include="Models\EmpresaVsEmpresa.cs" />
     <Compile Include="Models\EncabezadoEmpresa.cs" />
+    <Compile Include="Models\Log\ResultadoLog.cs" />
     <Compile Include="Models\MercadoCapital\ResultadoMercadoCapital.cs" />
     <Compile Include="Models\MercadoDinero\ResultadoMercadoDivisa.cs" />
     <Compile Include="Models\MercadoDivisa\ResultadoMercadoDivisa.cs" />
@@ -221,6 +222,7 @@
     <Content Include="Content\Loaders\loaders.css" />
     <Content Include="Content\Loaders\loaders.min.css" />
     <Content Include="Content\Login\Login.css" />
+    <Content Include="Content\Log\Log.css" />
     <Content Include="Content\Log\Log.js" />
     <Content Include="Content\MercadoCapital\MercadoCapital.css" />
     <Content Include="Content\MercadoDinero\MercadoDinero.css" />
