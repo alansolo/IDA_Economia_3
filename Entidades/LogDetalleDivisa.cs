@@ -13,6 +13,7 @@ namespace Entidades
         public long IdLog { get; set; }
         public string Empresa { get; set; }
         public DateTime Fecha { get; set; }
+        public string StrFecha { get; set; }
         public decimal Valor { get; set; }
         public string Usuario { get; set; }
         public DateTime Creado { get; set; }

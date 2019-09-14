@@ -15,6 +15,7 @@ namespace Datos.Log
         {
             object Resultado = new object();
             List<SqlParameter> listParametrosSQL = new List<SqlParameter>();
+            const string fechaParametro = "FECHA";
 
             try
             {
@@ -23,6 +24,11 @@ namespace Datos.Log
                     ParameterName = "@" + n.Nombre,
                     Value = n.Valor
                 }).ToList();
+
+                listParametrosSQL.Where(n => n.ParameterName.ToUpper().Contains(fechaParametro)).ToList().ForEach(m =>
+                {
+                    m.SqlDbType = SqlDbType.DateTime;
+                });
 
                 Resultado = ExecuteScalarMultiple(spName, listParametrosSQL);
             }

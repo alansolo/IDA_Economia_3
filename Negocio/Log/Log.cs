@@ -65,8 +65,19 @@ namespace Negocio.Log
 
                         var jsonLogDetalleDivisa = JsonConvert.DeserializeObject<Entidades.LogDetalleDivisa[]>(sbResultado.ToString());
                         ListLogDetalleDivisa = jsonLogDetalleDivisa.ToList();
+
+                        ListLog.ForEach(n =>
+                        {
+                            n.DetalleDivisa = ListLogDetalleDivisa.Where(m => m.IdLog == n.Id).ToList();
+                            n.DetalleDivisa.ForEach(o =>
+                            {
+                                o.StrFecha = o.Fecha.ToString("dd/MM/yyyy hh:mm:ss");
+                                o.StrCreado = o.Creado.ToString("dd/MM/yyyy hh:mm:ss");
+                            });
+                        });
                     }
-                    else if (dsResultado.Tables[2].Rows.Count > 0)
+
+                    if (dsResultado.Tables[2].Rows.Count > 0)
                     {
                         dtResultadoDetalle = dsResultado.Tables[2];
 
@@ -83,8 +94,19 @@ namespace Negocio.Log
 
                         var jsonLogDetalleDinero = JsonConvert.DeserializeObject<Entidades.LogDetalleDinero[]>(sbResultado.ToString());
                         ListLogDetalleDinero = jsonLogDetalleDinero.ToList();
+
+                        ListLog.ForEach(n =>
+                        {
+                            n.DetalleDinero = ListLogDetalleDinero.Where(m => m.IdLog == n.Id).ToList();
+                            n.DetalleDinero.ForEach(o =>
+                            {
+                                o.StrFecha = o.Fecha.ToString("dd/MM/yyyy hh:mm:ss");
+                                o.StrCreado = o.Creado.ToString("dd/MM/yyyy hh:mm:ss");
+                            });
+                        });
                     }
-                    else if (dsResultado.Tables[3].Rows.Count > 0)
+
+                    if (dsResultado.Tables[3].Rows.Count > 0)
                     {
                         dtResultadoDetalle = dsResultado.Tables[3];
 
@@ -101,12 +123,17 @@ namespace Negocio.Log
 
                         var jsonLogDetalleCapital = JsonConvert.DeserializeObject<Entidades.LogDetalleCapital[]>(sbResultado.ToString());
                         ListLogDetalleCapital = jsonLogDetalleCapital.ToList();
-                    }
 
-                    ListLog.ForEach(n =>
-                    {
-                        n.DetalleCapital = ListLogDetalleCapital.Where(m => m.IdLog == n.Id).ToList();
-                    });
+                        ListLog.ForEach(n =>
+                        {
+                            n.DetalleCapital = ListLogDetalleCapital.Where(m => m.IdLog == n.Id).ToList();
+                            n.DetalleCapital.ForEach(o =>
+                            {
+                                o.StrCreado = o.Creado.ToString("dd/MM/yyyy hh:mm:ss");
+                            });
+                        });
+                    }
+                    
                 }
             }
             catch (Exception ex)

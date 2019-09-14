@@ -37,6 +37,11 @@ app.controller("MyController", function ($scope, $http, $window) {
     $scope.FechaInicio = myDate;
     $scope.FechaFinal = myDate;
 
+
+    //$('#tablaDetalleCapital').floatThead({
+    //    position: 'fixed'
+    //});
+
     $scope.ObtenerLog = function () {
         $('#myModalLoader').modal('show');
 
@@ -78,6 +83,14 @@ app.controller("MyController", function ($scope, $http, $window) {
             }
         });
     };
+
+    $scope.MostrarDetalle = function (log) {
+        $scope.DetalleCapital = log.DetalleCapital;
+        $scope.DetalleDivisa = log.DetalleDivisa;
+        $scope.DetalleDinero = log.DetalleDinero;
+
+        $scope.$apply();
+    }
 
     function MessageInfo(titulo, message) {
         $.notify({

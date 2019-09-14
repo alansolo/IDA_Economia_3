@@ -24,7 +24,7 @@ namespace Datos.MercadoCapital
                     Value = n.Valor
                 }).ToList();
 
-                Resultado = ExecuteScalarMultiple(spName, listParametrosSQL);
+                Resultado = ExecuteScalar(spName, listParametrosSQL);           
             }
             catch (Exception ex)
             {

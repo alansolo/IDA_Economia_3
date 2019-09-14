@@ -54,14 +54,14 @@ namespace IDA_Economia.Controllers
                 ListaLog = log.ObtenerLog(listParametro);
                 
                 resultadoLog.ListaLog = ListaLog.OrderBy(n => n.Creado).ToList();
-                resultadoLog.ListaLog.ForEach(n =>
-                {
-                    n.StrCreado = n.Creado.ToString("dd/MM/yyyy hh:mm:ss");
-                    n.DetalleCapital.ForEach(m =>
-                    {
-                        m.StrCreado = m.Creado.ToString("dd/MM/yyyy hh:mm:ss");
-                    });
-                });
+                //resultadoLog.ListaLog.ForEach(n =>
+                //{
+                //    n.StrCreado = n.Creado.ToString("dd/MM/yyyy hh:mm:ss");
+                //    n.DetalleCapital.ForEach(m =>
+                //    {
+                //        m.StrCreado = m.Creado.ToString("dd/MM/yyyy hh:mm:ss");
+                //    });
+                //});
                 resultadoLog.Mensaje = "";
             }
             catch (Exception ex)

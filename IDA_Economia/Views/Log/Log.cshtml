@@ -9,12 +9,14 @@
 <head>
     <link href="~/Content/Log/Log.css" rel="stylesheet" />
     <script src="~/Scripts/Log/Log.js"></script>
+    @*<script src="~/Scripts/jquery.floatThead.min.js"></script>*@
 </head>
 
 <body>
 
     <div ng-app="MyApp" ng-controller="MyController">
-
+             
+        @*BUSQUEDA LOG*@
         <div class="accordion" id="accordionExampleUno">
             <div class="card">
                 <div class="card-header" id="headingUno">
@@ -94,6 +96,7 @@
 
         <br />
 
+        @*INFORMACION LOG*@
         <div class="accordion" id="accordionExampleDos">
             <div class="card">
                 <div class="card-header" id="headingDos">
@@ -128,7 +131,7 @@
                                     <td>{{d.Empresa}}</td>
                                     <td>{{d.Resumen}}</td>
                                     <td>
-                                        <button type="button" class="btn btn-primary" >
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalDetalle" ng-click="MostrarDetalle(d)">
                                             <i class="fa fa-list-ul fa-lg" aria-hidden="true"></i>
                                         </button>
                                     </td>
@@ -140,6 +143,129 @@
                 </div>
             </div>
         </div>
+
+        <br />
+
+        @*INFORMACION DETALLE LOG*@
+        <div class="modal fade" id="myModalDetalle" tabindex="-1" role="document" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" ng-class="">
+
+                    @*Encabezado Modal*@
+                    <div class="modal-header">
+
+                        <div class="navbar-header navbar-header-modal row">
+                            <img src="~/Imagenes/logoUNAM.png" class="img-rounded img-modal-ppg" alt="Cinque Terre">
+                            <h5 id="modalTitle" class="modal-title">Detalle Historico Actividades</h5>
+                        </div>
+
+                        <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+
+                    @*Cuerpo Modal*@
+                    <div class="modal-body">
+                        @*Formulario*@
+                        <form class="form-horizontal">
+                                                  
+                            <div id="divDetalleTabla" class="col-md-auto table-responsive tabla-height">
+                                
+                                @*Tabla Detalle Divisa*@
+                                <table class="table table-sm table-small-font table-bordered table-striped table-hover">
+                                    <thead ng-show="DetalleDivisa.length" class="thead-light">
+                                        <tr>
+                                            <th>Empresa</th>
+                                            <th>Fecha</th>
+                                            <th>Valor</th>
+                                            <th>Usuario</th>
+                                            <th>Creacion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="noMostrarDiv" ng-class="">
+                                        <tr ng-repeat="a in DetalleDivisa">
+                                            <td>{{a.Empresa}}</td>
+                                            <td>{{a.StrFecha}}</td>
+                                            <td>{{a.Valor}}</td>
+                                            <td>{{a.Usuario}}</td>
+                                            <td>{{a.StrCreado}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                @*Tabla Detalle Dinero*@
+                                <table class="table table-sm table-small-font table-bordered table-striped table-hover">
+                                    <thead ng-show="DetalleDinero.length" class="thead-light">
+                                        <tr>
+                                            <th>Empresa</th>
+                                            <th>Fecha</th>
+                                            <th>Valor</th>
+                                            <th>Usuario</th>
+                                            <th>Creacion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="noMostrarDiv" ng-class="">
+                                        <tr ng-repeat="b in DetalleDinero">
+                                            <td>{{b.Empresa}}</td>
+                                            <td>{{b.StrFecha}}</td>
+                                            <td>{{b.Valor}}</td>
+                                            <td>{{b.Usuario}}</td>
+                                            <td>{{b.StrCreado}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>                                                       
+                                
+                                @*Tabla Detalle Capital*@
+                                <table id="tablaDetalleCapital" class="table">
+                                    <thead ng-show="DetalleCapital.length" class="thead-light">
+                                        <tr>
+                                            <th>Numero</th>
+                                            <th>Rendimiento</th>
+                                            <th>Sigma</th>
+                                            <th>Empresa</th>
+                                            <th>Valor</th>
+                                            <th>Usuario</th>
+                                            <th>Creado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="noMostrarDiv" style="height:600px;overflow-y:visible">
+                                        <tr ng-repeat="c in DetalleCapital">
+                                            <td>{{c.Numero}}</td>
+                                            <td>{{c.Rendimiento}}</td>
+                                            <td>{{c.Sigma}}</td>
+                                            <td>{{c.Empresa}}</td>
+                                            <td>{{c.Valor}}</td>
+                                            <td>{{c.Usuario}}</td>
+                                            <td>{{c.StrCreado}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+
+                        </form>
+
+                    </div>
+
+                    @*Pie Modal*@
+                    <div class="modal-footer div-centrar">
+                        <div id="divCerrar" ng-show="" style="display:block !important;">
+                            <div class="form-group row">
+                                <div class="col-md-6 div-centrar">
+                                    <button id="cancelarModal" type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="">
+                                        <i class="fa fa-window-close-o fa-lg" aria-hidden="true"></i> Cerrar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
 
     </div>
 
