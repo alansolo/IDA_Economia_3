@@ -48,6 +48,11 @@ namespace Negocio.Log
                     var jsonLog = JsonConvert.DeserializeObject<Entidades.Log[]>(sbResultado.ToString());
                     ListLog = jsonLog.ToList();
 
+                    ListLog.ForEach(n =>
+                    {
+                        n.StrCreado = n.Creado.ToString("dd/MM/yyyy hh:mm:ss");
+                    });
+
                     if (dsResultado.Tables[1].Rows.Count > 0)
                     {
                         dtResultadoDetalle = dsResultado.Tables[1];

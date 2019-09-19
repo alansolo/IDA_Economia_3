@@ -15,5 +15,7 @@ namespace Entidades
         public string Login { get; set; }
         public string Password { get; set; }
         public string Nombre { get; set; }
+        public bool Estatus { get; set; }
+        public string StrEstatus { get; set; }
     }
 }

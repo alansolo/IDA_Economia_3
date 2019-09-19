@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Usuario
 {
-    public class BDUsuario:BD
+    public class BDUsuario : BD
     {
         public object ObtenerUsuario(string spName, List<Parametro> listParametro)
         {
@@ -52,5 +52,48 @@ namespace Datos.Usuario
 
             return Resultado;
         }
+        public object EditarUsuario(string spName, List<Parametro> listParametro)
+        {
+            object Resultado = new object();
+            List<SqlParameter> listParametrosSQL = new List<SqlParameter>();
+
+            try
+            {
+                listParametrosSQL = listParametro.Select(n => new SqlParameter
+                {
+                    ParameterName = "@" + n.Nombre,
+                    Value = n.Valor
+                }).ToList();
+
+                Resultado = ExecuteScalar(spName, listParametrosSQL);
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return Resultado;
+        }
+        public object EliminarUsuario(string spName, List<Parametro> listParametro)
+        {
+            object Resultado = new object();
+            List<SqlParameter> listParametrosSQL = new List<SqlParameter>();
+
+            try
+            {
+                listParametrosSQL = listParametro.Select(n => new SqlParameter
+                {
+                    ParameterName = "@" + n.Nombre,
+                    Value = n.Valor
+                }).ToList();
+
+                Resultado = ExecuteScalar(spName, listParametrosSQL);
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return Resultado;
+        }
+
     }
 }

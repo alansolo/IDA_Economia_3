@@ -196,6 +196,7 @@
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Serie.cs" />
     <Compile Include="Models\SeriesResponse.cs" />
+    <Compile Include="Models\Usuario\ResultadoUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -228,6 +229,7 @@
     <Content Include="Content\MercadoDinero\MercadoDinero.css" />
     <Content Include="Content\MercadoDivisa\MercadoDivisa.css" />
     <Content Include="Content\Shared\_LayoutIDA.css" />
+    <Content Include="Content\Usuario\Usuario.css" />
     <Content Include="Content\Usuario\Usuario.js" />
     <Content Include="Content\webfonts\fa-brands-400.svg" />
     <Content Include="Content\webfonts\fa-regular-400.svg" />

@@ -52,6 +52,7 @@
     <Compile Include="MercadoDinero\MercadoDinero.cs" />
     <Compile Include="MercadoDivisa\MercadoDivisa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Usuario\Rol.cs" />
     <Compile Include="Usuario\Usuario.cs" />
   </ItemGroup>
   <ItemGroup>

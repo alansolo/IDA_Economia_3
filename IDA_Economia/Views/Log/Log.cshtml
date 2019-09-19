@@ -34,6 +34,8 @@
 
                             <form role="form" name="formulario" id="formulario" class="">
 
+                                <br />
+
                                 <div class="form-group input-group">
                                     <label class="control-label width-control" for="claveCampania">Usuario:</label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -77,7 +79,7 @@
                                     <div class="input-group-append">
                                         <button type="button" class="btn btn-primary" ng-disabled="" title="Buscar Campaña por uno o varios filtros."
                                                 ng-click="ObtenerLog(Usuario, FechaInicio, FechaFinal)">
-                                            <i class="fa fa-search fa-lg" aria-hidden="true"></i>Buscar
+                                            <i class="fa fa-search fa-lg" aria-hidden="true"></i> Buscar
                                         </button>
                                     </div>
                                 </div>
@@ -108,6 +110,8 @@
                 </div>
 
                 <div id="collapseDos" class="collapse show" aria-labelledby="headingUno" data-parent="#accordionExampleDos">
+                    
+                    <br />
 
                     <div>
                         <table class="table">
@@ -119,6 +123,7 @@
                                     <th>Modulo</th>
                                     <th>Empresa</th>
                                     <th>Resumen</th>
+                                    <th>Datos</th>
                                     <th>Detalle</th>
                                 </tr>
                             </thead>
@@ -126,10 +131,11 @@
                                 <tr ng-repeat="d in ListLog">
                                     <td>{{d.Id}}</td>
                                     <td>{{d.Usuario}}</td>
-                                    <td>{{d.strCreado}}</td>
+                                    <td>{{d.StrCreado}}</td>
                                     <td>{{d.Modulo}}</td>
                                     <td>{{d.Empresa}}</td>
                                     <td>{{d.Resumen}}</td>
+                                    <td>{{d.Detalle}}</td>
                                     <td>
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalDetalle" ng-click="MostrarDetalle(d)">
                                             <i class="fa fa-list-ul fa-lg" aria-hidden="true"></i>

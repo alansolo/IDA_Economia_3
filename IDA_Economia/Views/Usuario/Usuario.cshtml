@@ -33,9 +33,11 @@
 
                             <form role="form" name="formulario" id="formulario" class="">
 
+                                <br />
+
                                 <div class="form-group input-group">
                                     <label class="control-label width-control" for="claveCampania">Login:</label>
-                                    &nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <div class="input-group-append">
                                         <input type="text" class="form-control" id="login" placeholder="Login" name="login"
                                                ng-model="LoginUsuario" required>
@@ -44,7 +46,7 @@
 
                                 <div class="form-group input-group">
                                     <label class="control-label width-control" for="campania">Nombre:</label>
-                                    &nbsp;
+                                    &nbsp;&nbsp;
                                     <div class="input-group-append">
                                         <input type="text" class="form-control text-uppercase" id="nombre" placeholder="Nombre" name="nombre"
                                                ng-model="NombreUsuario" required>
@@ -53,20 +55,27 @@
 
                                 <div class="form-group input-group">
                                     <label class="control-label width-control" for="alcance">Rol:</label>
-                                    &nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <div class="input-group-append">
-                                        <select class="form-control" id="rolUsuario" ng-model="RolUsuario" ng-options="data.Alcance for data in ListTipoAlcance | orderBy:'ID'" required>
+                                        <select class="form-control" id="rolUsuario" ng-model="RolUsuario" ng-options="data as data.Rol for data in ListCatRol track by data.Id" required>
                                             <option value="">-- SELECCIONE --</option>
                                         </select>
                                     </div>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <div class="input-group-append">
-                                        <button type="button" class="btn btn-primary" ng-disabled="" title="Buscar Campaña por uno o varios filtros."
-                                                ng-click="SearchCampana(Camp_Number, Nombre_Camp, TipoUrgente, TipoSell, TipoCampania, TipoAlcance)">
-                                            <i class="fa fa-search fa-lg" aria-hidden="true"></i>Buscar
+                                        <button type="button" class="btn btn-primary" title="Buscar Usuario"
+                                                ng-click="">
+                                            <i class="fa fa-search fa-lg" aria-hidden="true"></i> Buscar
                                         </button>
                                     </div>
                                 </div>
+
+                                <button type="button" class="btn btn-primary botonAgregar" title="Agregar Usuario" data-toggle="modal" data-target="#myModalAdd" ng-click="MostrarAgregarUsuario()">
+                                    <i class="fa fa-plus-square fa-lg" aria-hidden="true"></i> Agregar
+                                </button>
+
+                                <br />
+                                <br />
 
                             </form>
 
@@ -92,6 +101,8 @@
 
                 <div id="collapseDos" class="collapse show" aria-labelledby="headingUno" data-parent="#accordionExampleDos">
 
+                    <br />
+
                     <div>
                         <table class="table">
                             <thead class="thead-light">
@@ -99,6 +110,10 @@
                                     <th>Nombre</th>
                                     <th>Usuario</th>
                                     <th>Rol</th>
+                                    <th>Estatus</th>
+                                    <th>Editar</th>
+                                    <th>Activar</th>
+                                    <th>Inactivar</th>
                                 </tr>
                             </thead>
                             <tbody ng-show="ListUsuario.length">
@@ -106,6 +121,22 @@
                                     <td>{{d.Nombre}}</td>
                                     <td>{{d.Login}}</td>
                                     <td>{{d.Rol}}</td>
+                                    <td>{{d.StrEstatus}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAdd" ng-click="MostrarEditarUsuario(d)">
+                                            <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalDelete" ng-click="MostrarActivarUsuario(d)">
+                                            <i class="fa fa-check-circle fa-lg" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalDelete" ng-click="MostrarInactivarUsuario(d)">
+                                            <i class="fa fa-times-circle fa-lg" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -117,18 +148,16 @@
 
         <br />
 
-        @*INFORMACION DETALLE USUARIO*@
-        <div class="modal fade" id="myModalDetalle" tabindex="-1" role="document" data-keyboard="false" data-backdrop="static">
+        @*INFORMACION AGREGAR USUARIO*@
+        <div class="modal fade" id="myModalAdd" tabindex="-1" role="document" data-keyboard="false" data-backdrop="static">
             <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content" ng-class="ModalHeigth">
+                <div class="modal-content">
 
                     @*Encabezado Modal*@
                     <div class="modal-header">
 
                         <div class="navbar-header navbar-header-modal row">
-                            <img src="~/Images/PPG_Layout.png" class="img-rounded img-modal-ppg" alt="Cinque Terre">
-                            <img src="~/Images/comex_layout_2.png" class="img-rounded img-modal-comex" alt="Cinque Terre">
-                            <h5 id="modalTitle" class="modal-title">Detalle Historico Actividades</h5>
+                            <h5 id="modalTitle" class="modal-title">{{TituloAgregarEditar}}</h5>
                         </div>
 
                         <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
@@ -138,37 +167,38 @@
                     </div>
 
                     @*Cuerpo Modal*@
-                    <div class="modal-body">
+                    <div class="modal-body row justify-content-md-center">
                         @*Formulario*@
                         <form class="form-horizontal">
 
                             <div class="form-group input-group">
                                 <label class="control-label width-control" for="claveCampania">Usuario:</label>
-                                &nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <div class="input-group-append">
                                     <input type="text" class="form-control" id="usuarioAdd" placeholder="Usuario" name="usuarioAdd"
-                                           ng-model="UsuarioAdd" required>
+                                           ng-model="UsuarioAgregar.Nombre" required>
                                 </div>
                             </div>
 
                             <div class="form-group input-group">
                                 <label class="control-label width-control" for="claveCampania">Password:</label>
-                                &nbsp;
+                                &nbsp;&nbsp;
                                 <div class="input-group-append">
-                                    <input type="text" class="form-control" id="passwordAdd" placeholder="Password" name="passwordAdd"
-                                           ng-model="PasswordAdd" required>
+                                    <input type="password" class="form-control" id="passwordAdd" placeholder="Password" name="passwordAdd"
+                                           ng-model="UsuarioAgregar.Password" required>
                                 </div>
                             </div>
 
                             <div class="form-group input-group">
                                 <label class="control-label width-control" for="claveCampania">Rol:</label>
-                                &nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <div class="input-group-append">
-                                    <select class="form-control" id="rolAdd" ng-model="RolAdd" ng-options="data as data.Rol for data in ListRol tranck by data.Id" required>
+                                    <select class="form-control" id="rolUsuarioMod" ng-model="RolAgregar" ng-options="data as data.Rol for data in ListCatRol track by data.Id" required>
                                         <option value="">-- SELECCIONE --</option>
                                     </select>
                                 </div>
                             </div>
+
 
                         </form>
 
@@ -176,11 +206,78 @@
 
                     @*Pie Modal*@
                     <div class="modal-footer div-centrar">
-                        <div id="divSave" ng-show="">
+
+                        <div id="divSave" ng-show="EsGuardar">
                             <div class="form-group row">
                                 <div class="col-md-6 div-centrar">
-                                    <button id="cancelarModal" type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="">
+                                    <button id="cancelarModal" type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="GuardarUsuario(UsuarioAdd, PasswordAdd, RolAdd)">
                                         <i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar
+                                    </button>
+                                </div>
+                                <div class="col-md-6 div-centrar">
+                                    <button id="cancelarModal" type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="">
+                                        <i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i> Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divSave" ng-show="EsEditar">
+                            <div class="form-group row">
+                                <div class="col-md-6 div-centrar">
+                                    <button id="cancelarModal" type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="EditarUsuario(UsuarioAdd, PasswordAdd, RolAdd)">
+                                        <i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar
+                                    </button>
+                                </div>
+                                <div class="col-md-6 div-centrar">
+                                    <button id="cancelarModal" type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="">
+                                        <i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i> Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        @*MODAL ALERTA ELIMINAR USUARIO*@
+        <div class="modal fade" id="myModalDelete" tabindex="-1" role="document" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    @*Encabezado Modal*@
+                    <div class="modal-header">
+                        <div class="navbar-header navbar-header-modal row">
+                            <h5 id="modalTitle" class="modal-title">Inactivar Usuario</h5>
+                        </div>
+
+                        <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    @*Cuerpo Modal*@
+                    <div class="modal-body">
+                        @*Formulario*@
+                        <form class="form-horizontal">
+                            <input type="hidden" id="id_indicador" />
+
+                            <div class="div-centrar alert alert-warning form-group input-group">
+                                <i class="fa fa-exclamation-triangle fa-warning" aria-hidden="true" style="width:100px"></i>
+                                <h5 class="input-group-append">{{TituloActivarInactivar}}</h5>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    @*Pie Modal*@
+                    <div class="modal-footer div-centrar">
+                        <div id="divSave">
+                            <div class="form-group row">
+                                <div class="col-md-6 div-centrar">
+                                    <button id="saveModal" type="button" class="btn btn-primary" data-dismiss="modal" ng-click="EliminarUsuario(UsuarioEliminar)">
+                                        <i class="fa fa-save fa-lg" aria-hidden="true"></i> Eliminar
                                     </button>
                                 </div>
                                 <div class="col-md-6 div-centrar">
