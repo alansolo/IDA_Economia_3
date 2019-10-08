@@ -125,9 +125,44 @@ namespace IDA_Economia.Controllers
         public JsonResult CerrarSesion()
         {
             string mensaje = string.Empty;
+            List<Parametro> listParametro = new List<Parametro>();
+            Parametro parametro = new Parametro();
+            string usuario = string.Empty;
 
             try
             {
+                usuario = ((Usuario)Session["Usuario"]).Login;
+
+                //INSERTAR INFORMACION LOG
+                listParametro = new List<Parametro>();
+
+                parametro = new Parametro();
+                parametro.Nombre = "Usuario";
+                parametro.Valor = usuario;
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "Modulo";
+                parametro.Valor = "Cerrar";
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "Empresa";
+                parametro.Valor = "Cerrar sesion";
+
+                listParametro.Add(parametro);
+
+                parametro = new Parametro();
+                parametro.Nombre = "Resumen";
+                parametro.Valor = "Cerrar sesion";
+
+                listParametro.Add(parametro);
+
+                Negocio.Log.Log log = new Negocio.Log.Log();
+                log.InsertLog(listParametro);
+
                 Session.Abandon();
                 Session.Clear();
 
