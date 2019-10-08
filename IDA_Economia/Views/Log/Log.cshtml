@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_LayoutIDA.cshtml";
 }
 
-<h4>Historico Actividades</h4>
+@*<h4>Historico Actividades</h4>*@
 
 <head>
     <link href="~/Content/Log/Log.css" rel="stylesheet" />
@@ -22,7 +22,7 @@
                 <div class="card-header" id="headingUno">
                     <h2 class="mb-0">
                         <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseUno" aria-expanded="true" aria-controls="collapseUno">
-                            <i class="fa fa-money-check-alt fa-lg"></i> Busqueda Historico Actividades
+                            <i class="fa fa-list fa-lg"></i> Busqueda Historico Actividades
                         </button>
                     </h2>
                 </div>
@@ -40,7 +40,7 @@
                                     <label class="control-label width-control" for="claveCampania">Usuario:</label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <div class="input-group-append">
-                                        <input type="text" class="form-control text-uppercase" id="usuarioLog" placeholder="Usuario" name="usuarioLog"
+                                        <input type="text" class="form-control" id="usuarioLog" placeholder="Usuario" name="usuarioLog"
                                                ng-model="Usuario" required>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@
                 <div class="card-header" id="headingDos">
                     <h2 class="mb-0">
                         <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDos" aria-expanded="true" aria-controls="collapseDos">
-                            <i class="fa fa-money-check-alt fa-lg"></i> Historico Actividades
+                            <i class="fa fa-tasks fa-lg"></i> Historico Actividades
                         </button>
                     </h2>
                 </div>
@@ -137,7 +137,7 @@
                                     <td>{{d.Resumen}}</td>
                                     <td>{{d.Detalle}}</td>
                                     <td>
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalDetalle" ng-click="MostrarDetalle(d)">
+                                        <button type="button" class="btn btn-primary" ng-disabled="!d.EsDetalle" data-toggle="modal" data-target="#myModalDetalle" ng-click="MostrarDetalle(d)">
                                             <i class="fa fa-list-ul fa-lg" aria-hidden="true"></i>
                                         </button>
                                     </td>

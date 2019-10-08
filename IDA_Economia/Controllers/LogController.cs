@@ -1,4 +1,5 @@
 ﻿using Entidades;
+using Herramientas;
 using IDA_Economia.Models.Log;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,12 @@ namespace IDA_Economia.Controllers
             List<Parametro> listParametro = new List<Parametro>();
             Parametro parametro = new Parametro();
 
+            string mensaje = string.Empty;
+
+            const string moduloCapital = "MERCADO CAPITAL";
+            const string moduloDivisa = "MERCADO DIVISA";
+            const string moduloDinero = "MERCADO DINERO";
+
             try
             {
                 parametro = new Parametro();
@@ -52,8 +59,21 @@ namespace IDA_Economia.Controllers
                 listParametro.Add(parametro);
 
                 ListaLog = log.ObtenerLog(listParametro);
-                
+
+                ListaLog.ForEach(n =>
+                {
+                    if(n.Modulo.ToUpper() == moduloCapital || n.Modulo.ToUpper() == moduloDivisa || n.Modulo.ToUpper() == moduloDinero)
+                    {
+                        n.EsDetalle = true;
+                    }
+                    else
+                    {
+                        n.EsDetalle = false;
+                    }
+                });
+
                 resultadoLog.ListaLog = ListaLog.OrderBy(n => n.Creado).ToList();
+
                 //resultadoLog.ListaLog.ForEach(n =>
                 //{
                 //    n.StrCreado = n.Creado.ToString("dd/MM/yyyy hh:mm:ss");
@@ -62,14 +82,19 @@ namespace IDA_Economia.Controllers
                 //        m.StrCreado = m.Creado.ToString("dd/MM/yyyy hh:mm:ss");
                 //    });
                 //});
-                resultadoLog.Mensaje = "";
+
+                resultadoLog.Mensaje = "OK";
             }
             catch (Exception ex)
             {
-            }
+                mensaje = "ERROR: Metodo: ObtenerEstadistico_Dinero, Source: " + ex.Source + ", Mensaje: " + ex.Message;
+                ArchivoLog.EscribirLog(null, mensaje);
 
+                resultadoLog.Mensaje = mensaje;
+            }
 
             return Json(resultadoLog, JsonRequestBehavior.AllowGet);
         }
+
     }
 }

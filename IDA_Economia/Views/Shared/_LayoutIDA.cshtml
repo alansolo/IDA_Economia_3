@@ -17,6 +17,8 @@
     @Scripts.Render("~/bundles/loadersJs")
 
     @Scripts.Render("~/bundles/modernizr")
+
+    <script src="~/Scripts/Shared/LayoutIDA.js"></script>
 </head>
 <body>
     <div>
@@ -34,26 +36,60 @@
                             <i class="fa fa-fw fa-home"></i>
                             Inicio
                         </a>*@
-                        <a id="MenuMercadoCapital" class="nav-item nav-link" href="~/MercadoCapital/MercadoCapital">
-                            <i class="fa fa-fw fa-money-check-alt"></i>
-                            Mercado de Capitales
-                        </a>
-                        <a id="MenuMercadoDivisa" class="nav-item nav-link" href="~/MercadoDivisa/MercadoDivisa">
-                            <i class="fa fa-fw fa-coins"></i>
-                            Mercado de Divisas
-                        </a>
-                        <a id="MenuMercadoDinero" class="nav-item nav-link" href="~/MercadoDinero/MercadoDinero">
-                            <i class="fa fa-fw fa-money-bill-alt"></i>
-                            Mercado de Dinero
-                        </a>
-                        <a id="AdmonUsuario" class="nav-item nav-link" href="~/Usuario/Usuario">
-                            <i class="fa fa-fw fa-user-circle"></i>
-                            Admon. Usuario
-                        </a>
-                        <a id="Log" class="nav-item nav-link" href="~/Log/Log">
-                            <i class="fa fa-fw fa-list-alt"></i>
-                            Historico Actividades
-                        </a>
+
+                        @foreach (Entidades.CatPantalla pantalla in (List<Entidades.CatPantalla>)Session["ListPantalla"])
+                        {
+                            <a class="nav-item nav-link" href=@pantalla.URL>
+                                <i class="fa fa-fw @pantalla.Icono"></i>
+                                @pantalla.Nombre
+                            </a>
+                        }
+                        
+                        
+                        @if (Session["Usuario"] != null)
+                        {
+                            <ul class="navbar-nav ml-auto menu-login">
+                                <li class="nav-item dropdown ml-auto">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-fw fa-user-circle"></i>
+                                         @(((Entidades.Usuario)Session["Usuario"]).Login)
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <span class="dropdown-item">
+                                            <i class="fa fa-fw fa-user-lock"></i>
+                                             @(((Entidades.Usuario)Session["Usuario"]).Rol)
+                                        </span>
+                                        <div class="dropdown-divider"></div>
+                                        <button id="btnCerrarSesion" type="button" class="dropdown-item">
+                                            <i class="fa fa-fw fa-window-close"></i>
+                                             Cerrar sesion
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        }
+
+
+                        @*<a id="MenuMercadoCapital" class="nav-item nav-link" href="~/MercadoCapital/MercadoCapital">
+                                <i class="fa fa-fw fa-money-check-alt"></i>
+                                Mercado de Capitales
+                            </a>
+                            <a id="MenuMercadoDivisa" class="nav-item nav-link" href="~/MercadoDivisa/MercadoDivisa">
+                                <i class="fa fa-fw fa-coins"></i>
+                                Mercado de Divisas
+                            </a>
+                            <a id="MenuMercadoDinero" class="nav-item nav-link" href="~/MercadoDinero/MercadoDinero">
+                                <i class="fa fa-fw fa-money-bill-alt"></i>
+                                Mercado de Dinero
+                            </a>
+                            <a id="AdmonUsuario" class="nav-item nav-link" href="~/Usuario/Usuario">
+                                <i class="fa fa-fw fa-user-circle"></i>
+                                Admon. Usuario
+                            </a>
+                            <a id="Log" class="nav-item nav-link" href="~/Log/Log">
+                                <i class="fa fa-fw fa-list-alt"></i>
+                                Historico Actividades
+                            </a>*@
                     </div>
                 </div>
             </nav>

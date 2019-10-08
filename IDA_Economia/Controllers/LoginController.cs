@@ -21,7 +21,6 @@ namespace IDA_Economia.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public JsonResult ValidarLogin(string usuario, string password)
         {
@@ -33,6 +32,7 @@ namespace IDA_Economia.Controllers
             string passwordEncrip = string.Empty;
             string passwordDecrip = string.Empty;
             const string key = "idaeconomia";
+            List<CatPantalla> listaPantalla = new List<CatPantalla>();
 
             if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(password))
             {
@@ -51,6 +51,13 @@ namespace IDA_Economia.Controllers
 
                 Usuario = login.ObtenerUsuario(listParametro);
 
+                if (!Usuario.Estatus)
+                {
+                    mensejeError = "El usuario y password son incorrectos.";
+
+                    return Json(mensejeError, JsonRequestBehavior.AllowGet);
+                }
+
                 passwordEncrip = EncripDecrip.Encriptar(password, key);
 
                 //passwordDecrip = EncripDecrip.Desencriptar(passwordEncrip, key);
@@ -60,8 +67,21 @@ namespace IDA_Economia.Controllers
 
                 if (usuario == userDefault && passwordEncrip == passwordDefault)
                 {
-                    Session["Usuario"] = usuario;
+                    Session["Usuario"] = Usuario;
                     mensejeError = "OK";
+
+                    //OBTENER MENUS DEL USUARIO
+                    listParametro = new List<Parametro>();
+
+                    parametro = new Parametro();
+                    parametro.Nombre = "IdRol";
+                    parametro.Valor = Usuario.IdRol;
+
+                    listParametro.Add(parametro);
+
+                    listaPantalla = login.ObtenerPantalla(listParametro);
+
+                    Session["ListPantalla"] = listaPantalla;
 
                     //INSERTAR INFORMACION LOG
                     listParametro = new List<Parametro>();
@@ -100,6 +120,25 @@ namespace IDA_Economia.Controllers
             }
 
             return Json(mensejeError, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult CerrarSesion()
+        {
+            string mensaje = string.Empty;
+
+            try
+            {
+                Session.Abandon();
+                Session.Clear();
+
+                mensaje = "OK";             
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return Json(mensaje, JsonRequestBehavior.AllowGet);
         }
     }
 }

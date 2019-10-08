@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_LayoutIDA.cshtml";
 }
 
-<h2>Usuario</h2>
+@*<h4>Usuario</h4>*@
 
 <head>
     <link href="~/Content/Usuario/Usuario.css" rel="stylesheet" />
@@ -16,12 +16,12 @@
     <div ng-app="MyApp" ng-controller="MyController">
 
         @*BUSCAR USUARIO*@
-        <div class="accordion" id="accordionExampleUno">
+        <div class="accordion" id="accordionExampleUno" ng-show="EsSistema">
             <div class="card">
                 <div class="card-header" id="headingUno">
                     <h2 class="mb-0">
                         <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseUno" aria-expanded="true" aria-controls="collapseUno">
-                            <i class="fa fa-money-check-alt fa-lg"></i> Busqueda Usuarios
+                            <i class="fa fa-user-alt fa-lg"></i> Busqueda Usuarios
                         </button>
                     </h2>
                 </div>
@@ -48,7 +48,7 @@
                                     <label class="control-label width-control" for="campania">Nombre:</label>
                                     &nbsp;&nbsp;
                                     <div class="input-group-append">
-                                        <input type="text" class="form-control text-uppercase" id="nombre" placeholder="Nombre" name="nombre"
+                                        <input type="text" class="form-control" id="nombre" placeholder="Nombre" name="nombre"
                                                ng-model="NombreUsuario" required>
                                     </div>
                                 </div>                               
@@ -63,8 +63,7 @@
                                     </div>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <div class="input-group-append">
-                                        <button type="button" class="btn btn-primary" title="Buscar Usuario"
-                                                ng-click="">
+                                        <button type="button" class="btn btn-primary" title="Buscar Usuario" ng-click="BuscarUsuario(LoginUsuario, NombreUsuario, RolUsuario)">
                                             <i class="fa fa-search fa-lg" aria-hidden="true"></i> Buscar
                                         </button>
                                     </div>
@@ -94,7 +93,7 @@
                 <div class="card-header" id="headingDos">
                     <h2 class="mb-0">
                         <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDos" aria-expanded="true" aria-controls="collapseDos">
-                            <i class="fa fa-money-check-alt fa-lg"></i> Usuarios
+                            <i class="fa fa-user-cog fa-lg"></i> Usuarios
                         </button>
                     </h2>
                 </div>
@@ -112,8 +111,8 @@
                                     <th>Rol</th>
                                     <th>Estatus</th>
                                     <th>Editar</th>
-                                    <th>Activar</th>
-                                    <th>Inactivar</th>
+                                    <th ng-show="EsSistema">Activar</th>
+                                    <th ng-show="EsSistema">Inactivar</th>
                                 </tr>
                             </thead>
                             <tbody ng-show="ListUsuario.length">
@@ -127,13 +126,13 @@
                                             <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
                                         </button>
                                     </td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalDelete" ng-click="MostrarActivarUsuario(d)">
+                                    <td ng-show="EsSistema">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalDelete" ng-click="MostrarActivarUsuario(d)" ng-disabled="d.Estatus">
                                             <i class="fa fa-check-circle fa-lg" aria-hidden="true"></i>
                                         </button>
                                     </td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalDelete" ng-click="MostrarInactivarUsuario(d)">
+                                    <td ng-show="EsSistema">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalDelete" ng-click="MostrarInactivarUsuario(d)" ng-disabled="!d.Estatus">
                                             <i class="fa fa-times-circle fa-lg" aria-hidden="true"></i>
                                         </button>
                                     </td>
@@ -172,33 +171,59 @@
                         <form class="form-horizontal">
 
                             <div class="form-group input-group">
+                                <label class="control-label width-control" for="claveCampania">Nombre:</label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="input-group-append">
+                                    <input type="text" class="form-control" id="nombreAdd" placeholder="Nombre" name="nombreAdd"
+                                           ng-model="UsuarioAgregar.Nombre" ng-disabled="EsEditar" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group input-group">
                                 <label class="control-label width-control" for="claveCampania">Usuario:</label>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <div class="input-group-append">
                                     <input type="text" class="form-control" id="usuarioAdd" placeholder="Usuario" name="usuarioAdd"
-                                           ng-model="UsuarioAgregar.Nombre" required>
+                                           ng-model="UsuarioAgregar.Login" ng-disabled="EsEditar" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group input-group" ng-show="EsSistema && EsEditar">
+                                <label class="control-label width-control" for="claveCampania">Password Visible:</label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="input-group-append">
+                                    <input type="text" class="form-control" id="passwordAddVisible" placeholder="Password" name="passwordAdd"
+                                           ng-model="UsuarioAgregar.PasswordVisible" required>
                                 </div>
                             </div>
 
                             <div class="form-group input-group">
                                 <label class="control-label width-control" for="claveCampania">Password:</label>
-                                &nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <div class="input-group-append">
-                                    <input type="password" class="form-control" id="passwordAdd" placeholder="Password" name="passwordAdd"
+                                    <input type="password" class="form-control" id="passwordAdd" placeholder="Password" name="passwordAdd" data-toggle="password"
                                            ng-model="UsuarioAgregar.Password" required>
                                 </div>
                             </div>
 
                             <div class="form-group input-group">
-                                <label class="control-label width-control" for="claveCampania">Rol:</label>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <label class="control-label width-control" for="claveCampania">Confirmar Password:</label>
+                                &nbsp;&nbsp;
                                 <div class="input-group-append">
-                                    <select class="form-control" id="rolUsuarioMod" ng-model="RolAgregar" ng-options="data as data.Rol for data in ListCatRol track by data.Id" required>
-                                        <option value="">-- SELECCIONE --</option>
-                                    </select>
+                                    <input type="password" class="form-control" id="confirmarPasswordAdd" placeholder="Confirmar Password" name="confirmarPasswordAdd"
+                                           ng-model="UsuarioAgregar.ConfirmarPassword" required>
                                 </div>
                             </div>
 
+                            <div class="form-group input-group">
+                                <label class="control-label width-control" for="claveCampania">Rol:</label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="input-group-append">
+                                    <select class="form-control" id="rolUsuarioMod" ng-disabled="!EsSistema" ng-model="RolAgregar" ng-options="data as data.Rol for data in ListCatRol track by data.Id" required>
+                                        @*<option value="">-- SELECCIONE --</option>*@
+                                    </select>
+                                </div>
+                            </div>
 
                         </form>
 
@@ -210,7 +235,7 @@
                         <div id="divSave" ng-show="EsGuardar">
                             <div class="form-group row">
                                 <div class="col-md-6 div-centrar">
-                                    <button id="cancelarModal" type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="GuardarUsuario(UsuarioAdd, PasswordAdd, RolAdd)">
+                                    <button id="cancelarModal" type="button" class="btn btn-primary" ng-disabled="ValidarAgregarUsuario(UsuarioAgregar, RolAgregar)" data-dismiss="modal" ng-click="AgregarUsuario(UsuarioAgregar, RolAgregar)">
                                         <i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar
                                     </button>
                                 </div>
@@ -224,7 +249,7 @@
                         <div id="divSave" ng-show="EsEditar">
                             <div class="form-group row">
                                 <div class="col-md-6 div-centrar">
-                                    <button id="cancelarModal" type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="EditarUsuario(UsuarioAdd, PasswordAdd, RolAdd)">
+                                    <button id="cancelarModal" type="button" class="btn btn-primary" ng-disabled="ValidarAgregarUsuario(UsuarioAgregar, RolAgregar)" data-dismiss="modal" ng-click="EditarUsuario(UsuarioAgregar, RolAgregar)">
                                         <i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar
                                     </button>
                                 </div>
@@ -241,6 +266,8 @@
                 </div>
             </div>
         </div>
+        
+        <br />
 
         @*MODAL ALERTA ELIMINAR USUARIO*@
         <div class="modal fade" id="myModalDelete" tabindex="-1" role="document" data-keyboard="false" data-backdrop="static">
@@ -249,7 +276,7 @@
                     @*Encabezado Modal*@
                     <div class="modal-header">
                         <div class="navbar-header navbar-header-modal row">
-                            <h5 id="modalTitle" class="modal-title">Inactivar Usuario</h5>
+                            <h5 id="modalTitle" class="modal-title">{{TituloActivarInactivar}}</h5>
                         </div>
 
                         <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
@@ -265,19 +292,35 @@
 
                             <div class="div-centrar alert alert-warning form-group input-group">
                                 <i class="fa fa-exclamation-triangle fa-warning" aria-hidden="true" style="width:100px"></i>
-                                <h5 class="input-group-append">{{TituloActivarInactivar}}</h5>
+                                <h5 class="input-group-append">{{MensajeActivarInactivar}}</h5>
                             </div>
 
                         </form>
                     </div>
 
                     @*Pie Modal*@
-                    <div class="modal-footer div-centrar">
+                    <div class="modal-footer div-centrar" ng-show="EsActivar">
                         <div id="divSave">
                             <div class="form-group row">
                                 <div class="col-md-6 div-centrar">
-                                    <button id="saveModal" type="button" class="btn btn-primary" data-dismiss="modal" ng-click="EliminarUsuario(UsuarioEliminar)">
-                                        <i class="fa fa-save fa-lg" aria-hidden="true"></i> Eliminar
+                                    <button id="saveModal" type="button" class="btn btn-primary" data-dismiss="modal" ng-click="ActivarUsuario(UsuarioActivarInactivar)">
+                                        <i class="fa fa-save fa-lg" aria-hidden="true"></i> Activar
+                                    </button>
+                                </div>
+                                <div class="col-md-6 div-centrar">
+                                    <button id="cancelarModal" type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="">
+                                        <i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i> Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer div-centrar" ng-show="!EsActivar">
+                        <div id="divSave">
+                            <div class="form-group row">
+                                <div class="col-md-6 div-centrar">
+                                    <button id="saveModal" type="button" class="btn btn-primary" data-dismiss="modal" ng-click="InactivarUsuario(UsuarioActivarInactivar)">
+                                        <i class="fa fa-save fa-lg" aria-hidden="true"></i> Inactivar
                                     </button>
                                 </div>
                                 <div class="col-md-6 div-centrar">

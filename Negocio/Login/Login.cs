@@ -38,5 +38,41 @@ namespace Negocio.Login
 
             return Usuario;
         }
+        public List<Entidades.CatPantalla> ObtenerPantalla(List<Parametro> listParametro)
+        {
+            List<Entidades.CatPantalla> listaPantalla = new List<CatPantalla>();
+            object Resultado = new object();
+            const string spName = "ObtenerCatPantalla";
+            BDUsuario bdUsuario = new BDUsuario();
+            DataTable dtResultado = new DataTable();
+            StringBuilder sbResultado = new StringBuilder();
+
+            try
+            {
+                Resultado = bdUsuario.ObtenerUsuario(spName, listParametro);
+
+                dtResultado = (DataTable)Resultado;
+
+                if (dtResultado.Rows.Count > 0)
+                {
+                    sbResultado.Append("[");
+
+                    dtResultado.Rows.Cast<DataRow>().ToList().ForEach(n =>
+                    {
+                        sbResultado.Append(n[0].ToString());
+                    });
+
+                    sbResultado.Append("]");
+
+                    var jsonCatCapital = JsonConvert.DeserializeObject<CatPantalla[]>(sbResultado.ToString());
+                    listaPantalla = jsonCatCapital.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return listaPantalla;
+        }
     }
 }

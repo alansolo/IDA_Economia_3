@@ -315,3 +315,21 @@ main {
 .fecha-custom-text {
     height: 30px;
 }
+
+.dropdown-divider {
+    height: 2px;
+    border-top: 2px solid lightgray;
+}
+
+.navbar-nav {
+    display: contents !important;
+}
+
+.titulo-encabezado { 
+    color: #333333; 
+    font-family: 'Bitter', serif; 
+    font-size: 50px; 
+    font-weight: normal; 
+    line-height: 54px; 
+    margin: 0 0 54px; 
+}

@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using Entidades;
+using Herramientas;
 using IDA_Economia.Models;
 using IDA_Economia.Models.MercadoDinero;
 using Negocio.MercadoDinero;
@@ -37,17 +38,34 @@ namespace IDA_Economia.Controllers
             MercadoDinero mercadoDinero = new MercadoDinero();
             List<Parametro> ListParametro = new List<Parametro>();
 
-            ListCatDinero = mercadoDinero.ObtenerCatDinero(ListParametro);
+            ResultadoMercadoDinero resultadoMercadoDinero = new ResultadoMercadoDinero();
 
-            Session["ListCatDinero"] = ListCatDinero;
+            string mensaje = string.Empty;
 
-            //SELECCIONAR EL PRIMER ELEMENTO
-            if (ListCatDinero.Count > 0)
+            try
             {
-                ListCatDinero[0].Check = ListCatDinero[0].Valor;
+                ListCatDinero = mercadoDinero.ObtenerCatDinero(ListParametro);
+
+                Session["ListCatDinero"] = ListCatDinero;
+
+                //SELECCIONAR EL PRIMER ELEMENTO
+                if (ListCatDinero.Count > 0)
+                {
+                    ListCatDinero[0].Check = ListCatDinero[0].Valor;
+                }
+
+                resultadoMercadoDinero.ListaCatDinero = ListCatDinero;
+                resultadoMercadoDinero.Mensaje = "OK";
+            }
+            catch(Exception ex)
+            {
+                mensaje = "ERROR: Metodo: ObtenerEstadistico_Dinero, Source: " + ex.Source + ", Mensaje: " + ex.Message;
+                ArchivoLog.EscribirLog(null, mensaje);
+
+                resultadoMercadoDinero.Mensaje = mensaje;
             }
 
-            return Json(ListCatDinero, JsonRequestBehavior.AllowGet);
+            return Json(resultadoMercadoDinero, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult ObtenerEstadistico(string strFechaInicio, string strFechaFinal, List<CatDinero> ListCatDinero)
@@ -70,15 +88,17 @@ namespace IDA_Economia.Controllers
             GrupoParametro grupoParametro = new GrupoParametro();
             List<Parametro> listParametroDetalle = new List<Parametro>();
 
-            string Lang = "es-MX";//set your culture here
-            System.Threading.Thread.CurrentThread.CurrentCulture =
-                new System.Globalization.CultureInfo(Lang);
+            string Lang = "es-MX";//set your culture here           
 
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Lang);
-
+            string mensaje = string.Empty;
 
             try
             {
+                System.Threading.Thread.CurrentThread.CurrentCulture =
+                new System.Globalization.CultureInfo(Lang);
+
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Lang);
+
                 //Se solicita la información al cliente para definir el código que realizará la petición al API:
                 //string valor = "";
 
@@ -229,13 +249,15 @@ namespace IDA_Economia.Controllers
                 Negocio.Log.Log log = new Negocio.Log.Log();
                 log.InsertLogDinero(listParametro, listGrupoParametro);
 
-                resultadoMercadoDinero.Mensaje = "";
+                resultadoMercadoDinero.Mensaje = "OK";
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-            }
+                mensaje = "ERROR: Metodo: ObtenerEstadistico_Dinero, Source: " + ex.Source + ", Mensaje: " + ex.Message;
+                ArchivoLog.EscribirLog(null, mensaje);
 
+                resultadoMercadoDinero.Mensaje = mensaje;
+            }
 
             return Json(resultadoMercadoDinero, JsonRequestBehavior.AllowGet);
         }
@@ -243,27 +265,40 @@ namespace IDA_Economia.Controllers
         {
             string nombreArchivo = "Historico_Dinero.xlsx";
             string hojaArchivo = "Dinero";
-            DataTable dtInformacion = (DataTable)Session["dtInformacionDinero"];
+            DataTable dtInformacion = new DataTable();
 
-            using (XLWorkbook wb = new XLWorkbook())
+            string mensaje = string.Empty;
+
+            try
             {
-                wb.Worksheets.Add(dtInformacion, hojaArchivo);
+                dtInformacion = (DataTable)Session["dtInformacionDinero"];
 
-                Response.ClearContent();
-                Response.Buffer = true;
-                Response.Charset = "";
-                Response.ContentType = "application/vnd.ms-excel";
-                Response.AddHeader("content-disposition", "attachment; filename=" + nombreArchivo);
-
-                using (MemoryStream MyMemoryStream = new MemoryStream())
+                using (XLWorkbook wb = new XLWorkbook())
                 {
-                    wb.SaveAs(MyMemoryStream);
-                    MyMemoryStream.WriteTo(Response.OutputStream);
-                    Response.Flush();
-                    Response.End();
-                }
+                    wb.Worksheets.Add(dtInformacion, hojaArchivo);
 
+                    Response.ClearContent();
+                    Response.Buffer = true;
+                    Response.Charset = "";
+                    Response.ContentType = "application/vnd.ms-excel";
+                    Response.AddHeader("content-disposition", "attachment; filename=" + nombreArchivo);
+
+                    using (MemoryStream MyMemoryStream = new MemoryStream())
+                    {
+                        wb.SaveAs(MyMemoryStream);
+                        MyMemoryStream.WriteTo(Response.OutputStream);
+                        Response.Flush();
+                        Response.End();
+                    }
+
+                }
             }
+            catch (Exception ex)
+            {
+                mensaje = "ERROR: Metodo: ExportarExcel_Dinero, Source: " + ex.Source + ", Mensaje: " + ex.Message;
+                ArchivoLog.EscribirLog(null, mensaje);
+            }
+
         }
     }
 }

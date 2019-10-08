@@ -196,6 +196,7 @@
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Serie.cs" />
     <Compile Include="Models\SeriesResponse.cs" />
+    <Compile Include="Models\Usuario\ResultadoUsuarioDefault.cs" />
     <Compile Include="Models\Usuario\ResultadoUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -302,6 +303,7 @@
     <Content Include="Content\webfonts\fa-solid-900.woff" />
     <Content Include="Content\webfonts\fa-solid-900.woff2" />
     <Content Include="Scripts\bootstrap-notify.js" />
+    <Content Include="Scripts\bootstrap-show-password.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -349,6 +351,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\Shared\LayoutIDA.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -387,6 +390,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Log\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -401,6 +405,10 @@
     <ProjectReference Include="..\Entidades\7.Entidades.csproj">
       <Project>{2581E8BD-D205-4CAC-97E4-43C278408224}</Project>
       <Name>7.Entidades</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Herramientas\6.Herramientas.csproj">
+      <Project>{3C8FD4B4-6F3C-4127-8CD7-04EAB59E5465}</Project>
+      <Name>6.Herramientas</Name>
     </ProjectReference>
     <ProjectReference Include="..\Negocio\4.Negocio.csproj">
       <Project>{6f24c1ea-c59e-4a74-bc31-6f34cfef0436}</Project>

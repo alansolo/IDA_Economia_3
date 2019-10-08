@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using Entidades;
+using Herramientas;
 using IDA_Economia.Models;
 using IDA_Economia.Models.MercadoCapital;
 using Negocio.MercadoCapital;
@@ -21,6 +22,10 @@ namespace IDA_Economia.Controllers
         string crumb = "SPwNBQX77jD"; //"ourzFxbliAq";//
 
         // GET: MercadoCapital
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult MercadoCapital()
         {
@@ -39,17 +44,35 @@ namespace IDA_Economia.Controllers
             MercadoCapital mercadoCapital = new MercadoCapital();
             List<Parametro> ListParametro = new List<Parametro>();
 
-            ListCatCapital = mercadoCapital.ObtenerCatCapital(ListParametro);
+            ResultadoMercadoCapital resultadoMercadoCapital = new Models.MercadoCapital.ResultadoMercadoCapital();
 
-            Session["ListCatCapital"] = ListCatCapital;
+            string mensaje = string.Empty;
 
-            //SELECCIONAR EL PRIMER ELEMENTO
-            if(ListCatCapital.Count > 0)
+            try
             {
-                ListCatCapital[0].Check = true;
+                ListCatCapital = mercadoCapital.ObtenerCatCapital(ListParametro);
+
+                Session["ListCatCapital"] = ListCatCapital;
+
+                //SELECCIONAR EL PRIMER ELEMENTO
+                if (ListCatCapital.Count > 0)
+                {
+                    ListCatCapital[0].Check = true;
+                }
+
+                resultadoMercadoCapital.ListaCatCapital = ListCatCapital;
+
+                resultadoMercadoCapital.Mensaje = "OK";
+            }
+            catch (Exception ex)
+            {
+                mensaje = "ERROR: Metodo: ObtenerInfoInicio_Mercado, Source: " + ex.Source + ", Mensaje: " + ex.Message;
+                ArchivoLog.EscribirLog(null, mensaje);
+
+                resultadoMercadoCapital.Mensaje = mensaje;
             }
 
-            return Json(ListCatCapital, JsonRequestBehavior.AllowGet);
+            return Json(resultadoMercadoCapital, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult ObtenerEstadistico(string strFechaInicio, string strFechaFinal, List<CatCapital> ListCatCapital)
@@ -89,6 +112,7 @@ namespace IDA_Economia.Controllers
             GrupoParametro grupoParametro = new GrupoParametro();
             List<Parametro> listParametroDetalle = new List<Parametro>();
 
+            string mensaje = string.Empty;
 
             try
             {
@@ -633,17 +657,20 @@ namespace IDA_Economia.Controllers
                 parametro.Valor = "Fecha Inicio: " + strFechaInicio + ", Fecha Final: " + strFechaFinal;
 
                 listParametro.Add(parametro);
-
+                
                 //INSERTAR LOG
                 Negocio.Log.Log log = new Negocio.Log.Log();
                 log.InsertLogCapital(listParametro, listGrupoParametro);
 
-                resultadoMercadoCapital.Mensaje = "";
+                resultadoMercadoCapital.Mensaje = "OK";
 
             }
             catch (Exception ex)
             {
+                mensaje = "ERROR: Metodo: ObtenerEstadistico_Mercado, Source: " + ex.Source + ", Mensaje: " + ex.Message;
+                ArchivoLog.EscribirLog(null, mensaje);
 
+                resultadoMercadoCapital.Mensaje = mensaje;
             }
 
             return Json(resultadoMercadoCapital, JsonRequestBehavior.AllowGet);
@@ -652,26 +679,37 @@ namespace IDA_Economia.Controllers
         {
             string nombreArchivo = "Calculo_De_Portafolio_Eficiente.xlsx";
             string hojaArchivo = "Riesgo_Rendimiento";
-            DataTable dtInformacion = (DataTable)Session["dtInformacionCapital"]; 
+            DataTable dtInformacion = new DataTable();
+            string mensaje = string.Empty;
 
-            using (XLWorkbook wb = new XLWorkbook())
+            try
             {
-                wb.Worksheets.Add(dtInformacion, hojaArchivo);
+                dtInformacion = (DataTable)Session["dtInformacionCapital"];
 
-                Response.ClearContent();
-                Response.Buffer = true;
-                Response.Charset = "";
-                Response.ContentType = "application/vnd.ms-excel";
-                Response.AddHeader("content-disposition", "attachment; filename=" + nombreArchivo);
-
-                using (MemoryStream MyMemoryStream = new MemoryStream())
+                using (XLWorkbook wb = new XLWorkbook())
                 {
-                    wb.SaveAs(MyMemoryStream);
-                    MyMemoryStream.WriteTo(Response.OutputStream);
-                    Response.Flush();
-                    Response.End();
-                }
+                    wb.Worksheets.Add(dtInformacion, hojaArchivo);
 
+                    Response.ClearContent();
+                    Response.Buffer = true;
+                    Response.Charset = "";
+                    Response.ContentType = "application/vnd.ms-excel";
+                    Response.AddHeader("content-disposition", "attachment; filename=" + nombreArchivo);
+
+                    using (MemoryStream MyMemoryStream = new MemoryStream())
+                    {
+                        wb.SaveAs(MyMemoryStream);
+                        MyMemoryStream.WriteTo(Response.OutputStream);
+                        Response.Flush();
+                        Response.End();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = "ERROR: Metodo: ExportarExcel_Mercado, Source: " + ex.Source + ", Mensaje: " + ex.Message;
+                ArchivoLog.EscribirLog(null, mensaje);
             }
         }
     }

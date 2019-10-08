@@ -15,6 +15,7 @@ using System.Net.Http;
 using Entidades;
 using Negocio.MercadoDivisa;
 using System.Globalization;
+using Herramientas;
 
 namespace IDA_Economia.Controllers
 {
@@ -39,17 +40,34 @@ namespace IDA_Economia.Controllers
             MercadoDivisa mercadoDivisa = new MercadoDivisa();
             List<Parametro> ListParametro = new List<Parametro>();
 
-            ListCatDivisa = mercadoDivisa.ObtenerCatDivisa(ListParametro);
+            ResultadoMercadoDivisa resultadoMercadoDivisa = new ResultadoMercadoDivisa();
 
-            Session["ListCatDivisa"] = ListCatDivisa;
+            string mensaje = string.Empty;
 
-            //SELECCIONAR EL PRIMER ELEMENTO
-            if (ListCatDivisa.Count > 0)
+            try
             {
-                ListCatDivisa[0].Check = ListCatDivisa[0].Valor;
+                ListCatDivisa = mercadoDivisa.ObtenerCatDivisa(ListParametro);
+
+                Session["ListCatDivisa"] = ListCatDivisa;
+
+                //SELECCIONAR EL PRIMER ELEMENTO
+                if (ListCatDivisa.Count > 0)
+                {
+                    ListCatDivisa[0].Check = ListCatDivisa[0].Valor;
+                }
+
+                resultadoMercadoDivisa.ListaCatDivisa = ListCatDivisa;
+                resultadoMercadoDivisa.Mensaje = "OK";
+            }
+            catch(Exception ex)
+            {
+                mensaje = "ERROR: Metodo: ObtenerInfoInicio_Divisa, Source: " + ex.Source + ", Mensaje: " + ex.Message;
+                ArchivoLog.EscribirLog(null, mensaje);
+
+                resultadoMercadoDivisa.Mensaje = mensaje;
             }
 
-            return Json(ListCatDivisa, JsonRequestBehavior.AllowGet);
+            return Json(resultadoMercadoDivisa, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult ObtenerEstadistico(string strFechaInicio, string strFechaFinal, List<CatDivisa> ListCatDivisa)
@@ -72,14 +90,17 @@ namespace IDA_Economia.Controllers
             GrupoParametro grupoParametro = new GrupoParametro();
             List<Parametro> listParametroDetalle = new List<Parametro>();
 
-            string Lang = "es-MX";//set your culture here
-            System.Threading.Thread.CurrentThread.CurrentCulture =
-                new System.Globalization.CultureInfo(Lang);
+            string mensaje = string.Empty;
 
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Lang);
+            string Lang = "es-MX";//set your culture here
 
             try
-            {
+            {                    
+                System.Threading.Thread.CurrentThread.CurrentCulture =
+                    new System.Globalization.CultureInfo(Lang);
+
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Lang);
+
                 //Se solicita la información al cliente para definir el código que realizará la petición al API:
                 //string valor = "";
 
@@ -228,13 +249,15 @@ namespace IDA_Economia.Controllers
                 Negocio.Log.Log log = new Negocio.Log.Log();
                 log.InsertLogDivisa(listParametro, listGrupoParametro);
 
-                resultadoMercadoDivisa.Mensaje = "";
+                resultadoMercadoDivisa.Mensaje = "OK";
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-            }
+                mensaje = "ERROR: Metodo: ObtenerEstadistico_Divisa, Source: " + ex.Source + ", Mensaje: " + ex.Message;
+                ArchivoLog.EscribirLog(null, mensaje);
 
+                resultadoMercadoDivisa.Mensaje = mensaje;
+            }
 
             return Json(resultadoMercadoDivisa, JsonRequestBehavior.AllowGet);
         }
@@ -242,27 +265,40 @@ namespace IDA_Economia.Controllers
         {
             string nombreArchivo = "Historico_Divisa.xlsx";
             string hojaArchivo = "Divisa";
-            DataTable dtInformacion = (DataTable)Session["dtInformacionDivisa"];
+            DataTable dtInformacion = new DataTable();
 
-            using (XLWorkbook wb = new XLWorkbook())
+            string mensaje = string.Empty;
+
+            try
             {
-                wb.Worksheets.Add(dtInformacion, hojaArchivo);
+                dtInformacion = (DataTable)Session["dtInformacionDivisa"];
 
-                Response.ClearContent();
-                Response.Buffer = true;
-                Response.Charset = "";
-                Response.ContentType = "application/vnd.ms-excel";
-                Response.AddHeader("content-disposition", "attachment; filename=" + nombreArchivo);
-
-                using (MemoryStream MyMemoryStream = new MemoryStream())
+                using (XLWorkbook wb = new XLWorkbook())
                 {
-                    wb.SaveAs(MyMemoryStream);
-                    MyMemoryStream.WriteTo(Response.OutputStream);
-                    Response.Flush();
-                    Response.End();
-                }
+                    wb.Worksheets.Add(dtInformacion, hojaArchivo);
 
+                    Response.ClearContent();
+                    Response.Buffer = true;
+                    Response.Charset = "";
+                    Response.ContentType = "application/vnd.ms-excel";
+                    Response.AddHeader("content-disposition", "attachment; filename=" + nombreArchivo);
+
+                    using (MemoryStream MyMemoryStream = new MemoryStream())
+                    {
+                        wb.SaveAs(MyMemoryStream);
+                        MyMemoryStream.WriteTo(Response.OutputStream);
+                        Response.Flush();
+                        Response.End();
+                    }
+
+                }
             }
+            catch (Exception ex)
+            {
+                mensaje = "ERROR: Metodo: ExportarExcel_Divisa, Source: " + ex.Source + ", Mensaje: " + ex.Message;
+                ArchivoLog.EscribirLog(null, mensaje);
+            }
+
         }
     }
 

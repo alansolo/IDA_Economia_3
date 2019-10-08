@@ -43,6 +43,7 @@
     <Compile Include="CatCapital.cs" />
     <Compile Include="CatDinero.cs" />
     <Compile Include="CatDivisa.cs" />
+    <Compile Include="CatPantalla.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="LogDetalleDinero.cs" />
     <Compile Include="LogDetalleCapital.cs" />

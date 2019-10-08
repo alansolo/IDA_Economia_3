@@ -20,5 +20,6 @@ namespace Entidades
         public List<LogDetalleDivisa> DetalleDivisa { get; set; }
         public List<LogDetalleDinero> DetalleDinero { get; set; }
         public List<LogDetalleCapital> DetalleCapital { get; set; }
+        public bool EsDetalle { get; set; }
     }
 }

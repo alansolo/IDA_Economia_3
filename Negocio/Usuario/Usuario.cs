@@ -60,6 +60,54 @@ namespace Negocio.Usuario
 
             return ListUsuario;
         }
+        public List<Entidades.Usuario> BuscarUsuario(List<Parametro> listParametro)
+        {
+            object Resultado = new object();
+            List<Entidades.Usuario> ListUsuario = new List<Entidades.Usuario>();
+            const string spName = "ObtenerUsuario";
+            BDUsuario bdUsuario = new BDUsuario();
+            DataTable dtResultado = new DataTable();
+            StringBuilder sbResultado = new StringBuilder();
+
+            try
+            {
+                Resultado = bdUsuario.BuscarUsuario(spName, listParametro);
+
+                dtResultado = (DataTable)Resultado;
+
+                if (dtResultado.Rows.Count > 0)
+                {
+                    sbResultado.Append("[");
+
+                    dtResultado.Rows.Cast<DataRow>().ToList().ForEach(n =>
+                    {
+                        sbResultado.Append(n[0].ToString());
+                    });
+
+                    sbResultado.Append("]");
+                }
+
+                var jsonListUsuario = JsonConvert.DeserializeObject<Entidades.Usuario[]>(sbResultado.ToString());
+                ListUsuario = jsonListUsuario.ToList();
+
+                ListUsuario.ForEach(n =>
+                {
+                    if (n.Estatus)
+                    {
+                        n.StrEstatus = "Activo";
+                    }
+                    else
+                    {
+                        n.StrEstatus = "Inactivo";
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ListUsuario;
+        }
         public Entidades.Usuario AgregarUsuario(List<Parametro> listParametro)
         {
             object Resultado = new object();
@@ -72,10 +120,23 @@ namespace Negocio.Usuario
             {
                 Resultado = bdUsuario.InsertUsuario(spName, listParametro);
 
+                dtResultado = (DataTable)Resultado;
+
                 if (dtResultado.Rows.Count > 0)
                 {
                     var jsonListUsuario = JsonConvert.DeserializeObject<Entidades.Usuario>(dtResultado.Rows[0][0].ToString());
                     usuario = jsonListUsuario;
+
+                    if (usuario.Estatus)
+                    {
+                        usuario.StrEstatus = "Activo";
+                    }
+                    else
+                    {
+                        usuario.StrEstatus = "Inactivo";
+                    }
+
+                    usuario.ConfirmarPassword = usuario.Password;
                 }
                 
             }
@@ -97,10 +158,23 @@ namespace Negocio.Usuario
             {
                 Resultado = bdUsuario.EditarUsuario(spName, listParametro);
 
+                dtResultado = (DataTable)Resultado;
+                    
                 if (dtResultado.Rows.Count > 0)
                 {
                     var jsonListUsuario = JsonConvert.DeserializeObject<Entidades.Usuario>(dtResultado.Rows[0][0].ToString());
                     usuario = jsonListUsuario;
+
+                    if (usuario.Estatus)
+                    {
+                        usuario.StrEstatus = "Activo";
+                    }
+                    else
+                    {
+                        usuario.StrEstatus = "Inactivo";
+                    }
+
+                    usuario.ConfirmarPassword = usuario.Password;
                 }
 
             }

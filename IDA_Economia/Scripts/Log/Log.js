@@ -37,7 +37,6 @@ app.controller("MyController", function ($scope, $http, $window) {
     $scope.FechaInicio = myDate;
     $scope.FechaFinal = myDate;
 
-
     //$('#tablaDetalleCapital').floatThead({
     //    position: 'fixed'
     //});
@@ -58,12 +57,14 @@ app.controller("MyController", function ($scope, $http, $window) {
             dataType: 'json',
             success: function (datos) {
 
-                if (datos.Mensaje != "") {
-                    MessageInfo("Historico Actividades", datos.Mensaje);
+                if (datos.Mensaje != "OK") {
+                    MessageDanger("Historico Actividades", "No se pudo obtener la informacion de las actividades, intenta de nuevo y si persiste el error contacta al administrador de sistemas.");
 
                     $scope.$apply();
 
-                    $("#myModalLoader").modal('hide');
+                    $('#myModalLoader').on('shown.bs.modal', function (e) {
+                        $("#myModalLoader").modal('hide');
+                    })
 
                     return;
                 }
@@ -76,10 +77,16 @@ app.controller("MyController", function ($scope, $http, $window) {
 
                 $("#myModalLoader").modal('hide');
 
+                $('#myModalLoader').on('shown.bs.modal', function (e) {
+                    $("#myModalLoader").modal('hide');
+                })
+
             },
             error: function (error) {
 
-                $("#myModalLoader").modal('hide');
+                $('#myModalLoader').on('shown.bs.modal', function (e) {
+                    $("#myModalLoader").modal('hide');
+                })
             }
         });
     };

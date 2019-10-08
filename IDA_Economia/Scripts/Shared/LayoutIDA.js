@@ -1,42 +1,22 @@
-﻿var app = angular.module("MyApp", []);
-
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelector('main').className += 'loaded';
-});
-
-//funcion inicial para agregar las empresas
-app.controller("MyController", function ($scope, $http, $window) {
+﻿$(document).ready(function () {
 
     var urlPathSystem = "";
 
-    $scope.visibleError = false;
-
-    $scope.ValidarLogin = function (varUsuario, varPassword) {
+    $('#btnCerrarSesion').on('click', function () {
         $('#myModalLoader').modal('show');
 
         $.ajax({
             type: "POST",
-            url: urlPathSystem + "/Login/ValidarLogin",
-            data: JSON.stringify(
-                {
-                    'usuario': varUsuario,
-                    'password': varPassword
-                }),
+            url: urlPathSystem + "/Login/CerrarSesion",
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (datos) {
-                
+
                 if (datos == "OK") {
+                    MessageSuccess("Session", "Se cerro de forma correcta la sesión.");
 
-                    $window.location.href = urlPathSystem + "/MercadoCapital/MercadoCapital";
+                    window.location.href = urlPathSystem + "/Login";
                 }
-                else
-                {
-                    $scope.visibleError = true;
-                    $scope.mensajeError = datos;
-                }
-
-                $scope.$apply();
 
                 $('#myModalLoader').on('shown.bs.modal', function (e) {
                     $("#myModalLoader").modal('hide');
@@ -48,10 +28,9 @@ app.controller("MyController", function ($scope, $http, $window) {
                 $('#myModalLoader').on('shown.bs.modal', function (e) {
                     $("#myModalLoader").modal('hide');
                 })
-                
             }
         });
-    };
+    });
 
     function MessageInfo(titulo, message) {
         $.notify({
