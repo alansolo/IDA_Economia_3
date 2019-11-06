@@ -119,13 +119,14 @@ namespace IDA_Economia.Controllers
                     return Json(resultadoMercadoDinero, JsonRequestBehavior.AllowGet);
                 }
 
-
                 fechainicio = Convert.ToDateTime(strFechaInicio).ToString("yyyy-MM-dd");
 
                 fechafinal = Convert.ToDateTime(strFechaFinal).ToString("yyyy-MM-dd");
 
                 string url = "https://www.banxico.org.mx/SieAPIRest/service/v1/series/" + seriesID + "/datos/" + fechainicio + "/" + fechafinal;
 
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 //Se crea una cadena con los valores que se requiera consumir
                 HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
@@ -133,6 +134,7 @@ namespace IDA_Economia.Controllers
                 request.Headers["Bmx-Token"] = "6af6e6645653ed1cb3ecb5165c3d30df2d5289600811f7067b2169c9ff030eb4";
                 //request.Method = "GET";
                 request.PreAuthenticate = true;
+
                 HttpWebResponse response = request.GetResponse() as HttpWebResponse;
                 if (response.StatusCode != HttpStatusCode.OK)
                     throw new Exception(String.Format(

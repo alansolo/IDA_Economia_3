@@ -1,2 +1,14 @@
 ﻿body {
 }
+
+.modal-lg {
+    min-width: 1000px;
+}
+
+.table-responsive {
+    height: 500px;
+}
+
+.fecha {
+    height: 36px;
+}

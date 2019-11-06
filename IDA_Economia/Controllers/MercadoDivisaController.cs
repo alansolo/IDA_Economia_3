@@ -95,7 +95,7 @@ namespace IDA_Economia.Controllers
             string Lang = "es-MX";//set your culture here
 
             try
-            {                    
+            {
                 System.Threading.Thread.CurrentThread.CurrentCulture =
                     new System.Globalization.CultureInfo(Lang);
 
@@ -125,7 +125,9 @@ namespace IDA_Economia.Controllers
                 fechafinal = Convert.ToDateTime(strFechaFinal).ToString("yyyy-MM-dd");
 
                 string url = "https://www.banxico.org.mx/SieAPIRest/service/v1/series/" + seriesID + "/datos/" + fechainicio + "/" + fechafinal;
-              
+
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 //Se crea una cadena con los valores que se requiera consumir
                 HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;

@@ -70,6 +70,10 @@ namespace IDA_Economia.Controllers
                     Session["Usuario"] = Usuario;
                     mensejeError = "OK";
 
+                    ((Usuario)Session["Usuario"]).Nombre = "nombre";
+
+                    Usuario usu = (Usuario)Session["Usuario"];
+
                     //OBTENER MENUS DEL USUARIO
                     listParametro = new List<Parametro>();
 
