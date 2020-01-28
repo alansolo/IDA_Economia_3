@@ -1,6 +1,7 @@
 ﻿using ClosedXML.Excel;
 using Entidades;
 using Herramientas;
+using IDA_Economia.EntidadYahooFinanceApi;
 using IDA_Economia.Models;
 using IDA_Economia.Models.MercadoCapital;
 using Negocio.MercadoCapital;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using YahooFinance.NET;
@@ -18,8 +20,8 @@ namespace IDA_Economia.Controllers
 {
     public class MercadoCapitalController : Controller
     {
-        string cookie = "1a9rkttd53me9&b=3&s=8a"; //"5b47s4pehkvjd&b=3&s=is";//
-        string crumb = "SPwNBQX77jD"; //"ourzFxbliAq";//
+        string cookie = "d3d52ihf1icfd&b=3&s=2l"; //"1a9rkttd53me9&b=3&s=8a"; //"5b47s4pehkvjd&b=3&s=is";//
+        string crumb = "C9luNcNjVkK"; //"SPwNBQX77jD"; //"ourzFxbliAq";//
 
         // GET: MercadoCapital
         /// <summary>
@@ -94,7 +96,9 @@ namespace IDA_Economia.Controllers
             double promedio = 0;
             double varianza = 0;
             double desviacion = 0;
-            List<YahooHistoricalPriceData> yahooPriceHistoryTemp = new List<YahooHistoricalPriceData>();
+            //List<YahooHistoricalPriceData> yahooPriceHistoryTemp = new List<YahooHistoricalPriceData>();
+            List<CandleT> yahooPriceHistoryTemp = new List<CandleT>();
+            List<CandleT> yahooPriceHistory = new List<CandleT>();
 
             //LISTA DE EMPRESAS
             List<Empresa> ListaEmpresa = new List<Empresa>();
@@ -147,11 +151,42 @@ namespace IDA_Economia.Controllers
                 ////////////////////////
 
                 //OBTENER INFORMACION DE DIVISAS POR CADA EMPRESA
-                ListaEmpresa.ForEach(x =>
+                //ListaEmpresa.ForEach(x =>
+                foreach (Empresa x in ListaEmpresa)
                 {
-                    var yahooFinance = new YahooFinanceClient(cookie, crumb);
+                    /////////////////////////
+                    ///OBTENER CRUMB
+                    ////////////////////////
+                    //YahooFinance.NET.Token.Refresh();
+                    //YahooFinance.NET.Token.Refresh();
+                    //crumb = Token.Crumb;
+                    //cookie = Token.Cookie;
+
+                    //var yahooFinance = new YahooFinanceClient(cookie, crumb);
                     var yahooStockCode = x.Nombre; //yahooFinance.GetYahooStockCode(exchange, symbol);
-                    List<YahooHistoricalPriceData> yahooPriceHistory = yahooFinance.GetDailyHistoricalPriceData(yahooStockCode, fechaInicio, fechafinal);
+                    
+                    
+                    Task<IReadOnlyList<YahooFinanceApi.Candle>> listaPriceData = YahooFinanceApi.Yahoo.GetHistoricalAsync(yahooStockCode, fechaInicio, fechafinal);
+
+                    listaPriceData.Wait();
+                    var yahooPriceHistoryAsync = listaPriceData.Result;
+
+                    yahooPriceHistory = new List<EntidadYahooFinanceApi.CandleT>();
+                    yahooPriceHistoryAsync.ToList().ForEach(n =>
+                    {
+                        CandleT c = new CandleT();
+                        c.AdjustedClose = n.AdjustedClose;
+                        c.Close = n.Close;
+                        c.DateTime = n.DateTime;
+                        c.High = n.High;
+                        c.Low = n.Low;
+                        c.Open = n.Open;
+                        c.Volume = n.Volume;                       
+
+                        yahooPriceHistory.Add(c);
+                    });
+
+                    //List<YahooHistoricalPriceData> yahooPriceHistory = yahooFinance.GetDailyHistoricalPriceData(yahooStockCode, fechaInicio, fechafinal);
 
                     //OBTENER REGISTROS TOTALES
                     x.Cantidad = yahooPriceHistory.Count;
@@ -159,7 +194,7 @@ namespace IDA_Economia.Controllers
                     //CALCULAR RENDIMIENTO
                     cont = 0;
                     primerRegistro = true;
-                    foreach (YahooHistoricalPriceData data in yahooPriceHistory)
+                    foreach (var data in yahooPriceHistory)
                     {
                         if (primerRegistro)
                         {
@@ -167,8 +202,15 @@ namespace IDA_Economia.Controllers
                         }
                         else
                         {
-                            rendimiento = (Convert.ToDouble(data.Close) / Convert.ToDouble(yahooPriceHistory[cont - 1].Close)) - 1;
-                            data.Rendimiento = rendimiento;
+                            if (yahooPriceHistory[cont - 1].Close != 0)
+                            {
+                                rendimiento = (Convert.ToDouble(data.Close) / Convert.ToDouble(yahooPriceHistory[cont - 1].Close)) - 1;
+                                data.Rendimiento = rendimiento;
+                            }
+                            else
+                            {
+                                data.Rendimiento = 0;
+                            }
                         }
 
                         cont++;
@@ -214,7 +256,7 @@ namespace IDA_Economia.Controllers
 
                     x.VarianzaRendimiento = varianza;
                     x.DesviacionRendimiento = desviacion;
-                });
+                }
 
                 //CALCULAR MEDIA RENDIMIENTO
                 ListaEmpresa.ForEach(n =>
@@ -225,8 +267,18 @@ namespace IDA_Economia.Controllers
 
                 ListaEmpresa.ForEach(n =>
                 {
-                    n.MaxPrecio = n.ListaPrecio.Max(m => m.Close);
-                    n.MinPrecio = n.ListaPrecio.Min(m => m.Close);
+                    if (n.ListaPrecio.Count > 0)
+                    {
+                        n.MaxPrecio = n.ListaPrecio.Max(m => Convert.ToDouble(m.Close));
+                        n.MinPrecio = n.ListaPrecio.Min(m => Convert.ToDouble(m.Close));
+                    }
+                    else
+                    {
+                        n.MaxPrecio = 0;
+                        n.MinPrecio = 0;
+                    }
+
+                    
                 });
 
                 //dgvTotales.DataBind();
@@ -521,7 +573,7 @@ namespace IDA_Economia.Controllers
 
                     ListaCurvaVarianza.Add(curvaVarianza);
 
-                   
+
                     //EMPRESAS
                     for (int l = 0; curvaVarianza.W.Length > l; l++)
                     {
@@ -549,7 +601,7 @@ namespace IDA_Economia.Controllers
 
                         parametro = new Parametro();
                         parametro.Nombre = "Usuario";
-                        parametro.Valor = Session["Usuario"];
+                        parametro.Valor = ((Entidades.Usuario)Session["Usuario"]).Login;
 
                         listParametroDetalle.Add(parametro);
 
@@ -574,12 +626,21 @@ namespace IDA_Economia.Controllers
                     w++;
                 }
 
+                DataTable dtExportarInformacion = new DataTable();
+
+                Session["dtInformacionCapital"] = dtExportarInformacion;
+
+                if (Session["Usuario"] == null)
+                {
+                    resultadoMercadoCapital.Mensaje = "Sesion Expirada";
+
+                    return Json(resultadoMercadoCapital, JsonRequestBehavior.AllowGet);
+                }
+
 
                 double minCurvaVarianzaX = 0;
 
-                minCurvaVarianzaX = ListaCurvaVarianza.Min(n => n.Sigma);
-
-                DataTable dtExportarInformacion = new DataTable();
+                minCurvaVarianzaX = ListaCurvaVarianza.Min(n => n.Sigma);              
 
                 dtExportarInformacion.Columns.Add("Numero");
                 dtExportarInformacion.Columns.Add("Rendimiento_Asumido");
@@ -623,14 +684,14 @@ namespace IDA_Economia.Controllers
                 resultadoMercadoCapital.ListaCalculoMercadoCapital = ListaCalculoMercadoCapital;
                 resultadoMercadoCapital.ListaDatos = ListDatos.ToList();
 
-                Session["dtInformacionCapital"] = dtExportarInformacion;
+                
 
                 //INSERTAR INFORMACION LOG
                 listParametro = new List<Parametro>();
 
                 parametro = new Parametro();
                 parametro.Nombre = "Usuario";
-                parametro.Valor = Session["Usuario"];
+                parametro.Valor = ((Entidades.Usuario)Session["Usuario"]).Login;
 
                 listParametro.Add(parametro);
 
@@ -712,5 +773,7 @@ namespace IDA_Economia.Controllers
                 ArchivoLog.EscribirLog(null, mensaje);
             }
         }
+
+
     }
 }

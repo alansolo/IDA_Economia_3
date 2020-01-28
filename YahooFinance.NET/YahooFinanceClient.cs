@@ -93,17 +93,29 @@ namespace YahooFinance.NET
 
 				var values = line.Split(',');
 
-				var newPriceData = new YahooHistoricalPriceData
-				{
-					Date = DateTime.Parse(values[0], CultureInfo.InvariantCulture),
-					Open = decimal.Parse(values[1], CultureInfo.InvariantCulture),
-					High = decimal.Parse(values[2], CultureInfo.InvariantCulture),
-					Low = decimal.Parse(values[3], CultureInfo.InvariantCulture),
-					Close = decimal.Parse(values[4], CultureInfo.InvariantCulture),
-					AdjClose = decimal.Parse(values[5], CultureInfo.InvariantCulture),
-					Volume = long.Parse(values[6], CultureInfo.InvariantCulture),
-				};
-				historicalPriceData.Add(newPriceData);
+                try
+                {
+                    var newPriceData = new YahooHistoricalPriceData
+                    {
+                        Date = DateTime.Parse(values[0], CultureInfo.InvariantCulture),
+                        Open = values[1] == "null" ? 0 : decimal.Parse(values[1], CultureInfo.InvariantCulture),
+                        High = values[2] == "null" ? 0 : decimal.Parse(values[2], CultureInfo.InvariantCulture),
+                        Low = values[3] == "null" ? 0 : decimal.Parse(values[3], CultureInfo.InvariantCulture),
+                        Close = values[4] == "null" ? 0 : decimal.Parse(values[4], CultureInfo.InvariantCulture),
+                        AdjClose = values[5] == "null" ? 0 : decimal.Parse(values[5], CultureInfo.InvariantCulture),
+                        Volume = values[6] == "null" ? 0 : long.Parse(values[6], CultureInfo.InvariantCulture),
+
+                        
+                    };
+
+                    historicalPriceData.Add(newPriceData);
+                }
+                catch(Exception ex)
+                {
+
+                }
+
+				
 			}
 
 			return historicalPriceData;

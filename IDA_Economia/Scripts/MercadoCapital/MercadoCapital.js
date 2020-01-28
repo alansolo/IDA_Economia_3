@@ -68,14 +68,14 @@ app.controller("MyController", function ($scope, $http, $window) {
         dataType: 'json',
         success: function (datos) {
 
-            if (datos.Mensaje != "OK") {
+            if (datos.Mensaje !== "OK") {
                 MessageDanger("Mercado de Capitales", "No se pudo cargar la informacion de inicio, intenta de nuevo y si persiste el error contacta al administrador de sistemas.");
 
                 $scope.$apply();
 
                 $('#myModalLoader').on('shown.bs.modal', function (e) {
                     $("#myModalLoader").modal('hide');
-                })
+                });
 
                 return;
             }
@@ -86,13 +86,13 @@ app.controller("MyController", function ($scope, $http, $window) {
 
             $('#myModalLoader').on('shown.bs.modal', function (e) {
                 $("#myModalLoader").modal('hide');
-            })
+            });
         },
         error: function (error) {
 
             $('#myModalLoader').on('shown.bs.modal', function (e) {
                 $("#myModalLoader").modal('hide');
-            })
+            });
         }
     });
 
@@ -100,7 +100,7 @@ app.controller("MyController", function ($scope, $http, $window) {
         $('#myModalLoader').modal('show');
 
         var ListCatCapitalFiltro = $scope.ListCatCapital.filter(function (i, n) {
-            return i.Check === true
+            return i.Check === true;
         });
 
         $.ajax({
@@ -116,7 +116,29 @@ app.controller("MyController", function ($scope, $http, $window) {
             dataType: 'json',
             success: function (datos) {
 
-                if (datos.Mensaje != "OK")
+                if (datos.Mensaje === "Sesion Expirada") {
+
+                    $scope.$apply();
+
+                    $('#myModalLoader').on('shown.bs.modal', function (e) {
+                        $("#myModalLoader").modal('hide');
+                    });
+
+                    $window.location.href = urlPathSystem + "/Login/Login";
+                }
+                else if (datos.Mensaje.indexOf("Se debe") !== -1)
+                {
+                    MessageDanger("Mercado de Capitales", datos.Mensaje);
+
+                    $scope.$apply();
+
+                    $('#myModalLoader').on('shown.bs.modal', function (e) {
+                        $("#myModalLoader").modal('hide');
+                    });
+
+                    return;
+                }
+                else if (datos.Mensaje !== "OK")
                 {                  
                     MessageDanger("Mercado de Capitales", "No se pudo obtener el calculo de estadisticas, intenta de nuevo y si persiste el error contacta al administrador de sistemas.");
 
@@ -124,7 +146,7 @@ app.controller("MyController", function ($scope, $http, $window) {
 
                     $('#myModalLoader').on('shown.bs.modal', function (e) {
                         $("#myModalLoader").modal('hide');
-                    })
+                    });
 
                     return;
                 }
@@ -145,14 +167,14 @@ app.controller("MyController", function ($scope, $http, $window) {
 
                 $('#myModalLoader').on('shown.bs.modal', function (e) {
                     $("#myModalLoader").modal('hide');
-                })
+                });
 
             },
             error: function (error) {
 
                 $('#myModalLoader').on('shown.bs.modal', function (e) {
                     $("#myModalLoader").modal('hide');
-                })
+                });
             }
         });
     };

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>YahooFinance.NET</RootNamespace>
     <AssemblyName>YahooFinance.NET</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Token.cs" />
     <Compile Include="YahooExchangeHelper.cs" />
     <Compile Include="YahooFinanceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

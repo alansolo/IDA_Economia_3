@@ -152,6 +152,14 @@ namespace IDA_Economia.Controllers
 
                 var uno1 = resBan.seriesResponse.series[0];
 
+                if (uno1.Data == null)
+                {
+                    resultadoMercadoDinero.Mensaje = "No Datos";
+
+                    return Json(resultadoMercadoDinero, JsonRequestBehavior.AllowGet);
+                }
+
+
                 //LINQ C#
                 //PARA BUSCAR MAS INFORMACION
                 //var dos1 = uno1.Data.Where(n => (Convert.ToDecimal(n.Data)) > 9).ToList();
@@ -162,6 +170,13 @@ namespace IDA_Economia.Controllers
 
                 dt1.Columns.Add("Fecha");
                 dt1.Columns.Add("Valor");
+
+                if (Session["Usuario"] == null)
+                {
+                    resultadoMercadoDinero.Mensaje = "Sesion Expirada";
+
+                    return Json(resultadoMercadoDinero, JsonRequestBehavior.AllowGet);
+                }
 
 
                 listGrupoParametro = new List<GrupoParametro>();
@@ -200,7 +215,7 @@ namespace IDA_Economia.Controllers
 
                     parametro = new Parametro();
                     parametro.Nombre = "Usuario";
-                    parametro.Valor = Session["Usuario"];
+                    parametro.Valor = ((Entidades.Usuario)Session["Usuario"]).Login;
 
                     listParametroDetalle.Add(parametro);
 
@@ -219,7 +234,7 @@ namespace IDA_Economia.Controllers
 
                 parametro = new Parametro();
                 parametro.Nombre = "Usuario";
-                parametro.Valor = Session["Usuario"];
+                parametro.Valor = ((Entidades.Usuario)Session["Usuario"]).Login;
 
                 listParametro.Add(parametro);
 

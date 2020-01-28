@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.IDA_Economia", "IDA_Economia\1.IDA_Economia.csproj", "{24A92B6E-3F49-49B4-8004-53BB63019447}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "8.BaseDatos", "BaseDatos\8.BaseDatos.csproj", "{F5317EB7-A154-41A6-9217-393181BB41BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "9.Seguridad", "Seguridad\9.Seguridad.csproj", "{86DFF3AE-1F3F-4B07-8D96-172ABEB43B17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YahooFinanceAPI", "YahooFinanceAPI\YahooFinanceAPI.csproj", "{9F664C6A-6D24-45EF-9A9C-3324292E1C46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{86DFF3AE-1F3F-4B07-8D96-172ABEB43B17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86DFF3AE-1F3F-4B07-8D96-172ABEB43B17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86DFF3AE-1F3F-4B07-8D96-172ABEB43B17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F664C6A-6D24-45EF-9A9C-3324292E1C46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F664C6A-6D24-45EF-9A9C-3324292E1C46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F664C6A-6D24-45EF-9A9C-3324292E1C46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F664C6A-6D24-45EF-9A9C-3324292E1C46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
