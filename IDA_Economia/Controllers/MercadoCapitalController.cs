@@ -171,6 +171,7 @@ namespace IDA_Economia.Controllers
                     listaPriceData.Wait();
                     var yahooPriceHistoryAsync = listaPriceData.Result;
 
+
                     yahooPriceHistory = new List<EntidadYahooFinanceApi.CandleT>();
                     yahooPriceHistoryAsync.ToList().ForEach(n =>
                     {
