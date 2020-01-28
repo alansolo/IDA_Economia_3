@@ -171,6 +171,7 @@ namespace IDA_Economia.Controllers
                     listaPriceData.Wait();
                     var yahooPriceHistoryAsync = listaPriceData.Result;
 
+                    yahooPriceHistory = new List<CandleT>();
                     yahooPriceHistoryAsync.ToList().ForEach(n =>
                     {
                         CandleT c = new CandleT();
@@ -201,8 +202,15 @@ namespace IDA_Economia.Controllers
                         }
                         else
                         {
-                            rendimiento = (Convert.ToDouble(data.Close) / Convert.ToDouble(yahooPriceHistory[cont - 1].Close)) - 1;
-                            data.Rendimiento = rendimiento;
+                            if (yahooPriceHistory[cont - 1].Close != 0)
+                            {
+                                rendimiento = (Convert.ToDouble(data.Close) / Convert.ToDouble(yahooPriceHistory[cont - 1].Close)) - 1;
+                                data.Rendimiento = rendimiento;
+                            }
+                            else
+                            {
+                                data.Rendimiento = 0;
+                            }
                         }
 
                         cont++;
