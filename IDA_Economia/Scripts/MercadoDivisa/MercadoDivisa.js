@@ -48,7 +48,7 @@ app.controller("MyController", function ($scope, $http, $window) {
         dataType: 'json',
         success: function (datos) {
 
-            if (datos.Mensaje != "OK") {
+            if (datos.Mensaje !== "OK") {
                 
                 MessageDanger("Mercado de Divisas", "No se pudo cargar la informacion de inicio, intenta de nuevo y si persiste el error contacta al administrador de sistemas.");
 
@@ -56,7 +56,7 @@ app.controller("MyController", function ($scope, $http, $window) {
 
                 $('#myModalLoader').on('shown.bs.modal', function (e) {
                     $("#myModalLoader").modal('hide');
-                })
+                });
 
                 return;
             }
@@ -67,14 +67,14 @@ app.controller("MyController", function ($scope, $http, $window) {
 
             $('#myModalLoader').on('shown.bs.modal', function (e) {
                 $("#myModalLoader").modal('hide');
-            })
+            });
 
         },
         error: function (error) {
 
             $('#myModalLoader').on('shown.bs.modal', function (e) {
                 $("#myModalLoader").modal('hide');
-            })
+            });
         }
     });
 
@@ -94,7 +94,28 @@ app.controller("MyController", function ($scope, $http, $window) {
             dataType: 'json',
             success: function (datos) {
 
-                if (datos.Mensaje != "OK") {
+                if (datos.Mensaje === "Sesion Expirada") {
+                    $scope.$apply();
+
+                    $('#myModalLoader').on('shown.bs.modal', function (e) {
+                        $("#myModalLoader").modal('hide');
+                    });
+
+                    $window.location.href = urlPathSystem + "/Login/Login";
+                }
+                else if (datos.Mensaje === "No Datos")
+                {
+                    MessageInfo("Mercado de Divisas", "No se encontraron datos con los filtros de busqueda agregados.");
+
+                    $scope.$apply();
+
+                    $('#myModalLoader').on('shown.bs.modal', function (e) {
+                        $("#myModalLoader").modal('hide');
+                    });
+
+                    return;
+                }
+                else if (datos.Mensaje !== "OK") {
 
                     MessageDanger("Mercado de Divisas", "No se pudo obtener el calculo de estadisticas, intenta de nuevo y si persiste el error contacta al administrador de sistemas.");
 
@@ -102,7 +123,7 @@ app.controller("MyController", function ($scope, $http, $window) {
 
                     $('#myModalLoader').on('shown.bs.modal', function (e) {
                         $("#myModalLoader").modal('hide');
-                    })
+                    });
 
                     return;
                 }
@@ -117,14 +138,14 @@ app.controller("MyController", function ($scope, $http, $window) {
 
                 $('#myModalLoader').on('shown.bs.modal', function (e) {
                     $("#myModalLoader").modal('hide');
-                })
+                });
 
             },
             error: function (error) {
 
                 $('#myModalLoader').on('shown.bs.modal', function (e) {
                     $("#myModalLoader").modal('hide');
-                })
+                });
             }
         });
     };

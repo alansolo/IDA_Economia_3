@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IDA_Economia.EntidadYahooFinanceApi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,7 +16,9 @@ namespace IDA_Economia.Models
         public double VarianzaRendimientoX { get; set; }
         public double DesviacionRendimientoX { get; set; }
         public double VarianzaX { get; set; }
-        public List<YahooHistoricalPriceData> ListaPrecioX { get; set; }
+        //public List<YahooHistoricalPriceData> ListaPrecioX { get; set; }
+        //public List<YahooFinanceAPI.Models.HistoryPrice> ListaPrecioX { get; set; }
+        public List<CandleT> ListaPrecioX = new List<CandleT>();
         public int indiceX { get; set; }
         public string NombreY { get; set; }
         public int CantidadY { get; set; }
@@ -24,7 +27,9 @@ namespace IDA_Economia.Models
         public double VarianzaRendimientoY { get; set; }
         public double DesviacionRendimientoY { get; set; }
         public double VarianzaY { get; set; }
-        public List<YahooHistoricalPriceData> ListaPrecioY { get; set; }
+        //public List<YahooHistoricalPriceData> ListaPrecioY { get; set; }
+        //public List<YahooFinanceAPI.Models.HistoryPrice> ListaPrecioY { get; set; }
+        public List<CandleT> ListaPrecioY = new List<CandleT>();
         public int indiceY { get; set; }
         public double RendimientoXPorY { get; set; }
         public double Covarianza { get; set; }

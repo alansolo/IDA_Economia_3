@@ -26,7 +26,7 @@ app.controller("MyController", function ($scope, $http, $window) {
             dataType: 'json',
             success: function (datos) {
                 
-                if (datos == "OK") {
+                if (datos === "OK") {
 
                     $window.location.href = urlPathSystem + "/MercadoCapital/MercadoCapital";
                 }
@@ -40,14 +40,14 @@ app.controller("MyController", function ($scope, $http, $window) {
 
                 $('#myModalLoader').on('shown.bs.modal', function (e) {
                     $("#myModalLoader").modal('hide');
-                })
+                });
 
             },
             error: function (error) {
 
                 $('#myModalLoader').on('shown.bs.modal', function (e) {
                     $("#myModalLoader").modal('hide');
-                })
+                });
                 
             }
         });

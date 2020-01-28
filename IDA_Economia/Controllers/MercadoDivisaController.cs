@@ -156,6 +156,13 @@ namespace IDA_Economia.Controllers
                 //PARA BUSCAR MAS INFORMACION
                 //var dos1 = uno1.Data.Where(n => (Convert.ToDecimal(n.Data)) > 9).ToList();
 
+                if(uno1.Data == null)
+                {
+                    resultadoMercadoDivisa.Mensaje = "No Datos";
+
+                    return Json(resultadoMercadoDivisa, JsonRequestBehavior.AllowGet);
+                }
+
                 var dos1 = uno1.Data.ToList();
 
                 DataTable dt1 = new DataTable();
@@ -163,6 +170,13 @@ namespace IDA_Economia.Controllers
                 dt1.Columns.Add("Fecha");
                 dt1.Columns.Add("Valor");
 
+
+                if (Session["Usuario"] == null)
+                {
+                    resultadoMercadoDivisa.Mensaje = "Sesion Expirada";
+
+                    return Json(resultadoMercadoDivisa, JsonRequestBehavior.AllowGet);
+                }
 
                 listGrupoParametro = new List<GrupoParametro>();
 
@@ -200,7 +214,7 @@ namespace IDA_Economia.Controllers
 
                     parametro = new Parametro();
                     parametro.Nombre = "Usuario";
-                    parametro.Valor = Session["Usuario"];
+                    parametro.Valor = ((Entidades.Usuario)Session["Usuario"]).Login;
 
                     listParametroDetalle.Add(parametro);
 
@@ -214,12 +228,13 @@ namespace IDA_Economia.Controllers
 
                 Session["dtInformacionDivisa"] = dt1;
 
+
                 //INSERTAR INFORMACION LOG
                 listParametro = new List<Parametro>();
 
                 parametro = new Parametro();
                 parametro.Nombre = "Usuario";
-                parametro.Valor = Session["Usuario"];
+                parametro.Valor = ((Entidades.Usuario)Session["Usuario"]).Login;
 
                 listParametro.Add(parametro);
 

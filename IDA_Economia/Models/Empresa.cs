@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IDA_Economia.EntidadYahooFinanceApi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,6 +20,8 @@ namespace IDA_Economia.Models
         public double TotalDias { get; set; }
         public decimal MaxPrecio { get; set; }
         public decimal MinPrecio { get; set; }
-        public List<YahooHistoricalPriceData> ListaPrecio = new List<YahooHistoricalPriceData>();
+        //public List<YahooHistoricalPriceData> ListaPrecio = new List<YahooHistoricalPriceData>();
+        //public List<YahooFinanceAPI.Models.HistoryPrice> ListaPrecio = new List<YahooFinanceAPI.Models.HistoryPrice>();
+        public List<CandleT> ListaPrecio { get; set; }
     }
 }
