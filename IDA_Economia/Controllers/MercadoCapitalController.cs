@@ -164,30 +164,7 @@ namespace IDA_Economia.Controllers
 
                     //var yahooFinance = new YahooFinanceClient(cookie, crumb);
                     var yahooStockCode = x.Nombre; //yahooFinance.GetYahooStockCode(exchange, symbol);
-                    
-                    
-                    Task<IReadOnlyList<YahooFinanceApi.Candle>> listaPriceData = YahooFinanceApi.Yahoo.GetHistoricalAsync(yahooStockCode, fechaInicio, fechafinal);
-
-                    listaPriceData.Wait();
-                    var yahooPriceHistoryAsync = listaPriceData.Result;
-
-
-                    yahooPriceHistory = new List<EntidadYahooFinanceApi.CandleT>();
-                    yahooPriceHistoryAsync.ToList().ForEach(n =>
-                    {
-                        CandleT c = new CandleT();
-                        c.AdjustedClose = n.AdjustedClose;
-                        c.Close = n.Close;
-                        c.DateTime = n.DateTime;
-                        c.High = n.High;
-                        c.Low = n.Low;
-                        c.Open = n.Open;
-                        c.Volume = n.Volume;                       
-
-                        yahooPriceHistory.Add(c);
-                    });
-
-                    //List<YahooHistoricalPriceData> yahooPriceHistory = yahooFinance.GetDailyHistoricalPriceData(yahooStockCode, fechaInicio, fechafinal);
+                    List<YahooHistoricalPriceData> yahooPriceHistory = yahooFinance.GetDailyHistoricalPriceData(yahooStockCode, fechaInicio, fechafinal);
 
                     //OBTENER REGISTROS TOTALES
                     x.Cantidad = yahooPriceHistory.Count;
@@ -268,18 +245,8 @@ namespace IDA_Economia.Controllers
 
                 ListaEmpresa.ForEach(n =>
                 {
-                    if (n.ListaPrecio.Count > 0)
-                    {
-                        n.MaxPrecio = n.ListaPrecio.Max(m => Convert.ToDouble(m.Close));
-                        n.MinPrecio = n.ListaPrecio.Min(m => Convert.ToDouble(m.Close));
-                    }
-                    else
-                    {
-                        n.MaxPrecio = 0;
-                        n.MinPrecio = 0;
-                    }
-
-                    
+                    n.MaxPrecio = n.ListaPrecio.Max(m => m.Close);
+                    n.MinPrecio = n.ListaPrecio.Min(m => m.Close);
                 });
 
                 //dgvTotales.DataBind();
